@@ -1,0 +1,4 @@
+/build/
+/workingdir/*
+/artifacts/*
+shell.apk

@@ -1,0 +1,127 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: turtle-android
+  namespace: ${ENVIRONMENT}
+spec:
+  replicas: ${REPLICAS}
+  minReadySeconds: 5
+  revisionHistoryLimit: 10
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: turtle-android
+      environment: ${ENVIRONMENT}
+  template:
+    metadata:
+      labels:
+        app: turtle-android
+        environment: ${ENVIRONMENT}
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 1800 ## wait 30 minutes for any builds to complete
+      tolerations:
+      - key: dedicated
+        operator: Equal
+        value: jobs
+        effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: dedicated
+                operator: In
+                values:
+                - jobs
+      containers:
+      - name: turtle-android
+        imagePullPolicy: Always
+        image: ${CURRENT_TAG}
+        env:
+          # static vars
+          - name: ENVIRONMENT
+            value: ${ENVIRONMENT}
+          - name: PLATFORM
+            value: android
+          - name: AWS_S3_BUCKET
+            value: exp-shell-app-assets
+          - name: AWS_S3_REGION
+            value: us-west-1
+          - name: LOGGLY_SUBDOMAIN
+            value: exponent
+          - name: TURTLE_TEMPORARY_FILES_DIR
+            value: /tmp/turtle
+          # vars from k8s secrets
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: aws_access_key_id
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: aws_secret_access_key
+          - name: AWS_SQS_REGION
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: aws_sqs_region
+          - name: AWS_SQS_IOS_QUEUE_URL
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: aws_sqs_ios_queue_url
+          - name: AWS_SQS_ANDROID_QUEUE_URL
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: aws_sqs_android_queue_url
+          - name: AWS_SQS_OUT_QUEUE_URL
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: aws_sqs_out_queue_url
+          - name: LOGGLY_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: loggly_token
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: sentry_dsn
+          - name: API_PROTOCOL
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: api_protocol
+          - name: API_HOSTNAME
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: api_hostname
+          - name: API_PORT
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: api_port
+          # other vars
+          - name: GRADLE_DAEMON_DISABLED
+            value: "1"
+          - name: DISABLE_DEX_MAX_HEAP
+            value: "true"
+          - name: JAVA_OPTS
+            value: '-Xms2048m -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC'
+          - name: GRADLE_OPTS
+            value: '-Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xms2048m -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC"'
+        resources:
+          requests:
+            memory: "8192Mi"
+            cpu: "2000m"
+          limits:
+            memory: "8192Mi"
+            cpu: "2000m"

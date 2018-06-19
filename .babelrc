@@ -1,0 +1,17 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "8.9"
+      }
+    }]
+  ],
+  "plugins": [
+    ["module-resolver", {
+      "alias": {
+        "turtle": "./src",
+        "ROOT": "./"
+      }
+    }]
+  ]
+}

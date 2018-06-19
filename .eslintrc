@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    "import"
+  ],
+  "extends": ["universe", "plugin:import/errors"],
+  "rules":{
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "parent", "sibling", "index"],
+        "newlines-between": "always"
+      }
+    ],
+    "import/no-unresolved": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
+  }
+}

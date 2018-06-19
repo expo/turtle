@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "alwaysStrict": true,
+    "newLine": "lf",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "pretty": true,
+    "strict": true,
+    "target": "ES2016",
+    "lib": ["es2015", "es2017", "dom"],
+    "allowJs": true,
+    "baseUrl": "./",
+    "paths": {
+      "turtle/*": ["src/*"],
+      "ROOT/*": ["*"]
+    },
+    "moduleResolution": "node"
+  },
+  "include": [
+    "./src/"
+  ]
+}

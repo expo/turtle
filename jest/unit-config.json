@@ -1,0 +1,9 @@
+{
+  "displayName": "turtle",
+  "testEnvironment": "node",
+  "rootDir": "../src",
+  "testMatch": ["**/?(*.)test.js"],
+  "moduleNameMapper": {
+    "^turtle/(.*)$": "<rootDir>/$1"
+  }
+}
