@@ -17,6 +17,7 @@ export const isOffline = () => turtleMode === 'offline';
 
 export default {
   env: env('NODE_ENV'),
+  deploymentEnv: env('ENVIRONMENT'),
   platform: env('PLATFORM', 'ios'),
   aws: {
     accessKeyId: env('AWS_ACCESS_KEY_ID'),

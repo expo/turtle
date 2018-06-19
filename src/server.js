@@ -18,7 +18,9 @@ process.on('SIGTERM', handleExit);
 process.on('SIGINT', handleExit);
 
 async function main() {
-  logger.info(`Starting Turtle... (NODE_ENV=${config.env}, PLATFORM=${config.platform})`);
+  logger.info(
+    `Starting Turtle... (NODE_ENV=${config.env}, PLATFORM=${config.platform}, DEPLOYMENT_ENVIRONMENT=${config.deploymentEnv})`
+  );
   LoggerDetach.configure(logger);
   // eslint-disable-next-line no-constant-condition
   while (true) {

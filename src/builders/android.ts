@@ -8,7 +8,7 @@ import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
 import * as commonUtils from 'turtle/builders/utils/common';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import config from 'turtle/config';
-import logger, { s3logger } from 'turtle/logger';
+import logger from 'turtle/logger';
 import { IAndroidCredentials, IJob, IJobResult } from 'turtle/types/job';
 
 const l = logger.withFields({ buildPhase: 'starting builder' });

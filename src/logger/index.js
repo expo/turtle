@@ -28,8 +28,9 @@ if (isOffline()) {
 }
 
 if (config.sentry.dsn) {
-  const sentryClient = new RavenClient(config.sentry.dsn);
-  streams.push(sentryStream(sentryClient));
+  const raven = new RavenClient();
+  raven.config(config.sentry.dsn, { environment: config.deploymentEnv });
+  streams.push(sentryStream(raven));
 }
 
 if (config.logger.loggly.token) {
@@ -40,7 +41,7 @@ if (config.logger.loggly.token) {
     tags: [
       'app-shell-apps',
       `platform.${config.platform}`,
-      `environment.${config.env}`,
+      `environment.${config.deploymentEnv}`,
     ],
   };
   streams.push({
