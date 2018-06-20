@@ -10,7 +10,7 @@ mkdir -p $ARTIFACTS_DIR
 rm -rf $TEMP_DIR
 mkdir -p $TEMP_DIR
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/tools-public $TEMP_DIR/tools-public
-ln -s ${EXPO_UNIVERSE_DIR}/exponent/__internal__ tmp/src/exponent/__internal__
+ln -s ${EXPO_UNIVERSE_DIR}/exponent/__internal__ $TEMP_DIR/__internal__
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/template-files $TEMP_DIR/template-files
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/android $TEMP_DIR/android
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/cpp $TEMP_DIR/cpp
