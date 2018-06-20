@@ -2,31 +2,25 @@ FROM openjdk:8u141
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# https://github.com/yarnpkg/yarn/issues/2821
-RUN apt-get update && apt-get install apt-transport-https
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
 # Install dependencies
 # TODO: find out if yarn is actually necessary
 RUN dpkg --add-architecture i386 && \
-  apt-get update && \
-  apt remove cmdtest && \
-  apt-get install -yq \
-  ant\
-  build-essential\
-  bzip2:i386\
-  file\
-  lib32ncurses5\
-  lib32z1\
-  libc6:i386\
-  libncurses5:i386\
-  libstdc++6:i386\
-  unzip\
-  yarn\
-  zlib1g:i386\
-  --no-install-recommends && \
-  apt-get clean
+    apt-get update && \
+    apt-get install -yq \
+      ant\
+      build-essential\
+      bzip2:i386\
+      file\
+      lib32ncurses5\
+      lib32z1\
+      libc6:i386\
+      libncurses5:i386\
+      libstdc++6:i386\
+      unzip\
+      yarn\
+      zlib1g:i386\
+      --no-install-recommends && \
+    apt-get clean
 
 ENV NPM_CONFIG_LOGLEVEL warn
 ENV NODE_VERSION 8.9.0
@@ -97,9 +91,29 @@ RUN rm gradle-2.13-all.zip
 ENV GRADLE_HOME /usr/local/gradle-2.13
 ENV PATH ${GRADLE_HOME}/bin:$PATH
 
+# Install Gulp
+RUN npm install -g gulp-cli
+
+# Install Git
+RUN echo 'deb http://http.debian.net/debian wheezy-backports main' >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get -t wheezy-backports install git-core && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 ADD . /app
+
+# Generate dynamic macros
+RUN mkdir -p /app/workingdir/android/expoview/src/main/java/host/exp/exponent/generated/
+RUN cd /app/workingdir/tools-public && \
+  gulp generate-dynamic-macros \
+    --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
+    --platform android
 
 WORKDIR /app
 RUN yarn build:production
+
+ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
+ENV TURTLE_TOOLS_PUBLIC_PATH /app/workingdir/tools-public/
 
 CMD ["yarn", "start:server"]
