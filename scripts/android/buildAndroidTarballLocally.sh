@@ -14,5 +14,6 @@ ln -s ${EXPO_UNIVERSE_DIR}/exponent/__internal__ $TEMP_DIR/__internal__
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/template-files $TEMP_DIR/template-files
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/android $TEMP_DIR/android
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/cpp $TEMP_DIR/cpp
+ln -s ${EXPO_UNIVERSE_DIR}/exponent/package.json $TEMP_DIR/package.json
 cd $TEMP_DIR; tar -czhf $ARTIFACTS_DIR/android-shell-builder.tar.gz .
 rm -rf $TEMP_DIR
