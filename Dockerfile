@@ -2,6 +2,11 @@ FROM openjdk:8u141
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# https://github.com/yarnpkg/yarn/issues/2821
+RUN apt-get update && apt-get install apt-transport-https
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
 # Install dependencies
 # TODO: find out if yarn is actually necessary
 RUN dpkg --add-architecture i386 && \
