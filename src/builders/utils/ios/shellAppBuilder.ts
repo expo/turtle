@@ -2,9 +2,10 @@ import * as path from 'path';
 import * as util from 'util';
 
 import copy from 'copy';
-import { ImageHelpers, IosIcons, IosShellApp } from 'xdl';
+import { IosIcons, IosShellApp } from 'xdl';
 
 import * as commonUtils from 'turtle/builders/utils/common';
+import * as imageHelpers from 'turtle/builders/utils/ios/image';
 import config from 'turtle/config';
 import logger from 'turtle/logger/index';
 import { IContext } from 'turtle/types/context';
@@ -27,8 +28,8 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
     { buildPhase: 'icons setup' },
     'IosIcons: setting image functions to alternative sharp implementations',
   );
-  IosIcons.setResizeImageFunction(ImageHelpers.resizeIconWithSharpAsync);
-  IosIcons.setGetImageDimensionsFunction(ImageHelpers.getImageDimensionsWithSharpAsync);
+  IosIcons.setResizeImageFunction(imageHelpers.resizeIconWithSharpAsync);
+  IosIcons.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
   const appleTeamId = config.credentials && config.credentials.teamId;
   const shellAppParams = {
     url: commonUtils.getExperienceUrl(job.experienceName),
