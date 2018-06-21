@@ -89,11 +89,11 @@ RUN mkdir /ndk_setup && cd /ndk_setup && \
 ENV TERM dumb
 
 # Install gradle
-RUN wget https://services.gradle.org/distributions/gradle-2.13-all.zip
-RUN unzip -qq gradle-2.13-all.zip
-RUN mv gradle-2.13 /usr/local
-RUN rm gradle-2.13-all.zip
-ENV GRADLE_HOME /usr/local/gradle-2.13
+RUN wget https://services.gradle.org/distributions/gradle-4.4-all.zip
+RUN unzip -qq gradle-4.4-all.zip
+RUN mv gradle-4.4 /usr/local
+RUN rm gradle-4.4-all.zip
+ENV GRADLE_HOME /usr/local/gradle-4.4
 ENV PATH ${GRADLE_HOME}/bin:$PATH
 
 # Install Gulp
