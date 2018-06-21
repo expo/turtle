@@ -25,7 +25,7 @@ export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
   const artifactUrl = await uploadBuildToS3({
     uploadPath: apkFilePath,
     s3FileKey,
-    fakeUploadBuildPath: path.join(config.builder.fakeUploadDir, fakeUploadFilename),
+    ...config.builder.fakeUpload && { fakeUploadBuildPath: path.join(config.builder.fakeUploadDir, fakeUploadFilename) },
   });
 
   return { artifactUrl };

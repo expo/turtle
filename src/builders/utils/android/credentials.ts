@@ -13,7 +13,7 @@ import config, { isOffline } from 'turtle/config';
 
 async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredentials> {
   if (!jobData.credentials) {
-    const l = logger.withFields({ buildPhase: 'creating credentials' });
+    const l = logger.withFields({ buildPhase: 'generating keystore' });
     const credentials: any = {};
     l.info('Creating keystore');
     const keystoreFilename = `/tmp/keystore-${jobData.id}.tmp.jks`;
