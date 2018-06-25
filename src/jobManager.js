@@ -5,7 +5,7 @@ import { BUILD } from 'turtle/constants/index';
 import { sanitizeJob } from 'turtle/validator';
 import builders from 'turtle/builders';
 import config, { checkShouldExit } from 'turtle/config';
-import logger, { s3logger } from 'turtle/logger';
+import logger from 'turtle/logger';
 
 function _maybeExit() {
   if (checkShouldExit()) {
@@ -56,33 +56,23 @@ export async function getJob() {
   }
 }
 
-function initLogging(job) {
-  return s3logger.init(job);
-}
-
-async function endLogging(job) {
-  // a little hacky, but works
-  logger.info({ lastBuildLog: true }, 'this is the last log from this build');
-  await s3logger.waitForLogger();
-}
-
 async function build(rawJob) {
   const job = await sanitizeJob(rawJob);
-  const s3Url = await initLogging(job);
-
+  const s3Url = await logger.init(job);
   const { turtleVersion } = job.config;
-  await sqs.sendMessage(job.id, BUILD.JOB_STATES.IN_PROGRESS, {
-    logUrl: s3Url,
-    logFormat: 'json',
-    turtleVersion,
-  });
 
   try {
+    await sqs.sendMessage(job.id, BUILD.JOB_STATES.IN_PROGRESS, {
+      logUrl: s3Url,
+      logFormat: 'json',
+      turtleVersion,
+    });
     const result = await builders[job.platform](job);
     sqs.sendMessage(job.id, BUILD.JOB_STATES.FINISHED, { ...result, turtleVersion });
   } catch (err) {
     logErrorOnce(err);
     sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, { turtleVersion });
   }
-  await endLogging(job);
+
+  await logger.cleanup(job);
 }
