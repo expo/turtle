@@ -10,22 +10,22 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 # Install dependencies
 # TODO: find out if yarn is actually necessary
 RUN dpkg --add-architecture i386 && \
-    apt-get update && \
-    apt-get install -yq \
-      ant\
-      build-essential\
-      bzip2:i386\
-      file\
-      lib32ncurses5\
-      lib32z1\
-      libc6:i386\
-      libncurses5:i386\
-      libstdc++6:i386\
-      unzip\
-      yarn\
-      zlib1g:i386\
-      --no-install-recommends && \
-    apt-get clean
+  apt-get update && \
+  apt-get install -yq \
+  ant\
+  build-essential\
+  bzip2:i386\
+  file\
+  lib32ncurses5\
+  lib32z1\
+  libc6:i386\
+  libncurses5:i386\
+  libstdc++6:i386\
+  unzip\
+  yarn\
+  zlib1g:i386\
+  --no-install-recommends && \
+  apt-get clean
 
 ENV NPM_CONFIG_LOGLEVEL warn
 ENV NODE_VERSION 8.9.0
@@ -89,11 +89,11 @@ RUN mkdir /ndk_setup && cd /ndk_setup && \
 ENV TERM dumb
 
 # Install gradle
-RUN wget https://services.gradle.org/distributions/gradle-4.4-all.zip
-RUN unzip -qq gradle-4.4-all.zip
-RUN mv gradle-4.4 /usr/local
-RUN rm gradle-4.4-all.zip
-ENV GRADLE_HOME /usr/local/gradle-4.4
+RUN wget https://services.gradle.org/distributions/gradle-3.3-all.zip
+RUN unzip -qq gradle-3.3-all.zip
+RUN mv gradle-3.3 /usr/local
+RUN rm gradle-3.3-all.zip
+ENV GRADLE_HOME /usr/local/gradle-3.3
 ENV PATH ${GRADLE_HOME}/bin:$PATH
 
 # Install Gulp
@@ -101,10 +101,10 @@ RUN npm install -g gulp-cli
 
 # Install Git
 RUN echo 'deb http://http.debian.net/debian wheezy-backports main' >> /etc/apt/sources.list && \
-    apt-get update && \
-    apt-get -t wheezy-backports install git-core && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+  apt-get update && \
+  apt-get -t wheezy-backports install git-core && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
 ADD . /app
 
@@ -112,8 +112,8 @@ ADD . /app
 RUN mkdir -p /app/workingdir/android/expoview/src/main/java/host/exp/exponent/generated/
 RUN cd /app/workingdir/tools-public && \
   gulp generate-dynamic-macros \
-    --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
-    --platform android
+  --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
+  --platform android
 
 WORKDIR /app
 RUN yarn build:production
