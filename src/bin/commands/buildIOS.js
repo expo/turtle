@@ -50,7 +50,6 @@ const buildJobObject = (appJSON, { releaseChannel, buildType, username }, creden
   },
   id: uuid.v4(),
   platform: PLATFORMS.IOS,
-  username,
   experience: {
     sdkVersion: _.get(appJSON, 'expo.sdkVersion'),
   },

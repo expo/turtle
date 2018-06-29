@@ -1,6 +1,5 @@
 export interface IJob {
   platform: 'android' | 'ios';
-  username: string;
   experienceName: string;
   id: string;
   experience: {

@@ -3,7 +3,6 @@ import iosJobSchema from './ios';
 describe('iOS job schema', () => {
   it('allows for empty credentials object when buildType = simulator', () => {
     const job = {
-      username: 'dsokal-local',
       platform: 'ios',
       config: {
         buildType: 'simulator',
@@ -19,7 +18,6 @@ describe('iOS job schema', () => {
 
   it("doesn't allows for empty credentials object when buildType = archive", () => {
     const job = {
-      username: 'dsokal-local',
       platform: 'ios',
       config: {
         buildType: 'archive',
