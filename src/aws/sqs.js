@@ -83,6 +83,6 @@ export async function sendMessage(jobId, status, data = {}) {
       return await sqs.sendMessage(params).promise();
     });
   } catch (err) {
-    logger.err(`Error sending SQS message: ${JSON.stringify(params)}}`, err);
+    logger.error(`Error sending SQS message: ${JSON.stringify(params)}}`, err);
   }
 }

@@ -18,10 +18,8 @@
     "build:android-tarball:local": "./scripts/android/buildAndroidTarballLocally.sh",
     "build:android-tarball:remote": "./scripts/android/fetchRemoteAndroidTarball.sh",
     "docker:pull": "retry5 gcloud docker -- pull gcr.io/exponentjs/turtle-android:latest",
-    "docker:build":
-      "yarn build:android-tarball:remote && gcloud docker -- build -t gcr.io/exponentjs/turtle-android:latest -t gcr.io/exponentjs/turtle-android:${TAG} .",
-    "docker:push":
-      "retry5 gcloud docker -- push gcr.io/exponentjs/turtle-android:${TAG} && retry5 gcloud docker -- push gcr.io/exponentjs/turtle-android:latest",
+    "docker:build": "yarn build:android-tarball:remote && gcloud docker -- build -t gcr.io/exponentjs/turtle-android:latest -t gcr.io/exponentjs/turtle-android:${TAG} .",
+    "docker:push": "retry5 gcloud docker -- push gcr.io/exponentjs/turtle-android:${TAG} && retry5 gcloud docker -- push gcr.io/exponentjs/turtle-android:latest",
     "deploy:android": "./scripts/android/deploy.sh"
   },
   "bin": "./bin/turtle.js",
@@ -68,6 +66,7 @@
     "commander": "^2.15.1",
     "copy": "^0.3.1",
     "fs-extra": "^6.0.0",
+    "ioredis": "^3.2.2",
     "joi": "^13.2.0",
     "lodash": "^4.17.10",
     "raven": "^2.6.2",

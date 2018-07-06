@@ -6,6 +6,7 @@ import { sanitizeJob } from 'turtle/validator';
 import builders from 'turtle/builders';
 import config, { checkShouldExit } from 'turtle/config';
 import logger from 'turtle/logger';
+import * as redis from 'turtle/utils/redis';
 
 function _maybeExit() {
   if (checkShouldExit()) {
@@ -21,10 +22,21 @@ export async function doJob() {
   const receiptHandle = jobData.ReceiptHandle;
 
   logger.info(`Doing job ${jobData.MessageId} ${Date.now()}`);
-  const job = JSON.parse(jobData.Body);
+  const rawJob = JSON.parse(jobData.Body);
+  const job = await sanitizeJob(rawJob);
 
-  await build(job);
-  logger.info(`Job done ${jobData.MessageId} ${Date.now()}`);
+  const cancelled = await redis.checkIfCancelled(job.id);
+  if (cancelled) {
+    logger.info('The job has been cancelled');
+  } else {
+    redis.registerListener(job.id);
+    try {
+      await build(job);
+    } finally {
+      redis.unregisterListeners();
+    }
+    logger.info(`Job done ${jobData.MessageId} ${Date.now()}`);
+  }
 
   try {
     await sqs.deleteMessage(receiptHandle);
@@ -56,8 +68,7 @@ export async function getJob() {
   }
 }
 
-async function build(rawJob) {
-  const job = await sanitizeJob(rawJob);
+async function build(job) {
   const s3Url = await logger.init(job);
   const { turtleVersion } = job.config;
 

@@ -35,6 +35,9 @@ export default {
       out: env('AWS_SQS_OUT_QUEUE_URL'),
     },
   },
+  redis: {
+    url: env('REDIS_URL'),
+  },
   logger: {
     level: env('LOGGER_LEVEL', 'info'),
     interval: envNum('LOGGER_INTERVAL', 5),
