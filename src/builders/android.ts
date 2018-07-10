@@ -20,7 +20,7 @@ export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
     .randomBytes(16)
     .toString('hex');
   const s3Filename = `${jobData.experienceName}-${randomHex}-signed.apk`;
-  const s3FileKey = `android/`;
+  const s3FileKey = `android/${s3Filename}`;
   const fakeUploadFilename = s3Filename.replace('/', '\\');
   const artifactUrl = await uploadBuildToS3({
     uploadPath: apkFilePath,
