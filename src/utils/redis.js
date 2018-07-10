@@ -23,17 +23,22 @@ function connect(timeoutMs) {
   });
 }
 
-let _redisClient = null;
+const REDIS_CLIENT_SUBSCRIBER = Symbol('REDIS_CLIENT_SUBSCRIBER');
+const REDIS_CLIENT_DEFAULT = Symbol('REDIS_CLIENT_DEFAULT');
+const _redisClients = {
+  [REDIS_CLIENT_SUBSCRIBER]: null,
+  [REDIS_CLIENT_DEFAULT]: null,
+};
 
-async function getRedisClient() {
-  if (!_redisClient) {
+async function getRedisClient(type = REDIS_CLIENT_DEFAULT) {
+  if (!_redisClients[type]) {
     try {
-      _redisClient = await connect(MILIS_CONNECTION_TIMEOUT);
+      _redisClients[type] = await connect(MILIS_CONNECTION_TIMEOUT);
     } catch (err) {
       logger.error(err);
     }
   }
-  return _redisClient;
+  return _redisClients[type];
 }
 
 export async function checkIfCancelled(jobId) {
@@ -51,7 +56,7 @@ export async function checkIfCancelled(jobId) {
 
 export async function registerListener(jobId) {
   try {
-    const redis = await getRedisClient();
+    const redis = await getRedisClient(REDIS_CLIENT_SUBSCRIBER);
     redis.subscribe('jobs:cancelled');
     redis.on('message', function(channel, message) {
       if (message === jobId) {
