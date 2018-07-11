@@ -34,8 +34,11 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string) {
 
   const {
     credentials: { provisioningProfile, certPassword, teamId, password },
-    config: { bundleIdentifier },
+    config: { bundleIdentifier: _bundleIdentifierFromConfig },
+    experience: { manifest: { ios: { _bundleIdentifierFromManifest } } },
   } = job;
+
+  const bundleIdentifier = _bundleIdentifierFromConfig || _bundleIdentifierFromManifest;
 
   const { provisioningProfilePath } = ctx;
   await fileUtils.writeBase64ToBinaryFile(provisioningProfilePath, provisioningProfile);
