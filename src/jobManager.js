@@ -21,8 +21,8 @@ export async function doJob() {
   const pingerHandle = sqs.changeMessageVisibilityRecurring(jobData.ReceiptHandle);
   const receiptHandle = jobData.ReceiptHandle;
 
-  logger.info(`Doing job ${jobData.MessageId} ${Date.now()}`);
   const rawJob = JSON.parse(jobData.Body);
+  logger.info(`Doing job MessageId=${jobData.MessageId} BuildId=${rawJob.id} ${Date.now()}`);
   const job = await sanitizeJob(rawJob);
 
   const cancelled = await redis.checkIfCancelled(job.id);
@@ -35,7 +35,7 @@ export async function doJob() {
     } finally {
       redis.unregisterListeners();
     }
-    logger.info(`Job done ${jobData.MessageId} ${Date.now()}`);
+    logger.info(`Job done MessageId=${jobData.MessageId} BuildId=${job.id} ${Date.now()}`);
   }
 
   try {
