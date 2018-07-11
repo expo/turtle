@@ -66,7 +66,7 @@ export async function changeMessageVisibility(receiptHandle) {
 export function changeMessageVisibilityRecurring(receiptHandle) {
   return setInterval(() => {
     changeMessageVisibility(receiptHandle).catch(err =>
-      logger.error('Error at change msg visibility', err)
+      logger.warn('Error at change msg visibility', err)
     );
   }, VISIBILITY_TIMEOUT_SEC * 1000 / 3);
 }
