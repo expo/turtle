@@ -1,6 +1,6 @@
 import bunyan from 'bunyan';
 import { Client as RavenClient } from 'raven';
-import sentryStream from 'bunyan-sentry-stream';
+import { SentryStream } from 'bunyan-sentry-stream';
 import bunyanDebugStream from 'bunyan-debug-stream';
 
 import config, { isOffline } from 'turtle/config';
@@ -28,10 +28,14 @@ if (isOffline()) {
   );
 }
 
-if (config.sentry.dsn) {
+if (config.sentry.dsn && config.deploymentEnv !== 'development') {
   const raven = new RavenClient();
   raven.config(config.sentry.dsn, { environment: config.deploymentEnv });
-  streams.push(sentryStream(raven));
+  streams.push({
+    level: 'error',
+    type: 'raw', // Mandatory type for SentryStream
+    stream: new SentryStream(raven),
+  });
 }
 
 if (config.logger.loggly.token) {
