@@ -120,5 +120,6 @@ RUN yarn build:production
 
 ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
 ENV TURTLE_TOOLS_PUBLIC_PATH /app/workingdir/tools-public/
+ENV NODE_ENV "production"
 
-CMD ["yarn", "start:server"]
+CMD ["node", "./build/server.js"]
