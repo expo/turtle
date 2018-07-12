@@ -2,19 +2,6 @@ import path from 'path';
 
 import { env, envNum, envOptional, envTransform } from 'turtle/utils/env';
 
-const turtleMode = env('TURTLE_MODE', 'online');
-let shouldExit = false;
-
-export const setShouldExit = () => {
-  shouldExit = true;
-};
-
-export const checkShouldExit = () => {
-  return shouldExit;
-};
-
-export const isOffline = () => turtleMode === 'offline';
-
 export default {
   env: env('NODE_ENV'),
   deploymentEnv: env('ENVIRONMENT'),
@@ -59,7 +46,7 @@ export default {
     port: envNum('API_PORT'),
   },
   builder: {
-    mode: turtleMode,
+    mode: env('TURTLE_MODE', 'online'),
     workingDir: env('TURTLE_WORKING_DIR_PATH', path.join(process.cwd(), 'workingdir')),
     temporaryFilesRoot: env('TURTLE_TEMPORARY_FILES_DIR', path.join('/private', 'tmp', 'turtle')),
     skipCleanup: envTransform(

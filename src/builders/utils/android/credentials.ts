@@ -7,9 +7,8 @@ import { AndroidKeystore } from 'xdl';
 import * as sqs from 'turtle/aws/sqs';
 import { UPDATE_CREDENTIALS } from 'turtle/constants/build';
 import logger from 'turtle/logger';
-import { IContext } from 'turtle/types/context';
+import { isOffline } from 'turtle/turtleContext';
 import { IAndroidCredentials, IJob } from 'turtle/types/job';
-import config, { isOffline } from 'turtle/config';
 
 async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredentials> {
   if (!jobData.credentials) {

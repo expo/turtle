@@ -1,8 +1,9 @@
 import { LoggerDetach } from 'xdl';
 
-import config, { setShouldExit, checkShouldExit } from 'turtle/config';
+import config from 'turtle/config';
 import logger from 'turtle/logger';
 import { doJob } from 'turtle/jobManager';
+import { setShouldExit, checkShouldExit } from 'turtle/turtleContext';
 
 function handleExit() {
   if (checkShouldExit()) {

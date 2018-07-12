@@ -54,13 +54,14 @@ export async function checkIfCancelled(jobId) {
   }
 }
 
-export async function registerListener(jobId) {
+export async function registerListener(jobId, deleteMessage) {
   try {
     const redis = await getRedisClient(REDIS_CLIENT_SUBSCRIBER);
     redis.subscribe('jobs:cancelled');
-    redis.on('message', function(channel, message) {
+    redis.on('message', async function(channel, message) {
       if (message === jobId) {
         logger.info({ lastBuildLog: true }, 'Job cancelled - killing process');
+        await deleteMessage();
         setTimeout(() => process.exit(1), MILIS_TO_UPLOAD_LOGS);
       }
     });

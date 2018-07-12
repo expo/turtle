@@ -3,10 +3,11 @@ import { Client as RavenClient } from 'raven';
 import { SentryStream } from 'bunyan-sentry-stream';
 import bunyanDebugStream from 'bunyan-debug-stream';
 
-import config, { isOffline } from 'turtle/config';
+import config from 'turtle/config';
 import S3Stream from 'turtle/logger/s3Stream';
 import HackyLogglyStream from 'turtle/logger/hackyLogglyStream';
 import * as constants from 'turtle/constants/logger';
+import { isOffline } from 'turtle/turtleContext';
 
 export const s3logger = new S3Stream();
 let logglyStream;

@@ -4,6 +4,7 @@ import retry from 'async-retry';
 
 import logger from 'turtle/logger';
 import config from 'turtle/config';
+import { getCurrentJobId } from 'turtle/turtleContext';
 
 const sqs = new AWS.SQS({
   apiVersion: '2012-11-05',
@@ -63,11 +64,13 @@ export async function changeMessageVisibility(receiptHandle) {
 // Every VISIBILITY_TIMEOUT_SEC / 3 seconds we are telling AWS SQS
 // that we're still proccessing the message, so it does not
 // send the build job to another turtle agent
-export function changeMessageVisibilityRecurring(receiptHandle) {
+export function changeMessageVisibilityRecurring(receiptHandle, jobId) {
   return setInterval(() => {
-    changeMessageVisibility(receiptHandle).catch(err =>
-      logger.warn('Error at change msg visibility', err)
-    );
+    if (getCurrentJobId() === jobId) {
+      changeMessageVisibility(receiptHandle).catch(err => {
+        logger.warn('Error at change msg visibility', err);
+      });
+    }
   }, VISIBILITY_TIMEOUT_SEC * 1000 / 3);
 }
 

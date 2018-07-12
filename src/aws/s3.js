@@ -2,7 +2,8 @@ import AWS from 'aws-sdk';
 import _ from 'lodash';
 import fs from 'fs-extra';
 
-import config, { isOffline } from 'turtle/config';
+import config from 'turtle/config';
+import { isOffline } from 'turtle/turtleContext';
 
 const s3 = createS3Object();
 
