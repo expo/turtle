@@ -56,6 +56,5 @@ export default {
     ),
     fakeUpload: envTransform('TURTLE_FAKE_UPLOAD', '0', val => val === '1'),
     fakeUploadDir: envOptional('TURTLE_FAKE_UPLOAD_DIR'),
-    exitOnReceiveError: env('TURTLE_EXIT_ON_RECEIVE_ERROR', '1'),
   },
 };

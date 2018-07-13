@@ -70,10 +70,6 @@ export async function getJob() {
       }
     } catch (err) {
       logger.error('Error at receiving messages', err);
-      if (config.builder.exitOnReceiveError) {
-        logger.warn('Shuting down due to receive from SQS error');
-        process.exit(1);
-      }
     }
   }
 }
