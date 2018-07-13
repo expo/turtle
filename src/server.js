@@ -5,6 +5,8 @@ import logger from 'turtle/logger';
 import { doJob } from 'turtle/jobManager';
 import { setShouldExit, checkShouldExit } from 'turtle/turtleContext';
 
+process.on('unhandledRejection', err => logger.error('Unhandled promise rejection:', err));
+
 function handleExit() {
   if (checkShouldExit()) {
     logger.warn(`Received termination signal again. Forcing exit now.`);
@@ -25,7 +27,11 @@ async function main() {
   LoggerDetach.configure(logger);
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    await doJob();
+    try {
+      await doJob();
+    } catch (err) {
+      logger.error('Failed to do a job', err);
+    }
   }
 }
 

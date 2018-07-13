@@ -56,5 +56,6 @@ export default {
     ),
     fakeUpload: envTransform('TURTLE_FAKE_UPLOAD', '0', val => val === '1'),
     fakeUploadDir: envOptional('TURTLE_FAKE_UPLOAD_DIR'),
+    maxJobTimeMs: envNum('TURTLE_MAX_JOB_TIME_MS', 60 * 60 * 1000),
   },
 };

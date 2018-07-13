@@ -17,49 +17,14 @@ function _maybeExit() {
 }
 
 export async function doJob() {
-  logger.info('Fetching job');
   const jobData = await getJob();
-  const receiptHandle = jobData.ReceiptHandle;
-
-  const deleteMessage = async () => {
-    try {
-      setCurrentJobId(null);
-      await sqs.deleteMessage(receiptHandle);
-    } catch (err) {
-      logger.error('Error at deleting msg', err);
-    }
-  };
-
-  try {
-    const rawJob = JSON.parse(jobData.Body);
-    const job = await sanitizeJob(rawJob);
-
-    setCurrentJobId(job.id);
-    const pingerHandle = sqs.changeMessageVisibilityRecurring(jobData.ReceiptHandle, job.id);
-
-    logger.info(`Doing job MessageId=${jobData.MessageId} BuildId=${job.id} ${Date.now()}`);
-
-    const cancelled = await redis.checkIfCancelled(job.id);
-    if (cancelled) {
-      logger.info('The job has been cancelled');
-    } else {
-      redis.registerListener(job.id, deleteMessage);
-      try {
-        await build(job);
-      } finally {
-        redis.unregisterListeners();
-      }
-      logger.info(`Job done MessageId=${jobData.MessageId} BuildId=${job.id} ${Date.now()}`);
-    }
-    clearInterval(pingerHandle);
-  } finally {
-    await deleteMessage();
-  }
+  await processJob(jobData);
   _maybeExit();
 }
 
 export async function getJob() {
   _maybeExit();
+  logger.info('Fetching job');
   // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
@@ -72,6 +37,55 @@ export async function getJob() {
       logger.error('Error at receiving messages', err);
     }
   }
+}
+
+async function processJob(jobData) {
+  const receiptHandle = jobData.ReceiptHandle;
+  let timeoutId;
+  try {
+    const rawJob = JSON.parse(jobData.Body);
+    timeoutId = failAfterMaxJobTime(receiptHandle, rawJob);
+    const job = await sanitizeJob(rawJob);
+
+    setCurrentJobId(job.id);
+    const pingerHandle = sqs.changeMessageVisibilityRecurring(jobData.ReceiptHandle, job.id);
+
+    logger.info(`Doing job MessageId=${jobData.MessageId} BuildId=${job.id} ${Date.now()}`);
+
+    const cancelled = await redis.checkIfCancelled(job.id);
+    if (cancelled) {
+      logger.info('The job has been cancelled');
+    } else {
+      redis.registerListener(job.id, () => deleteMessage(receiptHandle));
+      try {
+        await build(job);
+      } finally {
+        redis.unregisterListeners();
+      }
+      logger.info(`Job done MessageId=${jobData.MessageId} BuildId=${job.id} ${Date.now()}`);
+    }
+    clearInterval(pingerHandle);
+  } finally {
+    await deleteMessage(receiptHandle);
+    if (timeoutId) {
+      logger.info('Clearing job failer timeout...');
+      clearTimeout(timeoutId);
+    }
+  }
+}
+
+function failAfterMaxJobTime(receiptHandle, job) {
+  return setTimeout(async () => {
+    try {
+      sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, {
+        turtleVersion: job.config.turtleVersion,
+      });
+      await deleteMessage(receiptHandle);
+    } finally {
+      logger.error('Going to terminate turtle agent, just in case...');
+      process.exit(1);
+    }
+  }, config.builder.maxJobTimeMs);
 }
 
 async function build(job) {
@@ -92,4 +106,13 @@ async function build(job) {
   }
 
   await logger.cleanup(job);
+}
+
+async function deleteMessage(receiptHandle) {
+  try {
+    setCurrentJobId(null);
+    await sqs.deleteMessage(receiptHandle);
+  } catch (err) {
+    logger.error('Error at deleting msg', err);
+  }
 }
