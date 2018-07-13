@@ -51,7 +51,7 @@ async function runShellAppBuilder(
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
       url: commonUtils.getExperienceUrl(jobData.experienceName),
-      sdkVersion: jobData.experience.sdkVersion,
+      sdkVersion: jobData.manifest.sdkVersion || jobData.sdkVersion,
       keystore: tempKeystorePath,
       alias: credentials.keystoreAlias,
       keystorePassword: credentials.keystorePassword,

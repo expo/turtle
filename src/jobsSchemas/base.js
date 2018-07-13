@@ -6,9 +6,7 @@ export default Joi.object().keys({
   platform: Joi.string().valid(Object.values(PLATFORMS)),
   experienceName: Joi.string(),
   id: Joi.string().uuid(),
-  experience: Joi.object().keys({
-    sdkVersion: Joi.string(),
-  }),
+  manifest: Joi.object().unknown(true),
   config: Joi.object()
     .keys({
       releaseChannel: Joi.string().regex(/[a-z\d][a-z\d._-]*/),

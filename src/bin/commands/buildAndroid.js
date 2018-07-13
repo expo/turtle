@@ -37,14 +37,7 @@ const buildJobObject = (appJSON, { releaseChannel, username, projectDir }, crede
   },
   id: uuid.v4(),
   platform: PLATFORMS.ANDROID,
-  experience: {
-    sdkVersion: _.get(appJSON, 'expo.sdkVersion'),
-    manifest: {
-      android: {
-        package: _.get(appJSON, 'expo.android.package'),
-      },
-    },
-  },
+  sdkVersion: _.get(appJSON, 'expo.sdkVersion'),
   projectDir,
   experienceName: `@${username}/${_.get(appJSON, 'expo.slug')}`,
   ...(credentials && { credentials }),

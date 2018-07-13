@@ -19,7 +19,7 @@ async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredential
     credentials.keystorePassword = crypto.randomBytes(16).toString('hex');
     credentials.keyPassword = crypto.randomBytes(16).toString('hex');
     credentials.keystoreAlias = Buffer.from(jobData.experienceName).toString('base64');
-    const androidPackage = jobData.experience.manifest.android.package;
+    const androidPackage = jobData.manifest.android.package;
 
     await AndroidKeystore.createKeystore({
       keystorePassword: credentials.keystorePassword,

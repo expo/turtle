@@ -2,10 +2,8 @@ export interface IJob {
   platform: 'android' | 'ios';
   experienceName: string;
   id: string;
-  experience: {
-    sdkVersion: string;
-    manifest: any;
-  };
+  manifest: any;
+  sdkVersion: string;
   config: {
     releaseChannel: string;
     turtleVersion?: string;

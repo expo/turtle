@@ -23,12 +23,5 @@ export default baseJobSchema.concat(
         then: Joi.optional(),
         otherwise: Joi.required(),
       }),
-    experience: Joi.object().keys({
-      manifest: Joi.object().keys({
-        ios: Joi.object().keys({
-          bundleIdentifier: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9\-.]+$/),
-        }),
-      }),
-    }),
   })
 );

@@ -12,12 +12,5 @@ export default baseJobSchema.concat(
       keystoreAlias: Joi.string(),
       keystore: Joi.string(),
     }),
-    experience: Joi.object().keys({
-      manifest: Joi.object().keys({
-        android: Joi.object().keys({
-          package: Joi.string(),
-        }),
-      }),
-    }),
   })
 );
