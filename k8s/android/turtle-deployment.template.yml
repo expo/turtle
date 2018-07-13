@@ -8,7 +8,9 @@ spec:
   minReadySeconds: 5
   revisionHistoryLimit: 10
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 5
   selector:
     matchLabels:
       app: turtle-android
