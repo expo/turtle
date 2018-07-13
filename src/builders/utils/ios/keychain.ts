@@ -13,7 +13,7 @@ export async function create(ctx: IContext): Promise<IKeychain> {
     l.info('done creating keychain');
     return keychainInfo;
   } catch (err) {
-    l.error({ err }, 'unable to create keychain');
+    l.error('unable to create keychain');
     throw err;
   }
 }
@@ -29,7 +29,7 @@ export async function remove(ctx: IContext, keychainPath: string) {
     l.info('done deleting keychain');
     return keychainInfo;
   } catch (err) {
-    l.error({ err }, 'unable to delete keychain');
+    l.error('unable to delete keychain');
     throw err;
   }
 }
@@ -50,7 +50,7 @@ export async function importCert(
     await IosKeychain.importIntoKeychain({ keychainPath, certPath, certPassword });
     l.info('done importing distribution certificate into keychain');
   } catch (err) {
-    l.error({ err }, 'unable to import distribution certificate into keychain');
+    l.error('unable to import distribution certificate into keychain');
     throw err;
   }
 }

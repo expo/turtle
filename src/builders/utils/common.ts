@@ -12,7 +12,7 @@ const alreadyLoggedError = Symbol('alreadyLoggedError');
 
 export function logErrorOnce(err: any) {
   if (!err[alreadyLoggedError]) {
-    logger.error(err);
+    logger.error(err.stack);
     err[alreadyLoggedError] = true;
   }
 }
