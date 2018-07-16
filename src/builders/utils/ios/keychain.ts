@@ -34,6 +34,10 @@ export async function remove(ctx: IContext, keychainPath: string) {
   }
 }
 
+export async function cleanUp() {
+  await IosKeychain.cleanUpKeychains();
+}
+
 export async function importCert(
   ctx: IContext,
   {

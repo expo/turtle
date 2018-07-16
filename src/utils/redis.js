@@ -3,8 +3,8 @@ import Redis from 'ioredis';
 import logger from 'turtle/logger';
 import config from 'turtle/config';
 
-const MILIS_TO_UPLOAD_LOGS = 3000;
-const MILIS_CONNECTION_TIMEOUT = 10000;
+const MILLIS_TO_UPLOAD_LOGS = 3000;
+const MILLIS_CONNECTION_TIMEOUT = 10000;
 
 function connect(timeoutMs) {
   return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ const _redisClients = {
 async function getRedisClient(type = REDIS_CLIENT_DEFAULT) {
   if (!_redisClients[type]) {
     try {
-      _redisClients[type] = await connect(MILIS_CONNECTION_TIMEOUT);
+      _redisClients[type] = await connect(MILLIS_CONNECTION_TIMEOUT);
     } catch (err) {
       logger.error(err);
     }
@@ -62,7 +62,7 @@ export async function registerListener(jobId, deleteMessage) {
       if (message === jobId) {
         logger.info({ lastBuildLog: true }, 'Job cancelled - killing process');
         await deleteMessage();
-        setTimeout(() => process.exit(1), MILIS_TO_UPLOAD_LOGS);
+        setTimeout(() => process.exit(1), MILLIS_TO_UPLOAD_LOGS);
       }
     });
   } catch (err) {

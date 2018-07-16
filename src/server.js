@@ -2,6 +2,7 @@ import { LoggerDetach } from 'xdl';
 
 import config from 'turtle/config';
 import logger from 'turtle/logger';
+import setup from 'turtle/setup';
 import { doJob } from 'turtle/jobManager';
 import { setShouldExit, checkShouldExit } from 'turtle/turtleContext';
 
@@ -25,6 +26,9 @@ async function main() {
     `Starting Turtle... (NODE_ENV=${config.env}, PLATFORM=${config.platform}, DEPLOYMENT_ENVIRONMENT=${config.deploymentEnv})`
   );
   LoggerDetach.configure(logger);
+  if (setup[config.platform]) {
+    await setup[config.platform]();
+  }
   // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
