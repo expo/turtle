@@ -17,7 +17,7 @@ export default class S3Stream extends EventEmitter {
 
   async init(job) {
     this.s3url = `logs/${job.experienceName}/${job.id}`;
-    const dir = path.join('/tmp', 'logs');
+    const dir = config.builder.tempS3LogsDir;
     const exists = await fs.exists(dir);
     if (!exists) {
       await fs.mkdir(dir);
