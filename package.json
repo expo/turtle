@@ -20,7 +20,11 @@
     "docker:pull": "retry5 gcloud docker -- pull gcr.io/exponentjs/turtle-android:latest",
     "docker:build": "yarn build:android-tarball:remote && gcloud docker -- build -t gcr.io/exponentjs/turtle-android:latest -t gcr.io/exponentjs/turtle-android:${TAG} .",
     "docker:push": "retry5 gcloud docker -- push gcr.io/exponentjs/turtle-android:${TAG} && retry5 gcloud docker -- push gcr.io/exponentjs/turtle-android:latest",
-    "deploy:android": "./scripts/android/deploy.sh"
+    "deploy:android": "./scripts/android/deploy.sh",
+    "secrets:init-private": "./scripts/initPrivateSecrets.sh",
+    "ssh:android:pods-names": "./scripts/ssh/findAndroidPods.sh",
+    "ssh:android:connect": "./scripts/ssh/connectToAndroidPod.sh",
+    "ssh:ios:ips": "./scripts/ssh/findIosIps.sh"
   },
   "bin": "./bin/turtle.js",
   "devDependencies": {
