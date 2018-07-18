@@ -35,8 +35,10 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string) {
   const {
     credentials: { provisioningProfile, certPassword, teamId, password },
     config: { bundleIdentifier: _bundleIdentifierFromConfig },
-    manifest: { ios: { bundleIdentifier: _bundleIdentifierFromManifest } },
+    manifest,
   } = job;
+
+  const { ios: { bundleIdentifier: _bundleIdentifierFromManifest } } = manifest;
 
   const bundleIdentifier = _bundleIdentifierFromConfig || _bundleIdentifierFromManifest;
 
@@ -54,6 +56,7 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string) {
     password,
     bundleIdentifier,
     workingDir: config.builder.workingDir,
+    manifest,
   });
   await ipaBuilder.build();
 
