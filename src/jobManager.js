@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { logErrorOnce } from 'turtle/builders/utils/common';
 
 import * as sqs from 'turtle/aws/sqs';
@@ -8,6 +9,8 @@ import config from 'turtle/config';
 import logger from 'turtle/logger';
 import * as redis from 'turtle/utils/redis';
 import { checkShouldExit, setCurrentJobId } from 'turtle/turtleContext';
+import * as buildStatusMetric from 'turtle/metrics/buildStatus';
+import * as buildDurationMetric from 'turtle/metrics/buildDuration';
 
 function _maybeExit() {
   if (checkShouldExit()) {
@@ -57,9 +60,26 @@ async function processJob(jobData) {
       logger.info('The job has been cancelled');
     } else {
       redis.registerListener(job.id, () => deleteMessage(receiptHandle));
+      const startTimestamp = +new Date();
+      let errorThrown = false;
+      const buildType = _.get(job, 'config.buildType', 'default');
       try {
         await build(job);
+        buildStatusMetric.add(buildType, true);
+      } catch (err) {
+        buildStatusMetric.add(buildType, false);
+        errorThrown = true;
+        throw err;
       } finally {
+        const endTimestamp = +new Date();
+        const turtleBuildDurationSecs = Math.ceil((endTimestamp - startTimestamp) / 1000);
+        buildDurationMetric.addTurtleDuration(buildType, turtleBuildDurationSecs, !errorThrown);
+        if (job.messageCreatedTimestamp) {
+          const totalBuildDurationSecs = Math.ceil(
+            (endTimestamp - job.messageCreatedTimestamp) / 1000
+          );
+          buildDurationMetric.addTotalDuration(buildType, totalBuildDurationSecs, !errorThrown);
+        }
         redis.unregisterListeners();
       }
       logger.info(`Job done MessageId=${jobData.MessageId} BuildId=${job.id} ${Date.now()}`);

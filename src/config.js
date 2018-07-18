@@ -1,9 +1,11 @@
 import path from 'path';
+import os from 'os';
 
 import { env, envNum, envOptional, envTransform } from 'turtle/utils/env';
 
 export default {
   env: env('NODE_ENV'),
+  hostname: env('HOSTNAME', os.hostname()),
   deploymentEnv: env('ENVIRONMENT'),
   platform: env('PLATFORM', 'ios'),
   aws: {
@@ -21,6 +23,12 @@ export default {
       android: env('AWS_SQS_ANDROID_QUEUE_URL'),
       out: env('AWS_SQS_OUT_QUEUE_URL'),
     },
+  },
+  cloudwatch: {
+    region: env('AWS_CLOUDWATCH_REGION'),
+    disabled: envTransform('AWS_CLOUDWATCH_DISABLED', '0', val => val === '1'),
+    intervalMs: envNum('AWS_CLOUDWATCH_INTERVAL_MS', 30000),
+    namespace: env('AWS_CLOUDWATCH_NAMESPACE', 'Turtle'),
   },
   redis: {
     url: env('REDIS_URL'),

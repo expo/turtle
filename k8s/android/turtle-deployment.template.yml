@@ -86,6 +86,11 @@ spec:
               secretKeyRef:
                 name: turtle-js-config
                 key: aws_sqs_out_queue_url
+          - name: AWS_CLOUDWATCH_REGION
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: aws_cloudwatch_region
           - name: LOGGLY_TOKEN
             valueFrom:
               secretKeyRef:
