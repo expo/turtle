@@ -61,24 +61,25 @@ async function processJob(jobData) {
     } else {
       redis.registerListener(job.id, () => deleteMessage(receiptHandle));
       const startTimestamp = +new Date();
-      let errorThrown = false;
+      let buildFailed = false;
       const buildType = _.get(job, 'config.buildType', 'default');
       try {
-        await build(job);
-        buildStatusMetric.add(buildType, true);
+        const success = await build(job);
+        buildStatusMetric.add(buildType, success);
+        buildFailed = !success;
       } catch (err) {
         buildStatusMetric.add(buildType, false);
-        errorThrown = true;
+        buildFailed = true;
         throw err;
       } finally {
         const endTimestamp = +new Date();
         const turtleBuildDurationSecs = Math.ceil((endTimestamp - startTimestamp) / 1000);
-        buildDurationMetric.addTurtleDuration(buildType, turtleBuildDurationSecs, !errorThrown);
+        buildDurationMetric.addTurtleDuration(buildType, turtleBuildDurationSecs, !buildFailed);
         if (job.messageCreatedTimestamp) {
           const totalBuildDurationSecs = Math.ceil(
             (endTimestamp - job.messageCreatedTimestamp) / 1000
           );
-          buildDurationMetric.addTotalDuration(buildType, totalBuildDurationSecs, !errorThrown);
+          buildDurationMetric.addTotalDuration(buildType, totalBuildDurationSecs, !buildFailed);
         }
         redis.unregisterListeners();
       }
@@ -120,12 +121,14 @@ async function build(job) {
     });
     const result = await builders[job.platform](job);
     sqs.sendMessage(job.id, BUILD.JOB_STATES.FINISHED, { ...result, turtleVersion });
+    return true;
   } catch (err) {
     logErrorOnce(err);
     sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, { turtleVersion });
+    return false;
+  } finally {
+    await logger.cleanup(job);
   }
-
-  await logger.cleanup(job);
 }
 
 async function deleteMessage(receiptHandle) {
