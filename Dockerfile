@@ -2,13 +2,7 @@ FROM openjdk:8u141
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# https://github.com/yarnpkg/yarn/issues/2821
-RUN apt-get update && apt-get install apt-transport-https
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
 # Install dependencies
-# TODO: find out if yarn is actually necessary
 RUN dpkg --add-architecture i386 && \
   apt-get update && \
   apt-get install -yq \
@@ -22,7 +16,6 @@ RUN dpkg --add-architecture i386 && \
   libncurses5:i386\
   libstdc++6:i386\
   unzip\
-  yarn\
   zlib1g:i386\
   --no-install-recommends && \
   apt-get clean
@@ -116,7 +109,6 @@ RUN cd /app/workingdir/tools-public && \
   --platform android
 
 WORKDIR /app
-RUN yarn build:production
 
 ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
 ENV TURTLE_TOOLS_PUBLIC_PATH /app/workingdir/tools-public/

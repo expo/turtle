@@ -13,12 +13,14 @@
     "bin:turtle": "node ./bin/turtle.js",
     "lint": "eslint src",
     "test": "jest --config jest/unit-config.json --watch",
+    "preinstall": "cd ../../dev/xdl && yarn install",
+    "postinstall": "rm -r node_modules/xdl && cp -r ../../dev/xdl node_modules/xdl && rm -r node_modules/xdl/node_modules",
     "build": "gulp build:server",
     "build:production": "./scripts/build.sh",
     "build:android-tarball:local": "./scripts/android/buildAndroidTarballLocally.sh",
     "build:android-tarball:remote": "./scripts/android/fetchRemoteAndroidTarball.sh",
     "docker:pull": "retry5 gcloud docker -- pull gcr.io/exponentjs/turtle-android:latest",
-    "docker:build": "yarn build:android-tarball:remote && gcloud docker -- build -t gcr.io/exponentjs/turtle-android:latest -t gcr.io/exponentjs/turtle-android:${TAG} .",
+    "docker:build": "yarn build:android-tarball:remote && yarn build:production && gcloud docker -- build -t gcr.io/exponentjs/turtle-android:latest -t gcr.io/exponentjs/turtle-android:${TAG} .",
     "docker:push": "retry5 gcloud docker -- push gcr.io/exponentjs/turtle-android:${TAG} && retry5 gcloud docker -- push gcr.io/exponentjs/turtle-android:latest",
     "deploy:android": "./scripts/android/deploy.sh",
     "secrets:init-private": "./scripts/initPrivateSecrets.sh",
@@ -77,6 +79,6 @@
     "sharp": "^0.18.4",
     "source-map-support": "^0.5.6",
     "uuid": "^3.2.1",
-    "xdl": "50.7.0"
+    "xdl": "file:../../dev/xdl"
   }
 }
