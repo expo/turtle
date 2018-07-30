@@ -11,7 +11,5 @@ ANDROID_SHELL_TARBALL_URI=$(head -n 1 $ANDROID_SHELL_TARBALL_FILE)
 mkdir -p $WORKING_DIR
 mkdir -p $ARTIFACTS_DIR
 retry5 aws s3 cp $ANDROID_SHELL_TARBALL_URI $ARTIFACTS_DIR/android-shell-builder.tar.gz
-# TODO: talk with Eric about this
-# tar zxf $ARTIFACTS_DIR/android-shell-builder.tar.gz -C $WORKING_DIR
-tar zxf $ARTIFACTS_DIR/android-shell-builder.tar.gz --strip-components=3 -C $WORKING_DIR ./src/exponent
+tar zxf $ARTIFACTS_DIR/android-shell-builder.tar.gz -C $WORKING_DIR
 rm -rf $ARTIFACTS_DIR/android-shell-builder.tar.gz
