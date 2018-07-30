@@ -41,7 +41,7 @@ Android builders are deployed to k8s cluster, deployment process is managed by C
 
 To perform a successful deploy to staging (and then to production), follow these steps:
 - if you want to upgrade Android shell app:
-  * go to CircleCI, find appropriate `shell_app_base_android` job and find S3 URL in logs
+  * go to CircleCI, find appropriate `shell_app_base_android_new` job and find S3 URL in logs
   * put S3 URL to `shellTarballs/android` file and commit your changes
   * wait for `new_turtle_android_build` job to finish
 - to deploy turtle to staging, just push your changes to `master` branch, deployment will start automatically
