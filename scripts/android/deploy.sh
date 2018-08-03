@@ -10,7 +10,7 @@ retry5 gcloud container images add-tag $PREV_TAG $CURRENT_TAG
 
 if [ "$environment" == "production" ]; then
   echo "Deploying Turtle to production..."
-  export REPLICAS=10
+  export REPLICAS=12
   export ENVIRONMENT=production
 elif [ "$environment" == "staging" ]; then
   echo "Deploying Turtle to staging..."
