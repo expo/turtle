@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: turtle-android
-  namespace: ${ENVIRONMENT}
+  namespace: ${NAMESPACE}
 spec:
   replicas: ${REPLICAS}
   minReadySeconds: 5
@@ -14,12 +14,12 @@ spec:
   selector:
     matchLabels:
       app: turtle-android
-      environment: ${ENVIRONMENT}
+      environment: ${NAMESPACE}
   template:
     metadata:
       labels:
         app: turtle-android
-        environment: ${ENVIRONMENT}
+        environment: ${NAMESPACE}
     spec:
       restartPolicy: Always
       terminationGracePeriodSeconds: 1800 ## wait 30 minutes for any builds to complete
@@ -39,11 +39,11 @@ spec:
                 - jobs
       containers:
       - name: turtle-android
-        image: ${CURRENT_TAG}
+        image: ${IMAGE}
         env:
           # static vars
           - name: ENVIRONMENT
-            value: ${ENVIRONMENT}
+            value: ${NAMESPACE}
           - name: PLATFORM
             value: android
           - name: AWS_S3_BUCKET
