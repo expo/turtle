@@ -39,7 +39,6 @@ spec:
                 - jobs
       containers:
       - name: turtle-android
-        imagePullPolicy: Always
         image: ${CURRENT_TAG}
         env:
           # static vars
