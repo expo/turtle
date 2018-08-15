@@ -104,6 +104,7 @@ ADD . /app
 # Generate dynamic macros
 RUN mkdir -p /app/workingdir/android/expoview/src/main/java/host/exp/exponent/generated/
 RUN cd /app/workingdir/tools-public && \
+  yarn install && \
   gulp generate-dynamic-macros \
   --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
   --platform android
