@@ -2,6 +2,11 @@ FROM openjdk:8u141
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# https://github.com/yarnpkg/yarn/issues/2821
+RUN apt-get update && apt-get install apt-transport-https
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+
 # Install dependencies
 RUN dpkg --add-architecture i386 && \
   apt-get update && \
@@ -16,6 +21,7 @@ RUN dpkg --add-architecture i386 && \
   libncurses5:i386\
   libstdc++6:i386\
   unzip\
+  yarn\
   zlib1g:i386\
   --no-install-recommends && \
   apt-get clean
@@ -103,6 +109,12 @@ ADD . /app
 
 # Generate dynamic macros
 RUN mkdir -p /app/workingdir/android/expoview/src/main/java/host/exp/exponent/generated/
+RUN cd /app/workingdir/ && \
+  mv package.json exponent-package.json && \
+  mv universe-package.json package.json && \
+  yarn install && \
+  mv package.json universe-package.json && \
+  mv exponent-package.json package.json
 RUN cd /app/workingdir/tools-public && \
   gulp generate-dynamic-macros \
   --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
