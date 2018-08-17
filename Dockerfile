@@ -92,6 +92,9 @@ ENV PATH ${GRADLE_HOME}/bin:$PATH
 # Install Gulp
 RUN npm install -g gulp-cli
 
+# Install yarn
+RUN npm install -g yarn
+
 # Install Git
 RUN echo 'deb http://http.debian.net/debian wheezy-backports main' >> /etc/apt/sources.list && \
   apt-get update && \
@@ -104,6 +107,7 @@ ADD . /app
 # Generate dynamic macros
 RUN mkdir -p /app/workingdir/android/expoview/src/main/java/host/exp/exponent/generated/
 RUN cd /app/workingdir/tools-public && \
+  yarn install && \
   gulp generate-dynamic-macros \
   --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
   --platform android
