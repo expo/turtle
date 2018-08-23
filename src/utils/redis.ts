@@ -6,7 +6,7 @@ import config from 'turtle/config';
 const MILLIS_TO_UPLOAD_LOGS = 3000;
 const MILLIS_CONNECTION_TIMEOUT = 10000;
 
-function connect(timeoutMs) {
+function connect(timeoutMs: number) {
   return new Promise((resolve, reject) => {
     const redisClient = new Redis(config.redis.url, {
       maxRetriesPerRequest: 2,
@@ -16,16 +16,21 @@ function connect(timeoutMs) {
       clearTimeout(timer);
       resolve(redisClient);
     });
-    redisClient.on('error', err => {
+    redisClient.on('error', (err: Error) => {
       clearTimeout(timer);
       reject(err);
     });
   });
 }
 
-const REDIS_CLIENT_SUBSCRIBER = Symbol('REDIS_CLIENT_SUBSCRIBER');
-const REDIS_CLIENT_DEFAULT = Symbol('REDIS_CLIENT_DEFAULT');
-const _redisClients = {
+const REDIS_CLIENT_SUBSCRIBER = 'REDIS_CLIENT_SUBSCRIBER';
+const REDIS_CLIENT_DEFAULT = 'REDIS_CLIENT_DEFAULT';
+
+interface IRedisClients {
+  [key: string]: any;
+}
+
+const _redisClients: IRedisClients = {
   [REDIS_CLIENT_SUBSCRIBER]: null,
   [REDIS_CLIENT_DEFAULT]: null,
 };
@@ -41,7 +46,7 @@ async function getRedisClient(type = REDIS_CLIENT_DEFAULT) {
   return _redisClients[type];
 }
 
-export async function checkIfCancelled(jobId) {
+export async function checkIfCancelled(jobId: string) {
   try {
     const redis = await getRedisClient();
     return await redis.get(`jobs:cancelled:${jobId}`);
@@ -54,11 +59,11 @@ export async function checkIfCancelled(jobId) {
   }
 }
 
-export async function registerListener(jobId, deleteMessage) {
+export async function registerListener(jobId: string, deleteMessage: any) {
   try {
     const redis = await getRedisClient(REDIS_CLIENT_SUBSCRIBER);
     redis.subscribe('jobs:cancelled');
-    redis.on('message', async function(channel, message) {
+    redis.on('message', async function(_: any, message: any) {
       if (message === jobId) {
         logger.info({ lastBuildLog: true }, 'Job cancelled - killing process');
         await deleteMessage();

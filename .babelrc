@@ -9,8 +9,7 @@
   "plugins": [
     ["module-resolver", {
       "alias": {
-        "turtle": "./src",
-        "ROOT": "./"
+        "turtle": "./build"
       }
     }]
   ]

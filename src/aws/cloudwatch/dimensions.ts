@@ -1,6 +1,6 @@
 import config from 'turtle/config';
 
-export const TYPE_DIMENSIONS = type => [
+export const TYPE_DIMENSIONS = (type: string) => [
   [
     { Name: 'env', Value: config.deploymentEnv },
     { Name: 'platform', Value: config.platform },

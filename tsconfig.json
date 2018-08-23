@@ -1,20 +1,22 @@
 {
   "compilerOptions": {
-    "alwaysStrict": true,
-    "newLine": "lf",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "pretty": true,
+    "target": "es2018",
+    "lib": ["es2018"],
+    "module": "commonjs",
+    "sourceMap": true,
+    "inlineSources": true,
+    "outDir": "./build",
+    "rootDir": "./src",
     "strict": true,
-    "target": "ES2016",
-    "lib": ["es2015", "es2017", "dom"],
-    "allowJs": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {
       "turtle/*": ["src/*"],
-      "ROOT/*": ["*"]
     },
-    "moduleResolution": "node"
+    "allowJs": true
   },
-  "include": ["./src/"]
+  "exclude": ["node_modules", "build", "workingdir"]
 }

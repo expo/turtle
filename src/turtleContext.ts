@@ -1,7 +1,7 @@
 import config from 'turtle/config';
 
 let shouldExit = false;
-let _currentJobId = null;
+let _currentJobId: string | null = null;
 
 export const setShouldExit = () => {
   shouldExit = true;
@@ -15,7 +15,7 @@ export const getCurrentJobId = () => {
   return _currentJobId;
 };
 
-export const setCurrentJobId = id => {
+export const setCurrentJobId = (id: string | null) => {
   _currentJobId = id;
 };
 

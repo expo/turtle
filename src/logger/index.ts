@@ -8,11 +8,19 @@ import S3Stream from 'turtle/logger/s3Stream';
 import HackyLogglyStream from 'turtle/logger/hackyLogglyStream';
 import * as constants from 'turtle/constants/logger';
 import { isOffline } from 'turtle/turtleContext';
+import { IJob } from 'turtle/job';
+
+interface Stream {
+  stream: any;
+  type?: string;
+  level?: string;
+  reemitErrorEvents?: boolean;
+}
 
 export const s3logger = new S3Stream();
-let logglyStream;
+let logglyStream: HackyLogglyStream;
 
-const streams = [];
+const streams: Stream[] = [];
 
 if (isOffline()) {
   const prettyStdOut = new bunyanDebugStream({ forceColor: true });
@@ -48,7 +56,7 @@ if (config.logger.loggly.token) {
       'app-shell-apps',
       `platform.${config.platform}`,
       `environment.${config.deploymentEnv}`,
-    ],
+    ]
   };
   logglyStream = new HackyLogglyStream(logglyConfig);
   streams.push({
@@ -63,9 +71,9 @@ const logger = bunyan.createLogger({
   streams,
 });
 
-logger.withFields = extraFields => withFields(logger, extraFields);
+logger.withFields = (extraFields: any) => withFields(logger, extraFields);
 
-logger.init = async job => {
+logger.init = async (job: IJob) => {
   if (logglyStream) {
     logglyStream.init(job);
   }
@@ -83,9 +91,9 @@ logger.cleanup = async () => {
 
 export default logger;
 
-export function withFields(logger, extraFields) {
+export function withFields(_logger: any, extraFields: any) {
   return constants.LEVELS.reduce((obj, level) => {
-    obj[level] = (...args) => logger[level](extraFields, ...args);
+    obj[level] = (...args: any[]) => _logger[level](extraFields, ...args);
     return obj;
-  }, {});
+  }, {} as any);
 }

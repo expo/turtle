@@ -8,9 +8,8 @@ import { logErrorOnce } from 'turtle/builders/utils/common';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import config from 'turtle/config';
 import { IOS } from 'turtle/constants/index';
-import { s3logger } from 'turtle/logger/index';
-import { IContext } from 'turtle/types/context';
-import { IJob, IJobResult } from 'turtle/types/job';
+import { IContext } from 'turtle/builders/ios/context';
+import { IJob, IJobResult } from 'turtle/job';
 
 const { BUILD_TYPES } = IOS;
 
@@ -18,7 +17,7 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
   const ctx = createBuilderContext(job);
 
   try {
-    await initBuilder(ctx, job);
+    await initBuilder(ctx);
 
     const { buildType } = job.config;
     if (buildType === BUILD_TYPES.SIMULATOR) {
@@ -39,7 +38,7 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
   }
 }
 
-async function initBuilder(ctx: IContext, job: IJob) {
+async function initBuilder(ctx: IContext) {
   for (const dir of getTemporaryDirs(ctx)) {
     await fs.ensureDir(dir);
     await fs.chmod(dir, 0o755);

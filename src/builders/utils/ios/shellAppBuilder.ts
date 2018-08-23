@@ -8,8 +8,8 @@ import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/ios/image';
 import config from 'turtle/config';
 import logger from 'turtle/logger/index';
-import { IContext } from 'turtle/types/context';
-import { IJob } from 'turtle/types/job';
+import { IContext } from 'turtle/builders/ios/context';
+import { IJob } from 'turtle/job';
 
 const copyAsync = util.promisify(copy);
 
@@ -31,7 +31,6 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
   );
   IosIcons.setResizeImageFunction(imageHelpers.resizeIconWithSharpAsync);
   IosIcons.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
-  const appleTeamId = config.credentials && config.credentials.teamId;
   const shellAppParams = {
     url: commonUtils.getExperienceUrl(job.experienceName),
     sdkVersion: manifest.sdkVersion || sdkVersion,

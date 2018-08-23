@@ -1,3 +1,5 @@
+!/src/node_modules
+
 /build/
 /workingdir/*
 /artifacts/*

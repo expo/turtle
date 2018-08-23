@@ -30,15 +30,12 @@
   },
   "bin": "./bin/turtle.js",
   "devDependencies": {
-    "@types/async-retry": "^1.2.0",
-    "@types/bunyan": "^1.8.4",
-    "@types/fs-extra": "^5.0.2",
-    "@types/joi": "^13.0.8",
+    "@types/fs-extra": "^5.0.4",
+    "@types/joi": "^13.4.3",
     "@types/lodash": "^4.14.109",
     "@types/raven": "^2.5.1",
     "@types/sharp": "^0.17.8",
     "@types/uuid": "^3.4.3",
-    "awesome-typescript-loader": "^5.0.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.3",
@@ -60,7 +57,7 @@
     "rimraf": "^2.6.2",
     "source-map-loader": "^0.2.3",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "async-retry": "^1.2.1",

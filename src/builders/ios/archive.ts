@@ -6,8 +6,8 @@ import * as fileUtils from 'turtle/builders/utils/file';
 import * as keychain from 'turtle/builders/utils/ios/keychain';
 import config from 'turtle/config';
 import logger from 'turtle/logger/index';
-import { IContext } from 'turtle/types/context';
-import { IJob } from 'turtle/types/job';
+import { IContext } from 'turtle/builders/ios/context';
+import { IJob } from 'turtle/job';
 
 export default async function buildArchive(ctx: IContext, job: IJob) {
   let keychainInfo;
@@ -43,7 +43,7 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string) {
   const bundleIdentifier = _bundleIdentifierFromConfig || _bundleIdentifierFromManifest;
 
   const { provisioningProfilePath } = ctx;
-  await fileUtils.writeBase64ToBinaryFile(provisioningProfilePath, provisioningProfile);
+  await fileUtils.writeBase64ToBinaryFile(provisioningProfilePath, provisioningProfile as string);
   l.info('saved provisioning profile to temporary path');
 
   const ipaBuilder = createIPABuilder({

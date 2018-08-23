@@ -24,7 +24,7 @@ export function register() {
   });
 }
 
-export function add(type, success = true) {
+export function add(type: string, success = true) {
   cloudwatch.addMetricData({
     name: BUILD_METRIC_NAME,
     value: 1,

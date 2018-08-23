@@ -8,7 +8,7 @@ import * as sqs from 'turtle/aws/sqs';
 import { UPDATE_CREDENTIALS } from 'turtle/constants/build';
 import logger from 'turtle/logger';
 import { isOffline } from 'turtle/turtleContext';
-import { IAndroidCredentials, IJob } from 'turtle/types/job';
+import { IAndroidCredentials, IJob } from 'turtle/job';
 
 async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredentials> {
   if (!jobData.credentials) {

@@ -2,8 +2,12 @@ import { IosKeychain } from 'xdl';
 
 import * as fileUtils from 'turtle/builders/utils/file';
 import logger from 'turtle/logger';
-import { IContext } from 'turtle/types/context';
-import { IKeychain } from 'turtle/types/keychain';
+import { IContext } from 'turtle/builders/ios/context';
+
+interface IKeychain {
+  path: string;
+}
+
 
 export async function create(ctx: IContext): Promise<IKeychain> {
   const l = logger.withFields({ buildPhase: 'creating keychain' });

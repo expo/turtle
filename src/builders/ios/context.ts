@@ -5,8 +5,22 @@ import { IosShellApp } from 'xdl';
 
 import config from 'turtle/config';
 import { IOS } from 'turtle/constants/index';
-import { IContext } from 'turtle/types/context';
-import { IJob } from 'turtle/types/job';
+import { IJob } from 'turtle/job';
+
+export interface IContext {
+  appDir: string;
+  appUUID: string;
+  archiveDir: string;
+  baseArchiveDir: string;
+  buildDir: string;
+  fakeUploadBuildPath?: string;
+  outputPath: string;
+  provisioningProfilePath: string;
+  provisioningProfileDir: string;
+  s3FileKey?: string;
+  tempCertPath: string;
+  uploadPath: string;
+}
 
 const { DEFAULT_EXPOKIT_WORKSPACE_NAME } = IosShellApp;
 const { BUILD_TYPES } = IOS;

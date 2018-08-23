@@ -26,7 +26,7 @@ export default {
   },
   cloudwatch: {
     region: env('AWS_CLOUDWATCH_REGION'),
-    disabled: envTransform('AWS_CLOUDWATCH_DISABLED', '0', val => val === '1'),
+    disabled: envTransform('AWS_CLOUDWATCH_DISABLED', '0', (val: string) => val === '1'),
     intervalMs: envNum('AWS_CLOUDWATCH_INTERVAL_MS', 30000),
     namespace: env('AWS_CLOUDWATCH_NAMESPACE', 'Turtle'),
   },
@@ -60,9 +60,9 @@ export default {
     skipCleanup: envTransform(
       'TURTLE_SKIP_CLEANUP',
       '0',
-      val => env('NODE_ENV') === 'development' && val === '1'
+      (val: string) => env('NODE_ENV') === 'development' && val === '1'
     ),
-    fakeUpload: envTransform('TURTLE_FAKE_UPLOAD', '0', val => val === '1'),
+    fakeUpload: envTransform('TURTLE_FAKE_UPLOAD', '0', (val: string) => val === '1'),
     fakeUploadDir: envOptional('TURTLE_FAKE_UPLOAD_DIR'),
     maxJobTimeMs: envNum('TURTLE_MAX_JOB_TIME_MS', 60 * 60 * 1000),
     tempS3LogsDir: env('TURTLE_TEMP_S3_LOGS_DIR', '/tmp/logs'),

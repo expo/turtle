@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { logErrorOnce } from 'turtle/builders/utils/common';
+import logger from 'turtle/logger';
 
 import * as sqs from 'turtle/aws/sqs';
 import { BUILD } from 'turtle/constants/index';
 import { sanitizeJob } from 'turtle/validator';
 import builders from 'turtle/builders';
 import config from 'turtle/config';
-import logger from 'turtle/logger';
 import * as redis from 'turtle/utils/redis';
 import { checkShouldExit, setCurrentJobId } from 'turtle/turtleContext';
 import * as buildStatusMetric from 'turtle/metrics/buildStatus';
@@ -42,7 +42,7 @@ export async function getJob() {
   }
 }
 
-async function processJob(jobData) {
+async function processJob(jobData: any) {
   const receiptHandle = jobData.ReceiptHandle;
   let timeoutId;
   try {
@@ -95,7 +95,7 @@ async function processJob(jobData) {
   }
 }
 
-function failAfterMaxJobTime(receiptHandle, job) {
+function failAfterMaxJobTime(receiptHandle: string, job: any) {
   return setTimeout(async () => {
     try {
       sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, {
@@ -109,7 +109,7 @@ function failAfterMaxJobTime(receiptHandle, job) {
   }, config.builder.maxJobTimeMs);
 }
 
-async function build(job) {
+async function build(job: any) {
   const s3Url = await logger.init(job);
   const { turtleVersion } = job.config;
 
@@ -119,7 +119,7 @@ async function build(job) {
       logFormat: 'json',
       turtleVersion,
     });
-    const result = await builders[job.platform](job);
+    const result = await (builders as any)[job.platform](job);
     sqs.sendMessage(job.id, BUILD.JOB_STATES.FINISHED, { ...result, turtleVersion });
     return true;
   } catch (err) {
@@ -131,7 +131,7 @@ async function build(job) {
   }
 }
 
-async function deleteMessage(receiptHandle) {
+async function deleteMessage(receiptHandle: string) {
   try {
     setCurrentJobId(null);
     await sqs.deleteMessage(receiptHandle);

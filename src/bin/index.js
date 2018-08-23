@@ -1,9 +1,10 @@
 import { LoggerDetach } from 'xdl';
 import program from 'commander';
 
-import { version } from 'ROOT/package.json';
-import * as commands from 'turtle/bin/commands';
 import logger from 'turtle/logger';
+import * as commands from 'turtle/bin/commands';
+
+const { version } = require('../../package.json');
 
 LoggerDetach.configure(logger);
 

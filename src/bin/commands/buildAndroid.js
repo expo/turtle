@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import fs from 'fs-extra';
 import uuid from 'uuid';
-import builder from 'turtle/builders/android';
 
+import builder from 'turtle/builders/android';
 import { ErrorWithCommandHelp } from 'turtle/bin/commands/errors';
 import { PLATFORMS } from 'turtle/constants';
 import { createBuilderAction } from 'turtle/bin/utils/builder';

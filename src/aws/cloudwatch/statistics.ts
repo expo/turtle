@@ -1,9 +1,11 @@
-export default function calculateStatistics(metrics) {
+import { Metric, MetricWithStats } from 'turtle/aws/cloudwatch/types';
+
+export default function calculateStatistics(metrics: Array<Metric>) {
   if (!metrics.length) {
     return [];
   }
 
-  const reduced = metrics.reduce((acc, i) => {
+  const reduced = metrics.reduce((acc: MetricWithStats | null, i: Metric) => {
     let result = acc;
     if (!result) {
       result = Object.assign({}, i, {
@@ -16,6 +18,7 @@ export default function calculateStatistics(metrics) {
         Value: undefined,
       });
     }
+
     result.StatisticValues.Maximum = Math.max(result.StatisticValues.Maximum, i.Value);
     result.StatisticValues.Minimum = Math.min(result.StatisticValues.Minimum, i.Value);
     result.StatisticValues.SampleCount += 1;

@@ -7,18 +7,31 @@ import _ from 'lodash';
 import { uploadFile } from 'turtle/aws/s3';
 import config from 'turtle/config';
 import * as constants from 'turtle/constants/logger';
+import { IJob } from 'turtle/job';
 
 export default class S3Stream extends EventEmitter {
+  s3Url: string | null;
+  lastFlush: number | null;
+  filePath: string | null;
+  fileHandle: number | null;
+  finishedPromise: Promise<any> | null;
+  finishedPromiseResolveFn: any;
+  secrets: any;
+
   constructor() {
     super();
-    this.s3url = null;
+    this.s3Url = null;
     this.lastFlush = null;
+    this.filePath = null;
+    this.fileHandle = null;
+    this.finishedPromise = null;
+    this.finishedPromiseResolveFn = null;
   }
 
-  async init(job) {
-    this.s3url = `logs/${job.experienceName}/${job.id}`;
+  async init(job: IJob) {
+    this.s3Url = `logs/${job.experienceName}/${job.id}`;
     const dir = config.builder.tempS3LogsDir;
-    const exists = await fs.exists(dir);
+    const exists = await fs.pathExists(dir);
     if (!exists) {
       await fs.mkdir(dir);
     }
@@ -26,7 +39,7 @@ export default class S3Stream extends EventEmitter {
     this.fileHandle = await fs.open(this.filePath, 'w+', 0o660);
     this.secrets = {};
     this.finishedPromise = new Promise(res => (this.finishedPromiseResolveFn = res));
-    const res = await this.flush();
+    const res = await this.flush() as any;
     return res.Location;
   }
 
@@ -34,7 +47,7 @@ export default class S3Stream extends EventEmitter {
     const res = this.finishedPromiseResolveFn;
     try {
       await this.flush(true);
-      await fs.close(this.fileHandle);
+      await fs.close(this.fileHandle as number);
       this.fileHandle = null;
       this.lastFlush = null;
       this.secrets = {};
@@ -58,12 +71,12 @@ export default class S3Stream extends EventEmitter {
   _flush() {
     this.lastFlush = Date.now();
     return uploadFile({
-      srcPath: this.filePath,
-      key: this.s3url,
+      srcPath: this.filePath as string,
+      key: this.s3Url as string,
     });
   }
 
-  write(recRaw) {
+  write(recRaw: any) {
     if (this.fileHandle) {
       const rec = JSON.stringify({
         ...recRaw,
@@ -76,13 +89,17 @@ export default class S3Stream extends EventEmitter {
         (acc, secret) => acc.replace(new RegExp(secret, 'g'), this.secrets[secret]),
         rec
       );
-      fs.write(this.fileHandle, `${recSanitized}\n`).then(() => this.flush());
+      fs
+        .write(this.fileHandle as number, `${recSanitized}\n`)
+        .then(() => {
+          this.flush();
+        });
     }
   }
 
-  addSecretsToFilter(secrets) {
-    const filteredSecrets = secrets.filter(i => i !== undefined && i !== null);
-    const replacements = filteredSecrets.map(i => 'X'.repeat(i.length));
+  addSecretsToFilter(secrets: any) {
+    const filteredSecrets = secrets.filter((i: any) => i !== undefined && i !== null);
+    const replacements = filteredSecrets.map((i: any) => 'X'.repeat(i.length));
     const toAdd = _.zipObject(filteredSecrets, replacements);
     this.secrets = Object.assign({}, this.secrets, toAdd);
   }

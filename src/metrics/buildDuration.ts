@@ -16,7 +16,7 @@ export function register() {
   }
 }
 
-export function addTurtleDuration(type, value, success = true) {
+export function addTurtleDuration(type: string, value: number, success = true) {
   cloudwatch.addMetricData({
     name: TURTLE_BUILD_DURATION_METRIC_NAME,
     value,
@@ -25,7 +25,7 @@ export function addTurtleDuration(type, value, success = true) {
   });
 }
 
-export function addTotalDuration(type, value, success = true) {
+export function addTotalDuration(type: string, value: number, success = true) {
   cloudwatch.addMetricData({
     name: TOTAL_BUILD_DURATION_METRIC_NAME,
     value,

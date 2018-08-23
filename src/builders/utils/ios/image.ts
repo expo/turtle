@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import sharp from 'sharp';
 
-export async function resizeIconWithSharpAsync(iconSizePx, iconFilename, destinationIconPath) {
+export async function resizeIconWithSharpAsync(iconSizePx: number, iconFilename: string, destinationIconPath: string) {
   const filename = path.join(destinationIconPath, iconFilename);
 
   // sharp can't have same input and output filename, so load to buffer then
@@ -15,7 +15,7 @@ export async function resizeIconWithSharpAsync(iconSizePx, iconFilename, destina
   await fs.writeFile(filename, buffer);
 }
 
-export async function getImageDimensionsWithSharpAsync(basename, dirname) {
+export async function getImageDimensionsWithSharpAsync(basename: string, dirname: string) {
   const filename = path.join(dirname, basename);
 
   try {

@@ -1,4 +1,4 @@
-export const env = (varName, defaultValue) => {
+export const env = (varName: string, defaultValue?: any) => {
   const envVar = process.env[varName];
   if (!envVar) {
     if (defaultValue !== undefined) {
@@ -13,8 +13,8 @@ export const env = (varName, defaultValue) => {
     return envVar;
   }
 };
-export const envOptional = varName => env(varName, null);
-export const envTransform = (varName, defaultValue, fn) => fn(env(varName, defaultValue));
-export const envNum = (varName, defaultValue) => parseInt(env(varName, defaultValue), 10);
+export const envOptional = (varName: string) => env(varName, null);
+export const envTransform = (varName: string, defaultValue: any, fn: any) => fn(env(varName, defaultValue));
+export const envNum = (varName: string, defaultValue?: number) => parseInt(env(varName, defaultValue), 10);
 
 const isOffline = () => process.env.TURTLE_MODE === 'offline';
