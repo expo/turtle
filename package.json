@@ -13,8 +13,6 @@
     "bin:turtle": "node ./bin/turtle.js",
     "lint": "eslint src",
     "test": "jest --config jest/unit-config.json --watch",
-    "preinstall": "cd ../../dev/xdl && yarn install",
-    "postinstall": "rm -r node_modules/xdl && cp -r ../../dev/xdl node_modules/xdl && rm -r node_modules/xdl/node_modules",
     "build": "gulp build:server",
     "build:production": "./scripts/build.sh",
     "build:android-tarball:local": "./scripts/android/buildAndroidTarballLocally.sh",
@@ -76,6 +74,6 @@
     "sharp": "^0.20.5",
     "source-map-support": "^0.5.6",
     "uuid": "^3.2.1",
-    "xdl": "file:../../dev/xdl"
+    "xdl": "50.9.0"
   }
 }
