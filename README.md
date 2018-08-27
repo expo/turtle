@@ -62,7 +62,7 @@ To perform a successful deploy to staging (and then to production), follow these
   * Set `environment` variable to `local_${YOUR_NICKNAME_HERE}`.
   * Save file, run `cd $EXPO_UNIVERSE_DIR/terraform` and then `terraform init` (to initialize new module).
   * Check a terraform plan: `terraform plan -target module.turtle_queues_local_${YOUR_NICKNAME_HERE}`.
-  * If you're sure the plan is correct, apply changes with: `terraform apply -target module.turtle_js_staging` (you will be prompted to type `yes` to confirm changes).
+  * If you're sure the plan is correct, apply changes with: `terraform apply -target module.turtle_queues_local_${YOUR_NICKNAME_HERE}` (you will be prompted to type `yes` to confirm changes).
   * Commit and push changes to `master` branch.
 
 ### Setup
