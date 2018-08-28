@@ -103,9 +103,9 @@
     mv "~2"
     safe-json-stringify "~1"
 
-"@expo/json-file@^8.0.0":
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.0.0.tgz#5c3cb84469b1229e6c4aac9a4285fca59e6709fd"
+"@expo/json-file@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.0.1.tgz#6109f0c1e18c0f84aa5e052406c861cd7ae347a8"
   dependencies:
     "@babel/code-frame" "^7.0.0-beta.44"
     json5 "^1.0.1"
@@ -184,24 +184,23 @@
     request "^2.81.0"
     uuid "^3.0.0"
 
-"@expo/osascript@^1.8.0":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@expo/osascript/-/osascript-1.8.1.tgz#d145f6c1b4ac9663c0bf5f3054236dc87dc4deba"
+"@expo/osascript@^1.8.2":
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/@expo/osascript/-/osascript-1.8.2.tgz#4e7c9da0d947495df6cf170b9b51c635edd7529a"
   dependencies:
     "@expo/spawn-async" "^1.2.8"
     babel-runtime "^6.23.0"
     exec-async "^2.2.0"
 
-"@expo/schemer@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@expo/schemer/-/schemer-1.1.0.tgz#74e519233f82c8871d018475895043e4caef3e7e"
+"@expo/schemer@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@expo/schemer/-/schemer-1.1.1.tgz#3c9d007a55ca30b369c80a6fde774e315343f717"
   dependencies:
     ajv "^5.2.2"
     babel-polyfill "^6.23.0"
     babel-preset-flow "^6.23.0"
     es6-error "^4.0.2"
     file-type "^5.2.0"
-    instapromise "^2.0.7"
     lodash "^4.17.4"
     probe-image-size "^3.1.0"
     read-chunk "^2.0.0"
@@ -3737,10 +3736,6 @@ inquirer@^5.0.1:
     string-width "^2.1.0"
     strip-ansi "^4.0.0"
     through "^2.3.6"
-
-instapromise@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/instapromise/-/instapromise-2.0.7.tgz#85e66b31021194da11214c865127ef04ec30167a"
 
 interpret@^1.0.0, interpret@^1.1.0:
   version "1.1.0"
@@ -7807,15 +7802,15 @@ xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
 
-xdl@50.9.0:
-  version "50.9.0"
-  resolved "https://registry.yarnpkg.com/xdl/-/xdl-50.9.0.tgz#79e1db0ff399e50aaeff33d626ec259d60c98844"
+xdl@51.1.0:
+  version "51.1.0"
+  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.1.0.tgz#6a05e63f4790cd0d9ee94ee6cac99089319418c7"
   dependencies:
     "@expo/bunyan" "3.0.2"
-    "@expo/json-file" "^8.0.0"
+    "@expo/json-file" "^8.0.1"
     "@expo/ngrok" "2.4.2"
-    "@expo/osascript" "^1.8.0"
-    "@expo/schemer" "1.1.0"
+    "@expo/osascript" "^1.8.2"
+    "@expo/schemer" "^1.1.1"
     "@expo/spawn-async" "^1.2.8"
     analytics-node "^2.1.0"
     axios "0.16.2"
