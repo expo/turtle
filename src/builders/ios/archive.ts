@@ -4,7 +4,6 @@ import { IosIPABuilder as createIPABuilder } from 'xdl';
 import { logErrorOnce } from 'turtle/builders/utils/common';
 import * as fileUtils from 'turtle/builders/utils/file';
 import * as keychain from 'turtle/builders/utils/ios/keychain';
-import config from 'turtle/config';
 import logger from 'turtle/logger/index';
 import { IContext } from 'turtle/builders/ios/context';
 import { IJob } from 'turtle/job';
@@ -55,7 +54,7 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string) {
     teamID: teamId,
     password,
     bundleIdentifier,
-    workingDir: config.builder.workingDir,
+    workingDir: ctx.workingDir,
     manifest,
   });
   await ipaBuilder.build();

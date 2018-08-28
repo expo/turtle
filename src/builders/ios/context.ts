@@ -1,7 +1,7 @@
 import * as path from 'path';
 
 import { v4 as uuidv4 } from 'uuid';
-import { IosShellApp } from 'xdl';
+import { IosShellApp, ExponentTools } from 'xdl';
 
 import config from 'turtle/config';
 import { IOS } from 'turtle/constants/index';
@@ -20,6 +20,7 @@ export interface IContext {
   s3FileKey?: string;
   tempCertPath: string;
   uploadPath: string;
+  workingDir: string;
 }
 
 const { DEFAULT_EXPOKIT_WORKSPACE_NAME } = IosShellApp;
@@ -28,11 +29,18 @@ const { BUILD_TYPES } = IOS;
 export function createBuilderContext(job: IJob): IContext {
   const { join } = path;
   const appUUID = uuidv4();
-  const { buildType } = job.config;
+  const { manifest: { sdkVersion: _sdkVersionFromManifest }, sdkVersion: _sdkVersionFromJob, config: { buildType } } = job;
+
+  const sdkVersion = _sdkVersionFromJob || _sdkVersionFromManifest;
+  const majorSdkVersion = ExponentTools.parseSdkMajorVersion(sdkVersion);
+  const workingDir = config.builder.useLocalWorkingDir
+    ? path.join(config.builder.workingDir, 'local')
+    : path.join(config.builder.workingDir, 'ios', `sdk${majorSdkVersion}`);
 
   const context: any = {
     appDir: join(config.builder.temporaryFilesRoot, appUUID),
     appUUID,
+    workingDir,
   };
   context.buildDir = join(context.appDir, 'build');
   context.provisioningProfileDir = join(context.appDir, 'provisioning');

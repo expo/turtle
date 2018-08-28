@@ -47,6 +47,9 @@ async function runShellAppBuilder(
 
   l.info('Starting build process');
   const outputFilePath = path.join(temporaryFilesRoot, 'shell-signed-' + jobData.id + '.apk');
+  const workingDir = config.builder.useLocalWorkingDir
+    ? path.join(config.builder.workingDir, 'local')
+    : path.join(config.builder.workingDir, 'android');
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
@@ -58,6 +61,7 @@ async function runShellAppBuilder(
       keyPassword: credentials.keyPassword,
       privateConfigFile: tempShellAppConfigPath,
       releaseChannel: jobData.config.releaseChannel,
+      workingDir,
       outputFile: outputFilePath,
     });
   } catch (err) {

@@ -4,7 +4,7 @@ set -xeo pipefail
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/../.. && pwd )"
 ARTIFACTS_DIR="$ROOT_DIR/artifacts"
-WORKING_DIR="$ROOT_DIR/workingdir"
+WORKING_DIR="$ROOT_DIR/workingdir/android"
 ANDROID_SHELL_TARBALL_FILE="$ROOT_DIR/shellTarballs/android"
 ANDROID_SHELL_TARBALL_URI=$(head -n 1 $ANDROID_SHELL_TARBALL_FILE)
 

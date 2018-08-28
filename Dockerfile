@@ -108,22 +108,21 @@ RUN echo 'deb http://http.debian.net/debian wheezy-backports main' >> /etc/apt/s
 ADD . /app
 
 # Generate dynamic macros
-RUN mkdir -p /app/workingdir/android/expoview/src/main/java/host/exp/exponent/generated/
-RUN cd /app/workingdir/ && \
+RUN mkdir -p /app/workingdir/android/android/expoview/src/main/java/host/exp/exponent/generated/
+RUN cd /app/workingdir/android/ && \
   mv package.json exponent-package.json && \
   mv universe-package.json package.json && \
   yarn install && \
   mv package.json universe-package.json && \
   mv exponent-package.json package.json
-RUN cd /app/workingdir/tools-public && \
+RUN cd /app/workingdir/android/tools-public && \
   gulp generate-dynamic-macros \
   --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
   --platform android
 
 WORKDIR /app
 
-ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
-ENV TURTLE_TOOLS_PUBLIC_PATH /app/workingdir/tools-public/
 ENV NODE_ENV "production"
+ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
 
 CMD ["node", "./build/server.js"]

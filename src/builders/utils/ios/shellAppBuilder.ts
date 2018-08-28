@@ -6,7 +6,6 @@ import { IosIcons, IosShellApp } from 'xdl';
 
 import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/ios/image';
-import config from 'turtle/config';
 import logger from 'turtle/logger/index';
 import { IContext } from 'turtle/builders/ios/context';
 import { IJob } from 'turtle/job';
@@ -14,10 +13,11 @@ import { IJob } from 'turtle/job';
 const copyAsync = util.promisify(copy);
 
 export default async function runShellAppBuilder(ctx: IContext, job: IJob): Promise<any> {
-  const { config: jobConfig, manifest, sdkVersion } = job;
+  const { config: jobConfig, manifest, sdkVersion: _sdkVersionFromJob } = job;
   const { buildType, releaseChannel } = jobConfig;
+  const sdkVersion = manifest.sdkVersion || _sdkVersionFromJob;
   const applicationFilesSrc = path.join(
-    config.builder.workingDir,
+    ctx.workingDir,
     'shellAppBase-builds',
     buildType as string,
     '**',
@@ -33,7 +33,7 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
   IosIcons.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
   const shellAppParams = {
     url: commonUtils.getExperienceUrl(job.experienceName),
-    sdkVersion: manifest.sdkVersion || sdkVersion,
+    sdkVersion,
     action: 'configure',
     type: buildType,
     releaseChannel,
@@ -41,7 +41,7 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
     privateConfigData: job.config,
     verbose: true,
     output: ctx.outputPath,
-    expoSourcePath: path.join(config.builder.workingDir, 'ios'),
+    expoSourcePath: path.join(ctx.workingDir, 'ios'),
     manifest,
   };
 

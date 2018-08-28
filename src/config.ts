@@ -66,5 +66,6 @@ export default {
     fakeUploadDir: envOptional('TURTLE_FAKE_UPLOAD_DIR'),
     maxJobTimeMs: envNum('TURTLE_MAX_JOB_TIME_MS', 60 * 60 * 1000),
     tempS3LogsDir: env('TURTLE_TEMP_S3_LOGS_DIR', '/tmp/logs'),
+    useLocalWorkingDir: envTransform('TURTLE_USE_LOCAL_WORKING_DIR', '0', (val: string) => val === '1'),
   },
 };

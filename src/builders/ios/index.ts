@@ -1,5 +1,8 @@
 import * as fs from 'fs-extra';
 import * as _ from 'lodash';
+import * as path from 'path';
+
+import { ExponentTools } from 'xdl';
 
 import buildArchive from 'turtle/builders/ios/archive';
 import { createBuilderContext } from 'turtle/builders/ios/context';
@@ -13,7 +16,18 @@ import { IJob, IJobResult } from 'turtle/job';
 
 const { BUILD_TYPES } = IOS;
 
+let SUPPORTED_SDK_VERSIONS: Array<number>;
+
 export default async function iosBuilder(job: IJob): Promise<IJobResult> {
+  if (!SUPPORTED_SDK_VERSIONS) {
+    SUPPORTED_SDK_VERSIONS = await findSupportedSdkVersions();
+  }
+
+  const targetMajorSdkVersion = ExponentTools.parseSdkMajorVersion(job.sdkVersion || job.manifest.sdkVersion);
+  if (!_.includes(SUPPORTED_SDK_VERSIONS, targetMajorSdkVersion)) {
+    throw new Error(`Unsupported SDK Version!`);
+  }
+
   const ctx = createBuilderContext(job);
 
   try {
@@ -54,3 +68,10 @@ async function cleanup(ctx: IContext) {
 
 const getTemporaryDirs = (ctx: IContext) =>
   Object.values(_.pick(ctx, ['appDir', 'provisioningProfileDir']));
+
+async function findSupportedSdkVersions(): Promise<Array<number>> {
+  const SDK_DIR_PREFIX = 'sdk';
+  const files = await fs.readdir(path.join(config.builder.workingDir, 'ios'));
+  const sdks = files.filter(file => file.startsWith(SDK_DIR_PREFIX));
+  return sdks.map(sdk => parseInt(sdk.substr(SDK_DIR_PREFIX.length)));
+}
