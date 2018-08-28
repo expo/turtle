@@ -12,7 +12,11 @@ mkdir -p $ARTIFACTS_DIR
 for SDK_VERSION in `ls $IOS_SHELL_TARBALLS_DIRECTORY`; do
   mkdir -p $WORKING_DIR/$SDK_VERSION
   TARBALL_URI=$(head -n 1 $IOS_SHELL_TARBALLS_DIRECTORY/$SDK_VERSION)
-  retry5 aws s3 cp $TARBALL_URI $ARTIFACTS_DIR/$SDK_VERSION.tar.gz
+  if [ -x "$(command -v aws)" ]; then
+    retry5 aws s3 cp $TARBALL_URI $ARTIFACTS_DIR/$SDK_VERSION.tar.gz
+  else
+    run expo.s3env --keep AWS_ACCESS_KEY_ID --keep AWS_SECRET_ACCESS_KEY --command retry5 aws s3 cp $TARBALL_URI $ARTIFACTS_DIR/$SDK_VERSION.tar.gz
+  fi
   tar zxf $ARTIFACTS_DIR/$SDK_VERSION.tar.gz -C $WORKING_DIR/$SDK_VERSION
   rm -rf $TARBALL_URI $ARTIFACTS_DIR/$SDK_VERSION.tar.gz
 done
