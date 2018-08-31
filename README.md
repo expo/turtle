@@ -37,7 +37,6 @@ If you ever need to upgrade `fastlane` version on builders, you should change `f
 
 To update iOS shell app as well, you have to put the appropriate S3 URL to the  `shellTarballs/ios/sdkXX` file (+ commit and push your changes). S3 URL to the iOS shell app can be obtained from logs of a `shell_app_sdk_XX_ios_upload` job (CircleCI).
 
-
 To perform a successful deploy to staging (for production, just replace `staging` with `production`), follow these steps:
 - if you want to upgrade iOS shell app:
   * go to CircleCI, find appropriate `shell_app_sdk_XX_ios_upload` job and find S3 URL in logs
@@ -104,6 +103,9 @@ To perform a successful deploy to staging (and then to production), follow these
 - Run `yarn secrets:init-private ${YOUR_NICKNAME_HERE}` in `server/turtle` directory to init your private secrets (with your queues urls).
 - Run `yarn` to install node modules.
 - Run `yarn start:ios` or `yarn start:android` to run Turtle.
+
+**Additional step:**
+Also, you have to remember to point your local www server to use the same AWS SQS queues which are used by Turtle. To do that, edit `server/www/secrets.local` and add there `AWS_SQS_ANDROID_QUEUE_URL`, `AWS_SQS_IOS_QUEUE_URL` and `AWS_SQS_OUT_QUEUE_URL` env variables, which you can find in `server/turtle/secrets.local` file.
 
 ### Local development
 
