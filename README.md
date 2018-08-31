@@ -13,6 +13,18 @@
 
 Turtle is a Node.js microservice which builds users' standalone apps. It fetches build jobs from AWS SQS queue (input queue), processes them and uploads builds artifacts (and logs) to AWS S3. Turtle is used to build both Android and iOS apps. During a build process, Turtle sends notifications about the progress to the www service over another AWS SQS queue (output queue). In the future, we'll also provide users with a command line tool which will enable them to build Expo standalone apps on their own CI services without being dependent on our system (it's still a work in progress).
 
+### What is a shell app?
+
+A shell app is precompiled (in case of iOS builds) Expo app which doesn't have user's code. It's only a generic concept.
+
+### What is a standalone app?
+
+.ipa/.apk files which users upload to Google Play Store/Apple App Store are called standalone apps.
+
+### What does Turtle actually do? (What's the difference between a shell app and a standalone app?)
+
+It takes a shell app, fills it with user's code and produces a standalone app. Some people say this is the only, true way to create a turtle (you need a shell and something to put inside).
+
 ## Deployment
 
 ### iOS
@@ -78,9 +90,17 @@ To perform a successful deploy to staging (and then to production), follow these
   * If you're sure the plan is correct, apply changes with: `terraform apply -target module.turtle_queues_local_${YOUR_NICKNAME_HERE}` (you will be prompted to type `yes` to confirm changes).
   * Commit and push changes to `master` branch.
 
+#### Generating iOS shell app
+
+- Go to `exponent/tools-public` directory.
+- Build iOS shell app for standalone (archive) builds with `gulp ios-shell-app --action build --type archive --verbose true --skipRepoUpdate`
+- Build iOS shell app for simulator builds with `gulp ios-shell-app --action build --type simulator --verbose true --skipRepoUpdate`
+- Don't worry. Even though these commands usually take long time to finish (an hour or two), you'll rarely have to rebuild iOS shell app.
+
 ### Setup
 
 - Run `update-local-secrets` to populate the `.secrets` files used for local configuration. You'll need to run this any time a secret used for configuring Turtle is changed and pushed to Google Cloud Storage (which shouldn't be very often)
+- Run `yarn init-workingdir:local` in `server/turtle` directory to initialize Turtle's working directory. This script create symlinks to the shell app from `exponent` directory.
 - Run `yarn secrets:init-private ${YOUR_NICKNAME_HERE}` in `server/turtle` directory to init your private secrets (with your queues urls).
 - Run `yarn` to install node modules.
 - Run `yarn start:ios` or `yarn start:android` to run Turtle.

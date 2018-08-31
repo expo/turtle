@@ -19,14 +19,7 @@ const { BUILD_TYPES } = IOS;
 let SUPPORTED_SDK_VERSIONS: Array<number>;
 
 export default async function iosBuilder(job: IJob): Promise<IJobResult> {
-  if (!SUPPORTED_SDK_VERSIONS) {
-    SUPPORTED_SDK_VERSIONS = await findSupportedSdkVersions();
-  }
-
-  const targetMajorSdkVersion = ExponentTools.parseSdkMajorVersion(job.sdkVersion || job.manifest.sdkVersion);
-  if (!_.includes(SUPPORTED_SDK_VERSIONS, targetMajorSdkVersion)) {
-    throw new Error(`Unsupported SDK Version!`);
-  }
+  await ensureCanBuildSdkVersion(job);
 
   const ctx = createBuilderContext(job);
 
@@ -68,6 +61,21 @@ async function cleanup(ctx: IContext) {
 
 const getTemporaryDirs = (ctx: IContext) =>
   Object.values(_.pick(ctx, ['appDir', 'provisioningProfileDir']));
+
+async function ensureCanBuildSdkVersion(job: IJob) {
+  if (config.builder.useLocalWorkingDir) {
+    return;
+  }
+
+  if (!SUPPORTED_SDK_VERSIONS) {
+    SUPPORTED_SDK_VERSIONS = await findSupportedSdkVersions();
+  }
+
+  const targetMajorSdkVersion = ExponentTools.parseSdkMajorVersion(job.sdkVersion || job.manifest.sdkVersion);
+  if (!_.includes(SUPPORTED_SDK_VERSIONS, targetMajorSdkVersion)) {
+    throw new Error(`Unsupported SDK Version!`);
+  }
+}
 
 async function findSupportedSdkVersions(): Promise<Array<number>> {
   const SDK_DIR_PREFIX = 'sdk';
