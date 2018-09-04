@@ -31,7 +31,7 @@ It takes a shell app, fills it with user's code and produces a standalone app. S
 
 iOS builders are deployed to MacStadium cluster, deployment process is managed by Terraform. Because we must be connected to the VPN to perform a successful deployment, there is no easy way to setup appropriate process on CircleCI. Therefore, currently all deployments have to be performed from a local machine.
 
-Terraform configuration for iOS builders lives in `terraform/turtle-js.tf` file. There are two instances of `turtle-js` module defined - one for staging and one for production. Each module instance has `agent_commit` variable defined. It tells terraform from which commit it should take Turtle JS code (and iOS shell app linked to it).
+Terraform configuration for iOS builders lives in `terraform/turtle-js.tf` file. There are two instances of `turtle-js` module defined - one for staging and one for production. Each module instance has `agent_commit` variable defined. It tells terraform from which commit it should take Turtle JS code (and iOS shell apps linked to it).
 
 If you ever need to upgrade `fastlane` version on builders, you should change `fastlane_staging` or `fastlane_production` local variable in the same file.
 
@@ -39,7 +39,8 @@ To update iOS shell app as well, you have to put the appropriate S3 URL to the  
 
 To perform a successful deploy to staging (for production, just replace `staging` with `production`), follow these steps:
 - if you want to upgrade iOS shell app:
-  * go to CircleCI, find appropriate `shell_app_sdk_XX_ios_upload` job and find S3 URL in logs
+  * go to CircleCI, find `shell_app` workflow for a commit from which you want to build a shell app and unlock `shell_app_approve_build` job
+  * once the `shell_app_sdk_latest_ios_upload` job has finished, find S3 URL to the shell app in its logs
   * put S3 URL to `shellTarballs/ios/sdkXX` file and commit your changes
   * wait for `turtle_agent_mac` job to finish
 - edit `terraform/turtle-js.tf`: change `agent_commit` variable in `module.turtle_js_staging`
@@ -51,13 +52,7 @@ To perform a successful deploy to staging (for production, just replace `staging
 
 Optional steps:
 
-**If you're releasing a new SDK**, then:
-- create new jobs generating shell app for a new SDK and add them to the `shell_app` workflow:
-  * open `.circleci/config.yml` file
-  * copy `shell_app_sdk_XX_ios_sim`, `shell_app_sdk_XX_ios_ipa` and `shell_app_sdk_XX_ios_upload` jobs for one of the previous SDK versions, replacing XX with major SDK version (e.g. `29`), remember to alter `EXPO_SDK_VERSION` and `EXPO_SDK_VERSION_MAJOR` environment variables as well
-  * add new jobs to the `shell_app` workflow (copy-paste configuration from one of the previous SDK versions)
-- create a new file `shellTarballs/ios/sdkXX`, where XX is the major SDK version, with the S3 url to the shell app with a new SDK
-- make sure to run `pt update-turtle-sdk-version --sdk X.0.0 --platform ios`. Versions object is being updated on staging, to move it to the production, use `pt promote-versions-to-prod`.*
+**If you're releasing a new SDK**, make sure to run `pt update-turtle-sdk-version --sdk X.0.0 --platform ios`. Versions object is being updated on staging, to move it to the production, use `pt promote-versions-to-prod`.*
 
 ### Android
 
