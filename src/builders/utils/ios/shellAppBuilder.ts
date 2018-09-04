@@ -32,7 +32,7 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
   IosIcons.setResizeImageFunction(imageHelpers.resizeIconWithSharpAsync);
   IosIcons.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
   const shellAppParams = {
-    url: commonUtils.getExperienceUrl(job.experienceName),
+    url: commonUtils.getExperienceUrl(job),
     sdkVersion,
     action: 'configure',
     type: buildType,

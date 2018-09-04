@@ -2,6 +2,7 @@ import * as crypto from 'crypto';
 import * as path from 'path';
 
 import * as fs from 'fs-extra';
+import _ from 'lodash';
 import { AndroidShellApp } from 'xdl';
 
 import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
@@ -53,7 +54,7 @@ async function runShellAppBuilder(
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
-      url: commonUtils.getExperienceUrl(jobData.experienceName),
+      url: commonUtils.getExperienceUrl(jobData),
       sdkVersion: jobData.manifest.sdkVersion || jobData.sdkVersion,
       keystore: tempKeystorePath,
       alias: credentials.keystoreAlias,

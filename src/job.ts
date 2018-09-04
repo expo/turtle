@@ -7,6 +7,7 @@ export interface IJob {
   config: {
     releaseChannel: string;
     turtleVersion?: string;
+    publicUrl?: string;
     // ios
     buildType?: string;
     bundleIdentifier?: string;
