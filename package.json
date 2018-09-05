@@ -8,7 +8,7 @@
     "start:ios": "PLATFORM=ios yarn start",
     "start:android": "PLATFORM=android yarn start",
     "watch": "EXPENV_OVERRIDES=local-common,local expenv gulp watch:source",
-    "bin:turtle": "node ./bin/turtle.js",
+    "bin:turtle": "./bin/turtle.js",
     "lint": "eslint src",
     "test": "jest --config jest/unit-config.json --watch",
     "build": "gulp build:server",

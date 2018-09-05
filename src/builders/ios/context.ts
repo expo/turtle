@@ -29,7 +29,7 @@ const { BUILD_TYPES } = IOS;
 export function createBuilderContext(job: IJob): IContext {
   const { join } = path;
   const appUUID = uuidv4();
-  const { manifest: { sdkVersion: _sdkVersionFromManifest }, sdkVersion: _sdkVersionFromJob, config: { buildType } } = job;
+  const { manifest: { sdkVersion: _sdkVersionFromManifest = null } = {}, sdkVersion: _sdkVersionFromJob, config: { buildType } } = job;
 
   const sdkVersion = _sdkVersionFromJob || _sdkVersionFromManifest;
   const majorSdkVersion = ExponentTools.parseSdkMajorVersion(sdkVersion);

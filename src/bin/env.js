@@ -35,6 +35,7 @@ const OFFLINE_ENV_VARS = {
   API_PROTOCOL: apiConfig.protocol,
   API_HOSTNAME: apiConfig.hostname,
   API_PORT: apiConfig.port,
+  TURTLE_USE_LOCAL_WORKING_DIR: '1',
   TURTLE_FAKE_UPLOAD: '1',
   // TODO: temporary, change me
   TURTLE_FAKE_UPLOAD_DIR: '/Users/dsokal/Downloads',

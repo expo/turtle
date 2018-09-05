@@ -55,7 +55,7 @@ export default {
   },
   builder: {
     mode: env('TURTLE_MODE', 'online'),
-    workingDir: env('TURTLE_WORKING_DIR_PATH', path.join(process.cwd(), 'workingdir')),
+    workingDir: env('TURTLE_WORKING_DIR_PATH', path.join(__dirname, '..', 'workingdir')),
     temporaryFilesRoot: env('TURTLE_TEMPORARY_FILES_DIR', path.join('/private', 'tmp', 'turtle')),
     skipCleanup: envTransform(
       'TURTLE_SKIP_CLEANUP',

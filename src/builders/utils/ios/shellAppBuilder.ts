@@ -1,8 +1,9 @@
-import * as path from 'path';
-import * as util from 'util';
+import path from 'path';
+import util from 'util';
 
 import copy from 'copy';
 import { IosIcons, IosShellApp } from 'xdl';
+import _ from 'lodash';
 
 import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/ios/image';
@@ -15,7 +16,7 @@ const copyAsync = util.promisify(copy);
 export default async function runShellAppBuilder(ctx: IContext, job: IJob): Promise<any> {
   const { config: jobConfig, manifest, sdkVersion: _sdkVersionFromJob } = job;
   const { buildType, releaseChannel } = jobConfig;
-  const sdkVersion = manifest.sdkVersion || _sdkVersionFromJob;
+  const sdkVersion = _.get(manifest, 'sdkVersion', _sdkVersionFromJob);
   const applicationFilesSrc = path.join(
     ctx.workingDir,
     'shellAppBase-builds',
