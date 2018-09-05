@@ -5,7 +5,7 @@ import logger from 'turtle/logger';
 import { IJob } from 'turtle/job';
 
 export function getExperienceUrl(job: IJob) {
-  const {experienceName, config: jobConfig} = job;
+  const { experienceName, config: jobConfig } = job;
   const { publicUrl } = jobConfig;
 
   // publicUrl is passed in if user wants to build an externally hosted app
