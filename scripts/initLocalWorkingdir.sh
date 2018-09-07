@@ -1,19 +1,22 @@
 #!/usr/bin/env bash
 
+ensure_link_exists() {
+  if [ ! -L "$2" ]; then
+    ln -s $1 $2
+    echo "$2 link created"
+  fi
+}
+
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. && pwd )"
 WORKINGDIR="$ROOT_DIR/workingdir/local"
 
-LINKS=( "android" "client-builds" "cpp" "exponent-view-template" "ios" "shellAppBase-builds" "shellAppWorkspaces" )
 if [ ! -d "$WORKINGDIR" ]; then
   mkdir -p $WORKINGDIR
   echo "$WORKINGDIR directory created"
 fi
 
+LINKS=( "template-files" "package.json" "android" "expokit-npm-package" "modules" "client-builds" "cpp" "exponent-view-template" "ios" "shellAppBase-builds" "shellAppWorkspaces")
+
 for LINKNAME in ${LINKS[@]}; do
-  FROM="$EXPO_UNIVERSE_DIR/exponent/$LINKNAME"
-  TO="$WORKINGDIR/$LINKNAME"
-  if [ ! -L "$TO" ]; then
-    ln -s $FROM $TO
-    echo "$TO link created"
-  fi
+  ensure_link_exists "$EXPO_UNIVERSE_DIR/exponent/$LINKNAME" "$WORKINGDIR/$LINKNAME"
 done
