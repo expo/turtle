@@ -3552,6 +3552,10 @@ hasbin@^1.2.3:
   dependencies:
     async "~1.5"
 
+hashids@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/hashids/-/hashids-1.1.4.tgz#e4ff92ad66b684a3bd6aace7c17d66618ee5fa21"
+
 hawk@~6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/hawk/-/hawk-6.0.2.tgz#af4d914eb065f9b5ce4d9d11c1cb2126eecc3038"
@@ -7802,9 +7806,9 @@ xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
 
-xdl@51.1.0:
-  version "51.1.0"
-  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.1.0.tgz#6a05e63f4790cd0d9ee94ee6cac99089319418c7"
+xdl@51.2.2:
+  version "51.2.2"
+  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.2.2.tgz#cbdf7697f4994191a485deb01ad0ebf3ac8c8859"
   dependencies:
     "@expo/bunyan" "3.0.2"
     "@expo/json-file" "^8.0.1"
@@ -7832,6 +7836,7 @@ xdl@51.1.0:
     glob-promise "^3.3.0"
     globby "^6.1.0"
     hasbin "^1.2.3"
+    hashids "^1.1.4"
     home-dir "^1.0.0"
     idx "^2.1.0"
     indent-string "^3.1.0"
