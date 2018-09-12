@@ -3,15 +3,16 @@ import * as path from 'path';
 
 import * as fs from 'fs-extra';
 import _ from 'lodash';
-import { AndroidShellApp, ImageUtils } from 'xdl';
+import { AndroidShellApp } from 'xdl';
 
 import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
 import * as commonUtils from 'turtle/builders/utils/common';
-import * as imageHelpers from 'turtle/builders/utils/image';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
 import { IAndroidCredentials, IJob, IJobResult } from 'turtle/job';
+
+const l = logger.withFields({ buildPhase: 'starting builder' });
 
 export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
   const credentials = await getOrCreateCredentials(jobData);
@@ -45,15 +46,7 @@ async function runShellAppBuilder(
     mode: 0o600,
   });
 
-  logger.info({ buildPhase: 'starting builder' }, 'Starting build process');
-
-  logger.info(
-    { buildPhase: 'icons setup' },
-    'ImageUtils: setting image functions to alternative sharp implementations',
-  );
-  ImageUtils.setResizeImageFunction(imageHelpers.resizeIconWithSharpAsync);
-  ImageUtils.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
-
+  l.info('Starting build process');
   const outputFilePath = path.join(temporaryFilesRoot, 'shell-signed-' + jobData.id + '.apk');
   const workingDir = config.builder.useLocalWorkingDir
     ? path.join(config.builder.workingDir, 'local')

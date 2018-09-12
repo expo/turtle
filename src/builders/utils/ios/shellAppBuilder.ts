@@ -2,11 +2,11 @@ import path from 'path';
 import util from 'util';
 
 import copy from 'copy';
-import { ImageUtils, IosShellApp } from 'xdl';
+import { IosIcons, IosShellApp } from 'xdl';
 import _ from 'lodash';
 
 import * as commonUtils from 'turtle/builders/utils/common';
-import * as imageHelpers from 'turtle/builders/utils/image';
+import * as imageHelpers from 'turtle/builders/utils/ios/image';
 import logger from 'turtle/logger/index';
 import { IContext } from 'turtle/builders/ios/context';
 import { IJob } from 'turtle/job';
@@ -28,10 +28,10 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
 
   logger.info(
     { buildPhase: 'icons setup' },
-    'ImageUtils: setting image functions to alternative sharp implementations',
+    'IosIcons: setting image functions to alternative sharp implementations',
   );
-  ImageUtils.setResizeImageFunction(imageHelpers.resizeIconWithSharpAsync);
-  ImageUtils.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
+  IosIcons.setResizeImageFunction(imageHelpers.resizeIconWithSharpAsync);
+  IosIcons.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
   const shellAppParams = {
     url: commonUtils.getExperienceUrl(job),
     sdkVersion,
