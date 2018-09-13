@@ -22,7 +22,7 @@ function _maybeExit() {
 export async function doJob() {
   const jobData = await getJob();
   await processJob(jobData);
-  _maybeExit();
+  process.exit();
 }
 
 export async function getJob() {
