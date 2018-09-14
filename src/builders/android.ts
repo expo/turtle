@@ -54,7 +54,7 @@ async function runShellAppBuilder(
   ImageUtils.setResizeImageFunction(imageHelpers.resizeIconWithSharpAsync);
   ImageUtils.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
 
-  const outputFilePath = path.join(temporaryFilesRoot, 'shell-signed-' + jobData.id + '.apk');
+  const outputFilePath = path.join(temporaryFilesRoot, `shell-signed-${jobData.id}.apk`);
   const workingDir = config.builder.useLocalWorkingDir
     ? path.join(config.builder.workingDir, 'local')
     : path.join(config.builder.workingDir, 'android');
