@@ -1,9 +1,9 @@
-import * as crypto from 'crypto';
-import * as path from 'path';
+import path from 'path';
 
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import _ from 'lodash';
 import { AndroidShellApp, ImageUtils } from 'xdl';
+import uuidv4 from 'uuid/v4';
 
 import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
 import * as commonUtils from 'turtle/builders/utils/common';
@@ -16,9 +16,7 @@ import { IAndroidCredentials, IJob, IJobResult } from 'turtle/job';
 export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
   const credentials = await getOrCreateCredentials(jobData);
   const apkFilePath = await runShellAppBuilder(jobData, credentials);
-  const randomHex = crypto
-    .randomBytes(16)
-    .toString('hex');
+  const randomHex = uuidv4().replace(/-/g, '');
   const s3Filename = `${jobData.experienceName}-${randomHex}-signed.apk`;
   const s3FileKey = `android/${s3Filename}`;
   const fakeUploadFilename = s3Filename.replace('/', '\\');
