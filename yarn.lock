@@ -7814,9 +7814,9 @@ xdg-basedir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
 
-xdl@51.3.0:
-  version "51.3.0"
-  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.3.0.tgz#e46355625db6f7940a244c771d07f83528028c45"
+xdl@51.3.1:
+  version "51.3.1"
+  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.3.1.tgz#8cd7943620257efb0b3708e0c0df3ffcaca876c7"
   dependencies:
     "@expo/bunyan" "3.0.2"
     "@expo/json-file" "^8.0.1"
