@@ -46,6 +46,7 @@ To perform a successful deploy to staging (for production, just replace `staging
 - edit `terraform/turtle-js.tf`: change `agent_commit` variable in `module.turtle_js_staging`
 - connect to the VPN
 - run: `cd $EXPO_UNIVERSE_DIR/terraform`
+- run: `nix-shell`
 - check the terraform plan: `terraform plan -target module.turtle_js_staging`
 - if sure the plan is correct, apply changes with: `terraform apply -target module.turtle_js_staging` (you will be prompted to type `yes` to confirm changes)
 - commit and push changes in `terraform/turtle-js.tf` to `master`
