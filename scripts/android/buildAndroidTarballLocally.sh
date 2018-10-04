@@ -16,7 +16,6 @@ ln -s ${EXPO_UNIVERSE_DIR}/exponent/android $TEMP_DIR/android
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/package.json $TEMP_DIR/package.json
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/expokit-npm-package $TEMP_DIR/expokit-npm-package
 ln -s ${EXPO_UNIVERSE_DIR}/exponent/modules $TEMP_DIR/modules
-ln -s ${EXPO_UNIVERSE_DIR}/dev/xdl $TEMP_DIR/xdl
 ln -s ${EXPO_UNIVERSE_DIR}/libraries/eslint-config-universe $TEMP_DIR/eslint-config-universe
 ln -s ${EXPO_UNIVERSE_DIR}/libraries/json-file $TEMP_DIR/json-file
 ln -s ${EXPO_UNIVERSE_DIR}/libraries/osascript $TEMP_DIR/osascript
