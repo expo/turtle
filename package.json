@@ -15,7 +15,7 @@
     "build:production": "./scripts/build.sh",
     "build:android-tarball:local": "./scripts/android/buildAndroidTarballLocally.sh",
     "init-workingdir:local": "./scripts/initLocalWorkingdir.sh",
-    "init-workingdir:remote": "yarn init-workingdir:remote-android && init-workingdir:remote-ios",
+    "init-workingdir:remote": "yarn init-workingdir:remote-android && yarn init-workingdir:remote-ios",
     "init-workingdir:remote-android": "./scripts/android/fetchRemoteAndroidTarball.sh",
     "init-workingdir:remote-ios": "./scripts/ios/fetchRemoteIosTarball.sh",
     "docker:pull": "retry5 gcloud docker -- pull gcr.io/exponentjs/turtle-android:latest",
