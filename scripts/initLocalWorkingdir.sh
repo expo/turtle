@@ -15,7 +15,7 @@ if [ ! -d "$WORKINGDIR" ]; then
   echo "$WORKINGDIR directory created"
 fi
 
-LINKS=( "template-files" "package.json" "android" "expokit-npm-package" "modules" "client-builds" "cpp" "exponent-view-template" "ios" "shellAppBase-builds" "shellAppWorkspaces")
+LINKS=( "template-files" "package.json" "android" "expokit-npm-package" "packages" "client-builds" "cpp" "exponent-view-template" "ios" "shellAppBase-builds" "shellAppWorkspaces")
 
 for LINKNAME in ${LINKS[@]}; do
   ensure_link_exists "$EXPO_UNIVERSE_DIR/exponent/$LINKNAME" "$WORKINGDIR/$LINKNAME"
