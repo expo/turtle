@@ -1,11 +1,12 @@
 import * as path from 'path';
 
 import { v4 as uuidv4 } from 'uuid';
-import { IosShellApp, ExponentTools } from 'xdl';
+import { IosShellApp } from 'xdl';
 
 import config from 'turtle/config';
 import { IOS } from 'turtle/constants/index';
 import { IJob } from 'turtle/job';
+import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
 
 export interface IContext {
   appDir: string;
@@ -32,13 +33,10 @@ export function createBuilderContext(job: IJob): IContext {
   const { manifest: { sdkVersion: _sdkVersionFromManifest = null } = {}, sdkVersion: _sdkVersionFromJob, config: { buildType } } = job;
 
   const sdkVersion = _sdkVersionFromJob || _sdkVersionFromManifest;
-  const majorSdkVersion = ExponentTools.parseSdkMajorVersion(sdkVersion);
-  const workingDir = config.builder.useLocalWorkingDir
-    ? path.join(config.builder.workingDir, 'local')
-    : path.join(config.builder.workingDir, 'ios', `sdk${majorSdkVersion}`);
+  const workingDir = formatShellAppDirectory(sdkVersion);
 
   const context: any = {
-    appDir: join(config.builder.temporaryFilesRoot, appUUID),
+    appDir: join(config.directories.temporaryFilesRoot, appUUID),
     appUUID,
     workingDir,
   };
@@ -76,7 +74,7 @@ export function createBuilderContext(job: IJob): IContext {
   const s3Filename = `${job.experienceName}-${appUUID}-${buildType}.${s3FileExtension}`;
   if (config.builder.fakeUpload) {
     const fakeUploadFilename = s3Filename.replace('/', '\\');
-    context.fakeUploadBuildPath = join(config.builder.fakeUploadDir, fakeUploadFilename);
+    context.fakeUploadBuildPath = job.fakeUploadBuildPath ? job.fakeUploadBuildPath : join(job.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename);
   } else {
     context.s3FileKey = join('ios', s3Filename);
   }

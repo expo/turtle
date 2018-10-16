@@ -14,6 +14,8 @@ export default Joi.object().keys({
     })
     .unknown(true),
   projectDir: Joi.string(),
+  fakeUploadDir: Joi.string(),
+  fakeUploadBuildPath: Joi.string(),
   sdkVersion: Joi.string(),
   messageCreatedTimestamp: Joi.number(),
 });

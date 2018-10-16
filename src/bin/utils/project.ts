@@ -1,9 +1,8 @@
 import path from 'path';
-
 import fs from 'fs-extra';
 
-export async function loadAppJSON(projectDirArg) {
-  const projectDir = resolveProjectDir(projectDirArg);
+export async function loadAppJSON(projectDirArg: string) {
+  const projectDir = resolveAbsoluteDir(projectDirArg);
   const appJSONPath = path.join(projectDir, 'app.json');
   const appJSONExists = await fs.pathExists(appJSONPath);
   if (!appJSONExists) {
@@ -13,11 +12,11 @@ export async function loadAppJSON(projectDirArg) {
   }
 }
 
-export const resolveProjectDir = projectDirArg => {
-  if (projectDirArg && path.isAbsolute(projectDirArg)) {
-    return projectDirArg;
+export const resolveAbsoluteDir = (dir: string) => {
+  if (dir && path.isAbsolute(dir)) {
+    return dir;
   } else {
     const cwd = process.env.INIT_CWD || process.cwd();
-    return projectDirArg ? path.join(cwd, projectDirArg) : cwd;
+    return dir ? path.join(cwd, dir) : cwd;
   }
 };

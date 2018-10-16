@@ -7,11 +7,11 @@ import { ErrorWithCommandHelp } from 'turtle/bin/commands/errors';
 import { PLATFORMS } from 'turtle/constants';
 import { createBuilderAction } from 'turtle/bin/utils/builder';
 
-export default program => {
+export default (program: any, setCommonCommandOptions: any) => {
   const command = program.command('build:android [project-dir]');
+  setCommonCommandOptions(command);
   command
     .alias('ba')
-    .option('--release-channel <channel-name>', 'pull from specified release channel', 'default')
     .option(
       '--keystore-path <app.jks>',
       'path to your Keystore (please provide Keystore password and Key password as EXPO_ANDROID_KEYSTORE_PASSWORD and EXPO_ANDROID_KEY_PASSWORD env variables)'
@@ -27,13 +27,16 @@ export default program => {
         prepareCredentials,
         buildJobObject,
         builder,
+        platform: 'android',
+        os: ['darwin', 'linux'],
       })
     );
 };
 
-const buildJobObject = (appJSON, { releaseChannel, username, projectDir }, credentials) => ({
+const buildJobObject = (appJSON: any, { releaseChannel, username, projectDir, publicUrl }: any, credentials: any) => ({
   config: {
     releaseChannel,
+    publicUrl,
   },
   id: uuid.v4(),
   platform: PLATFORMS.ANDROID,
@@ -43,7 +46,7 @@ const buildJobObject = (appJSON, { releaseChannel, username, projectDir }, crede
   ...(credentials && { credentials }),
 });
 
-const prepareCredentials = async cmd => {
+const prepareCredentials = async (cmd: any) => {
   const { keystorePath, keystoreAlias } = cmd;
   const keystorePassword = process.env.EXPO_ANDROID_KEYSTORE_PASSWORD;
   const keyPassword = process.env.EXPO_ANDROID_KEY_PASSWORD;

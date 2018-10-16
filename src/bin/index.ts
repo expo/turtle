@@ -9,25 +9,21 @@ const { version } = require('../../package.json');
 
 LoggerDetach.configure(logger);
 
-export function run(programName) {
+export function run(programName: string) {
   runAsync(programName).catch(e => {
     logger.error('Uncaught Error', e);
     process.exit(1);
   });
 }
 
-async function runAsync(programName) {
-  program.name = programName;
-  program
-    .version(version)
-    .option('-u --username <username>', 'username (you can also set EXPO_USERNAME env variable)')
-    .option('-p --password <password>', 'password (you can also set EXPO_PASSWORD env variable)');
+async function runAsync(programName: string) {
+  program.version(version);
   Object.values(commands).forEach(command => registerCommand(program, command));
   program.parse(process.argv);
 
   const subCommand = process.argv[2];
   if (subCommand) {
-    const commands = program.commands.reduce((acc, command) => {
+    const commands = program.commands.reduce((acc: Array<string>, command: any) => {
       acc.push(command['_name']);
       const alias = command['_alias'];
       if (alias) {
@@ -45,4 +41,4 @@ async function runAsync(programName) {
   }
 }
 
-const registerCommand = (program, command) => command(program);
+const registerCommand = (prog: any, command: any) => command(prog);

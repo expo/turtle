@@ -79,7 +79,7 @@ async function ensureCanBuildSdkVersion(job: IJob) {
 
 async function findSupportedSdkVersions(): Promise<Array<number>> {
   const SDK_DIR_PREFIX = 'sdk';
-  const files = await fs.readdir(path.join(config.builder.workingDir, 'ios'));
+  const files = await fs.readdir(path.join(config.directories.workingDir, 'ios'));
   const sdks = files.filter(file => file.startsWith(SDK_DIR_PREFIX));
   return sdks.map(sdk => parseInt(sdk.substr(SDK_DIR_PREFIX.length)));
 }

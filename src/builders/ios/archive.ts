@@ -1,6 +1,7 @@
-import runShellAppBuilder from 'turtle/builders/utils/ios/shellAppBuilder';
+import _ from 'lodash';
 import { IosIPABuilder as createIPABuilder } from 'xdl';
 
+import runShellAppBuilder from 'turtle/builders/utils/ios/shellAppBuilder';
 import { logErrorOnce } from 'turtle/builders/utils/common';
 import * as fileUtils from 'turtle/builders/utils/file';
 import * as keychain from 'turtle/builders/utils/ios/keychain';
@@ -15,8 +16,8 @@ export default async function buildArchive(ctx: IContext, job: IJob) {
     const { credentials } = job;
     const { certP12, certPassword } = credentials as { certP12: string; certPassword: string };
     await keychain.importCert(ctx, { keychainPath: keychainInfo.path, certP12, certPassword });
-    await runShellAppBuilder(ctx, job);
-    await buildAndSignIPA(ctx, job, keychainInfo.path);
+    const manifest = await runShellAppBuilder(ctx, job);
+    await buildAndSignIPA(ctx, job, keychainInfo.path, manifest);
   } catch (err) {
     logErrorOnce(err);
     throw err;
@@ -27,18 +28,16 @@ export default async function buildArchive(ctx: IContext, job: IJob) {
   }
 }
 
-async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string) {
+async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string, manifest: any) {
   const l = logger.withFields({ buildPhase: 'building and signing IPA' });
   l.info('building and signing IPA');
 
   const {
     credentials: { provisioningProfile, certPassword, teamId, password },
     config: { bundleIdentifier: _bundleIdentifierFromConfig },
-    manifest,
   } = job;
 
-  const { ios: { bundleIdentifier: _bundleIdentifierFromManifest } } = manifest;
-
+  const _bundleIdentifierFromManifest = _.get(manifest, 'ios.bundleIdentifier');
   const bundleIdentifier = _bundleIdentifierFromConfig || _bundleIdentifierFromManifest;
 
   const { provisioningProfilePath } = ctx;

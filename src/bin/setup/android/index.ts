@@ -1,0 +1,109 @@
+import path from 'path';
+import util from 'util';
+
+import fs from 'fs-extra';
+import { ExponentTools } from 'xdl';
+import _which from 'which';
+
+import logger from 'turtle/logger';
+import config from 'turtle/config';
+import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
+import { checkSystem, ensureShellAppIsPresent } from 'turtle/bin/setup/utils/common';
+import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
+import ensureAndroidSDKIsPresent from 'turtle/bin/setup/android/sdk';
+import ensureAndroidNDKIsPresent from 'turtle/bin/setup/android/ndk';
+
+const which = util.promisify(_which);
+const REQUIRED_TOOLS: Array<IToolDefinition> = [
+  {
+    command: 'gulp',
+    missingDescription: 'Run `npm install -g gulp-cli` (or `yarn global add gulp-cli`) to install gulp',
+  },
+  {
+    command: 'javac',
+    missingDescription: 'Please install JDK (version 8 or newer) - check https://jdk.java.net/',
+    testFn: async () => {
+      const { status, stdout } = await ExponentTools.spawnAsyncThrowError(
+        'javac',
+        ['-version'],
+        { stdio: 'pipe' }
+      );
+      if (stdout.match(/no java runtime present/i)) {
+        return false;
+      }
+      return status === 0;
+    }
+  },
+];
+const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
+const l = logger.withFields(LOGGER_FIELDS);
+
+export default async function setup(sdkVersion?: string) {
+  await checkSystem(REQUIRED_TOOLS);
+  await prepareAndroidEnv();
+  if (sdkVersion) {
+    await ensureShellAppIsPresent(
+      sdkVersion,
+      { formatShellAppDirectory, formatShellAppTarballUriPath },
+      _shellAppPostDownloadAction
+    );
+  }
+}
+
+async function prepareAndroidEnv() {
+  await fs.ensureDir(config.directories.androidDependenciesDir);
+  const sdkConfig = await ensureAndroidSDKIsPresent();
+  const ndkConfig = await ensureAndroidNDKIsPresent();
+  _setEnvVars({ ...sdkConfig.envVars, ...ndkConfig.envVars });
+  _alterPath([...sdkConfig.path, ...sdkConfig.path]);
+}
+
+function formatShellAppTarballUriPath(_sdkMajorVersion: string) {
+  return path.join(config.directories.shellTarballsDir, 'android');
+}
+
+async function _shellAppPostDownloadAction(workingdir: string) {
+  const inWorkingdir = (filename: string) => path.join(workingdir, filename);
+
+  await fs.move(inWorkingdir('package.json'), inWorkingdir('exponent-package.json'));
+  await fs.move(inWorkingdir('universe-package.json'), inWorkingdir('package.json'));
+  await _installNodeModules(workingdir);
+  await fs.move(inWorkingdir('package.json'), inWorkingdir('universe-package.json'));
+  await fs.move(inWorkingdir('exponent-package.json'), inWorkingdir('package.json'));
+
+  // TODO: remove following lines after upgrading android shell app
+  const toolsPublicDir = path.join(workingdir, 'tools-public');
+  await _installNodeModules(toolsPublicDir);
+}
+
+async function _installNodeModules(cwd: string) {
+  l.info(`installing dependencies in ${cwd} directory...`);
+  const command = await _shouldUseYarnOrNpm();
+  await ExponentTools.spawnAsyncThrowError(command, ['install'], {
+    pipeToLogger: true,
+    loggerFields: LOGGER_FIELDS,
+    cwd,
+  });
+  l.info('dependencies installed!');
+}
+
+async function _shouldUseYarnOrNpm() {
+  try {
+    await which('yarn');
+    return 'yarn';
+  } catch (err) {
+    return 'npm';
+  }
+}
+
+function _setEnvVars(envVars: object) {
+  Object
+    .entries(envVars)
+    .forEach(([key, value]) => process.env[key] = value);
+}
+
+function _alterPath(newPaths: Array<string>) {
+  const currentPaths = process.env.PATH ? process.env.PATH.split(':') : [];
+  const paths = [...newPaths, ...currentPaths];
+  process.env.PATH = paths.join(':');
+}

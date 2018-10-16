@@ -12,6 +12,7 @@ import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
 import { IAndroidCredentials, IJob, IJobResult } from 'turtle/job';
+import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
 
 export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
   const credentials = await getOrCreateCredentials(jobData);
@@ -23,7 +24,9 @@ export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
   const artifactUrl = await uploadBuildToS3({
     uploadPath: apkFilePath,
     s3FileKey,
-    ...config.builder.fakeUpload && { fakeUploadBuildPath: path.join(config.builder.fakeUploadDir, fakeUploadFilename) },
+    ...config.builder.fakeUpload && {
+      fakeUploadBuildPath: jobData.fakeUploadBuildPath ? jobData.fakeUploadBuildPath : path.join(jobData.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename)
+    },
   });
 
   return { artifactUrl };
@@ -33,7 +36,7 @@ async function runShellAppBuilder(
   jobData: IJob,
   credentials: IAndroidCredentials,
 ): Promise<string> {
-  const { temporaryFilesRoot } = config.builder;
+  const { temporaryFilesRoot } = config.directories;
   await fs.ensureDir(temporaryFilesRoot);
   const tempShellAppConfigPath = path.join(temporaryFilesRoot, `app-config-${jobData.id}.json`);
   const tempKeystorePath = path.join(temporaryFilesRoot, `keystore-${jobData.id}.jks`);
@@ -53,14 +56,15 @@ async function runShellAppBuilder(
   ImageUtils.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
 
   const outputFilePath = path.join(temporaryFilesRoot, `shell-signed-${jobData.id}.apk`);
-  const workingDir = config.builder.useLocalWorkingDir
-    ? path.join(config.builder.workingDir, 'local')
-    : path.join(config.builder.workingDir, 'android');
+
+  const { manifest: { sdkVersion: _sdkVersionFromManifest = null } = {}, sdkVersion: _sdkVersionFromJob } = jobData;
+  const sdkVersion = _sdkVersionFromJob || _sdkVersionFromManifest;
+  const workingDir = formatShellAppDirectory(sdkVersion);
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
       url: commonUtils.getExperienceUrl(jobData),
-      sdkVersion: jobData.manifest.sdkVersion || jobData.sdkVersion,
+      sdkVersion: _.get(jobData, 'manifest.sdkVersion') || jobData.sdkVersion,
       keystore: tempKeystorePath,
       alias: credentials.keystoreAlias,
       keystorePassword: credentials.keystorePassword,

@@ -7,8 +7,9 @@ import { ErrorWithCommandHelp } from 'turtle/bin/commands/errors';
 import { PLATFORMS, IOS } from 'turtle/constants';
 import { createBuilderAction } from 'turtle/bin/utils/builder';
 
-export default program => {
+export default (program: any, setCommonCommandOptions: any) => {
   const command = program.command('build:ios [project-dir]');
+  setCommonCommandOptions(command);
   command
     .alias('bi')
     .option(
@@ -17,7 +18,6 @@ export default program => {
       /^(archive|simulator)$/i,
       'archive'
     )
-    .option('--release-channel <channel-name>', 'pull from specified release channel', 'default')
     .option('--team-id <apple-teamId>', 'Apple Team ID')
     .option(
       '--dist-p12-path <dist.p12>',
@@ -38,15 +38,18 @@ export default program => {
         prepareCredentials,
         buildJobObject,
         builder,
+        platform: 'ios',
+        os: 'darwin',
       })
     );
 };
 
-const buildJobObject = (appJSON, { releaseChannel, buildType, username }, credentials) => ({
+const buildJobObject = (appJSON: any, { releaseChannel, buildType, username, publicUrl }: any, credentials: any) => ({
   config: {
     buildType,
     releaseChannel,
     bundleIdentifier: _.get(appJSON, 'expo.ios.bundleIdentifier'),
+    publicUrl,
   },
   id: uuid.v4(),
   platform: PLATFORMS.IOS,
@@ -55,7 +58,7 @@ const buildJobObject = (appJSON, { releaseChannel, buildType, username }, creden
   ...(credentials && { credentials }),
 });
 
-const prepareCredentials = async cmd => {
+const prepareCredentials = async (cmd: any) => {
   if (cmd.type !== IOS.BUILD_TYPES.ARCHIVE) {
     return null;
   }

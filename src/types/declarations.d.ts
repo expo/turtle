@@ -5,3 +5,5 @@ declare module 'bunyan-sentry-stream';
 declare module 'bunyan-debug-stream';
 declare module 'async-retry';
 declare module 'ioredis';
+declare module 'request-progress';
+declare module 'is-semver';

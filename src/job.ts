@@ -26,6 +26,8 @@ export interface IJob {
     teamId?: string;
   };
   projectDir: string;
+  fakeUploadDir?: string;
+  fakeUploadBuildPath?: string;
 }
 
 export interface IAndroidCredentials {

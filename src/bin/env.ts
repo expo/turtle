@@ -1,3 +1,6 @@
+import path from 'path';
+import os from 'os';
+
 import _ from 'lodash';
 
 import { env } from 'turtle/utils/env';
@@ -13,8 +16,8 @@ const resolveEnv = () => {
 };
 
 const currentEnv = resolveEnv();
-const isLocal = env => env === 'local';
-const isStaging = env => env === 'staging';
+const isLocal = (env: string) => env === 'local';
+const isStaging = (env: string) => env === 'staging';
 
 const apiConfig = {
   protocol: 'https',
@@ -35,14 +38,14 @@ const OFFLINE_ENV_VARS = {
   API_PROTOCOL: apiConfig.protocol,
   API_HOSTNAME: apiConfig.hostname,
   API_PORT: apiConfig.port,
-  TURTLE_USE_LOCAL_WORKING_DIR: '1',
   TURTLE_FAKE_UPLOAD: '1',
-  // TODO: temporary, change me
-  TURTLE_FAKE_UPLOAD_DIR: '/Users/dsokal/Downloads',
+  TURTLE_FAKE_UPLOAD_DIR: path.join(os.homedir(), 'expo-apps'),
+  TURTLE_WORKING_DIR_PATH: path.join(os.homedir(), '.turtle/workingdir'),
+  EXPO_SKIP_SOURCING: '1',
 };
 
 export function initOfflineEnv() {
   _.map(OFFLINE_ENV_VARS, (val, key) => {
-    process.env[key] = val;
+    process.env[key] = String(val);
   });
 }

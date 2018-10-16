@@ -2,7 +2,12 @@ import { User as UserManager } from 'xdl';
 
 import { ErrorWithProgramHelp } from 'turtle/bin/commands/errors';
 
-export async function ensureUserLoggedIn(userData) {
+interface IUserData {
+  username?: string;
+  password?: string;
+}
+
+export async function ensureUserLoggedIn(userData: IUserData) {
   const currentUser = await UserManager.getCurrentUserAsync();
   if (currentUser) {
     return currentUser;
