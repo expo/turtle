@@ -57,8 +57,8 @@ async function runShellAppBuilder(
 
   const outputFilePath = path.join(temporaryFilesRoot, `shell-signed-${jobData.id}.apk`);
 
-  const { manifest: { sdkVersion: _sdkVersionFromManifest = null } = {}, sdkVersion: _sdkVersionFromJob } = jobData;
-  const sdkVersion = _sdkVersionFromJob || _sdkVersionFromManifest;
+  const { manifest: { sdkVersion: sdkVersionFromManifest = null } = {}, sdkVersion: sdkVersionFromJob } = jobData;
+  const sdkVersion = sdkVersionFromJob || sdkVersionFromManifest;
   const workingDir = formatShellAppDirectory(sdkVersion);
 
   try {
