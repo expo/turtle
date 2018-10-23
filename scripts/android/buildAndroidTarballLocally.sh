@@ -4,7 +4,7 @@ set -xeo pipefail
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/../.. && pwd )"
 ARTIFACTS_DIR="$ROOT_DIR/artifacts"
-TEMP_DIR="$ROOT_DIR/tmp"
+TEMP_DIR="/tmp/android-shell-app"
 
 mkdir -p $ARTIFACTS_DIR
 rm -rf $TEMP_DIR
@@ -21,5 +21,14 @@ ln -s ${EXPO_UNIVERSE_DIR}/libraries/json-file $TEMP_DIR/json-file
 ln -s ${EXPO_UNIVERSE_DIR}/libraries/osascript $TEMP_DIR/osascript
 ln -s ${EXPO_UNIVERSE_DIR}/libraries/schemer $TEMP_DIR/schemer
 ln -s ${EXPO_UNIVERSE_DIR}/package.json $TEMP_DIR/universe-package.json
+
+# generate dynamic macros
+mkdir -p $TEMP_DIR/android/expoview/src/main/java/host/exp/exponent/generated/
+cd $TEMP_DIR/tools-public
+gulp generate-dynamic-macros \
+  --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
+  --platform android
+rm -rf $TEMP_DIR/secrets
+
 cd $TEMP_DIR; tar -czhf $ARTIFACTS_DIR/android-shell-builder.tar.gz .
 rm -rf $TEMP_DIR
