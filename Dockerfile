@@ -107,10 +107,6 @@ RUN echo 'deb http://http.debian.net/debian wheezy-backports main' >> /etc/apt/s
 
 ADD . /app
 
-# Generate dynamic macros
-RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
-      mkdir -p /app/workingdir/android/$SDK_VERSION/expoview/src/main/java/host/exp/exponent/generated/ \
-    ; done
 RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
       cd /app/workingdir/android/$SDK_VERSION && \
       mv package.json exponent-package.json && \
@@ -118,12 +114,6 @@ RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
       yarn install && \
       mv package.json universe-package.json && \
       mv exponent-package.json package.json \
-    ; done
-RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
-      cd /app/workingdir/android/$SDK_VERSION/tools-public && \
-      gulp generate-dynamic-macros \
-      --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
-      --platform android \
     ; done
 
 WORKDIR /app
