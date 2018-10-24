@@ -58,8 +58,8 @@ async function prepareAndroidEnv() {
   _alterPath([...sdkConfig.path, ...sdkConfig.path]);
 }
 
-function formatShellAppTarballUriPath(_sdkMajorVersion: string) {
-  return path.join(config.directories.shellTarballsDir, 'android');
+function formatShellAppTarballUriPath(sdkMajorVersion: string) {
+  return path.join(config.directories.shellTarballsDir, 'android', `sdk${sdkMajorVersion}`);
 }
 
 async function _shellAppPostDownloadAction(workingdir: string) {
