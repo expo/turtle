@@ -17,7 +17,7 @@ function createSetupCommand(platform: string, os?: string) {
         '--sdk-version <sdk-version>',
         'version of Expo SDK shell app to download (optional)'
       )
-      .action((cmd: any) => setupAction(program, cmd, platform, os));
+      .asyncAction(async (cmd: any) => await setupAction(program, cmd, platform, os));
   };
 }
 

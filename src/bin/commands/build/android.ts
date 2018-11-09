@@ -20,7 +20,7 @@ export default (program: any, setCommonCommandOptions: any) => {
     .description(
       'Build a standalone APK for your project, signed and ready for submission to the Google Play Store.'
     )
-    .action(
+    .asyncAction(
       createBuilderAction({
         program,
         command,

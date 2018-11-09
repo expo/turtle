@@ -31,7 +31,7 @@ export default (program: any, setCommonCommandOptions: any) => {
     .description(
       'Build a standalone IPA for your project, signed and ready for submission to the Apple App Store.'
     )
-    .action(
+    .asyncAction(
       createBuilderAction({
         program,
         command,

@@ -1,13 +1,24 @@
-import { LoggerDetach } from 'xdl';
-import program from 'commander';
+import { LoggerDetach, ModuleVersion } from 'xdl';
+import program, { Command } from 'commander';
 import _ from 'lodash';
 
 import logger from 'turtle/logger';
 import * as commands from 'turtle/bin/commands';
 
-const { version } = require('../../package.json');
+const { name, version } = require('../../package.json');
+
+const ModuleVersionChecker = ModuleVersion.createModuleVersionChecker(name, version);
 
 LoggerDetach.configure(logger);
+
+Command.prototype.asyncAction = function asyncAction(asyncFn: (...asyncFnArgs: any[]) => void): Command {
+  return this.action(async (...args) => {
+    try {
+      await checkForUpdateAsync();
+    } catch (e) {}
+    return await asyncFn(...args);
+  });
+}
 
 export function run(programName: string) {
   runAsync(programName).catch(e => {
@@ -42,3 +53,14 @@ async function runAsync(programName: string) {
 }
 
 const registerCommand = (prog: any, command: any) => command(prog);
+
+async function checkForUpdateAsync() {
+  const { updateIsAvailable, current, latest } = await ModuleVersionChecker.checkAsync();
+  if (updateIsAvailable) {
+    logger.warn(
+      `There is a new version of ${name} available (${latest}).
+You are currently using ${name} ${current}
+Run \`npm install -g ${name}\` to get the latest version`
+    );
+  }
+}
