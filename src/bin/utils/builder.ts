@@ -37,15 +37,21 @@ export function createBuilderAction({
         password: cmd.password || process.env.EXPO_PASSWORD,
       };
 
-      if (!(userData.username && userData.password)) {
-        throw new ErrorWithCommandHelp('You must provide your Expo username and password');
+      if (userData.username || userData.password) {
+        if (userData.username && userData.password) {
+          await UserUtils.ensureUserLoggedIn(userData);
+        } else {
+          throw new ErrorWithCommandHelp('You must provide both Expo username and password');
+        }
+      } else if (!cmd.publicUrl) {
+        throw new ErrorWithCommandHelp('You must provide your Expo username and password unless you specify --public-url to your project manifest.');
       }
-      await UserUtils.ensureUserLoggedIn(userData);
+
 
       const args = {
         releaseChannel: cmd.releaseChannel || 'default',
         buildType: cmd.type,
-        username: userData.username,
+        username: userData.username || 'anonymous',
         projectDir: ProjectUtils.resolveAbsoluteDir(projectDirArg),
         publicUrl: cmd.publicUrl,
       };
