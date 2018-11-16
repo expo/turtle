@@ -9,6 +9,10 @@ import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
 
 const REQUIRED_TOOLS: Array<IToolDefinition> = [
   {
+    command: 'bash',
+    missingDescription: 'Please install bash',
+  },
+  {
     command: 'fastlane',
     missingDescription: 'Please check https://docs.fastlane.tools/getting-started/ios/setup/',
   },

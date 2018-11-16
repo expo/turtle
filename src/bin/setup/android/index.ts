@@ -16,6 +16,10 @@ import ensureAndroidNDKIsPresent from 'turtle/bin/setup/android/ndk';
 const which = util.promisify(_which);
 const REQUIRED_TOOLS: Array<IToolDefinition> = [
   {
+    command: 'bash',
+    missingDescription: 'Please install bash',
+  },
+  {
     command: 'gulp',
     missingDescription: 'Run `npm install -g gulp-cli` (or `yarn global add gulp-cli`) to install gulp',
   },
