@@ -11,7 +11,6 @@ interface IUploadCtx {
 }
 
 export async function uploadBuildToS3(ctx: IUploadCtx) {
-
   if (config.builder.fakeUpload) {
     const l = logger.withFields({ buildPhase: 'copying build artifact' });
     const { fakeUploadBuildPath, uploadPath } = ctx;

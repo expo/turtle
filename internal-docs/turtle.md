@@ -103,3 +103,14 @@ Turtle uploads build artifacts to S3. This could take some time if you have poor
 ### Connecting to Android builders (via SSH)
 - Run `yarn ssh:android:pods-names $ENV` (`ENV` can be either set to `production` or `staging`) to get k8s pods names.
 - Run `yarn ssh:connect $ENV $POD_NAME` to connect to the appropriate pod.
+
+## Testing
+- both platforms: `yarn test:smoke`
+- single platform: `yarn test:smoke:android` or `yarn test:smoke:ios` 
+
+### Generating recording files for smoke tests
+
+Smoke tests are powered by `Nock` which uses JSON files which contain responses to the HTTP requests fired by the build process.
+
+To record new responses remove old `recording.json` and start test and manually schedule build with `expo-cli` tool.
+As a precaution, remember to revoke Apple certificates that were used for the build after recording HTTP requests/responses with `Nock`.
