@@ -5225,21 +5225,21 @@ jmespath@0.15.0:
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
   integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
 
+joi@14.0.4:
+  version "14.0.4"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-14.0.4.tgz#f066f79330f6bd6f3dda243be6d2c211f83a5f9b"
+  integrity sha512-KUXRcinDUMMbtlOk7YLGHQvG73dLyf8bmgE+6sBTkdJbZpeGVGAlPXEHLiQBV7KinD/VLD5OA0EUgoTTfbRAJQ==
+  dependencies:
+    hoek "6.x.x"
+    isemail "3.x.x"
+    topo "3.x.x"
+
 joi@^13.2.0:
   version "13.7.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-13.7.0.tgz#cfd85ebfe67e8a1900432400b4d03bbd93fb879f"
   integrity sha512-xuY5VkHfeOYK3Hdi91ulocfuFopwgbSORmIwzcwHKESQhC7w1kD5jaVSPnqDxS2I8t3RZ9omCKAxNwXN5zG1/Q==
   dependencies:
     hoek "5.x.x"
-    isemail "3.x.x"
-    topo "3.x.x"
-
-joi@^14.0.4:
-  version "14.0.6"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-14.0.6.tgz#8c72314af6dba13ca48028a4f0af992ddc5a7472"
-  integrity sha512-mKXPSNYMG3taVBZemQj3pPOlMZGrnnu14JKAC6AHg6jJVX35L7oDk89ss1sHj+laDSEh3mD2PmeheI5k6Aw8nQ==
-  dependencies:
-    hoek "6.x.x"
     isemail "3.x.x"
     topo "3.x.x"
 
@@ -8920,10 +8920,10 @@ xdg-basedir@^3.0.0:
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
   integrity sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ=
 
-xdl@51.6.1-alpha.2+42799e6:
-  version "51.6.1-alpha.2"
-  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.6.1-alpha.2.tgz#73671338de7d7435d15169cf83abb5acc1bb0bcd"
-  integrity sha512-qVPiMcJGqbTNPCHOJe3M9T77SdThcUvnRkLs1goXDMTUOYGumyRddHDMw/BLnRmlRxUglUymqwf3TKXFJlPCMQ==
+xdl@51.6.1:
+  version "51.6.1"
+  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.6.1.tgz#d0ee46a014257ebb41446e733df25ebb0f686227"
+  integrity sha512-ykSz6jmpcm+B9Y4jFxwoGqXFZAMcezDoZd6Xa9BlTBGsY9/rPDZGDMZyvDUKWPKNzE81pvuBOVMiqLLu82kJWg==
   dependencies:
     "@expo/bunyan" "3.0.2"
     "@expo/json-file" "^8.1.0"
@@ -8957,7 +8957,7 @@ xdl@51.6.1-alpha.2+42799e6:
     indent-string "^3.1.0"
     inquirer "^5.0.1"
     invariant "^2.2.4"
-    joi "^14.0.4"
+    joi "14.0.4"
     latest-version "^4.0.0"
     lodash "^4.14.1"
     md5hex "^1.0.0"
