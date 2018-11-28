@@ -9289,10 +9289,10 @@ xdg-basedir@^3.0.0:
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
   integrity sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ=
 
-xdl@51.6.2-alpha.13+709e6e0b:
-  version "51.6.2-alpha.13"
-  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.6.2-alpha.13.tgz#be54a62cea4011872d6cf9d4c2ec624fd6fb9590"
-  integrity sha512-PX+5fHUchAnOWguHG7/mCtDnPfl5pRyJWag10+OKbqJ4v8dvpyhnFimd5z0/n+kpO5sFWUeCulwOntAMYdseYg==
+xdl@51.6.2-alpha.16+9b2888b2:
+  version "51.6.2-alpha.16"
+  resolved "https://registry.yarnpkg.com/xdl/-/xdl-51.6.2-alpha.16.tgz#02ea90027d5a3cc54f194645e0b488bb4e5b956a"
+  integrity sha512-WZ9fH0kzQcAEWSgwnWVJns/Z78dJUZnefUcpF2CwuJ3tFdsE0UDxhgmjDMYvyeDn+bIfk6McZQlufxLSTGTpxQ==
   dependencies:
     "@expo/bunyan" "3.0.2"
     "@expo/json-file" "^8.1.0"
