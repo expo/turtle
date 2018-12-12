@@ -110,6 +110,11 @@ spec:
               secretKeyRef:
                 name: turtle-js-config
                 key: redis_url
+          - name: REDIS_CONFIG_URL
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: turtle_redis_url
           - name: SENTRY_DSN
             valueFrom:
               secretKeyRef:
