@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { IosShellApp } from 'xdl';
 
 import config from 'turtle/config';
-import { IOS } from 'turtle/constants/index';
+import { IOS, PLATFORMS } from 'turtle/constants/index';
 import { IJob } from 'turtle/job';
 import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
 
@@ -76,7 +76,7 @@ export function createBuilderContext(job: IJob): IContext {
     const fakeUploadFilename = s3Filename.replace('/', '\\');
     context.fakeUploadBuildPath = job.fakeUploadBuildPath ? job.fakeUploadBuildPath : join(job.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename);
   } else {
-    context.s3FileKey = join('ios', s3Filename);
+    context.s3FileKey = join(PLATFORMS.IOS, s3Filename);
   }
 
   return context;

@@ -16,10 +16,10 @@ const sqs = new AWS.SQS({
 
 const VISIBILITY_TIMEOUT_SEC = 30;
 
-export async function receiveMessage() {
+export async function receiveMessage(priority: string) {
   const params = {
     MaxNumberOfMessages: 1,
-    QueueUrl: QUEUE_URL(),
+    QueueUrl: QUEUE_URL(priority),
     VisibilityTimeout: VISIBILITY_TIMEOUT_SEC,
   };
   return await retry(() => {
@@ -31,7 +31,7 @@ export async function receiveMessage() {
           logger.info(`Received a message`);
           return data.Messages[0];
         } else {
-          logger.debug('No messages received');
+          logger.debug(`No messages received [${priority}]`);
           return null;
         }
       })
@@ -42,9 +42,9 @@ export async function receiveMessage() {
   });
 }
 
-export async function deleteMessage(receiptHandle: string) {
+export async function deleteMessage(priority: string, receiptHandle: string) {
   const params = {
-    QueueUrl: QUEUE_URL(),
+    QueueUrl: QUEUE_URL(priority),
     ReceiptHandle: receiptHandle,
   };
   return await retry(() => {
@@ -52,9 +52,9 @@ export async function deleteMessage(receiptHandle: string) {
   });
 }
 
-export async function changeMessageVisibility(receiptHandle: string) {
+export async function changeMessageVisibility(priority: string, receiptHandle: string) {
   const params = {
-    QueueUrl: QUEUE_URL(),
+    QueueUrl: QUEUE_URL(priority),
     ReceiptHandle: receiptHandle,
     VisibilityTimeout: VISIBILITY_TIMEOUT_SEC,
   };
@@ -64,10 +64,10 @@ export async function changeMessageVisibility(receiptHandle: string) {
 // Every VISIBILITY_TIMEOUT_SEC / 3 seconds we are telling AWS SQS
 // that we're still proccessing the message, so it does not
 // send the build job to another turtle agent
-export function changeMessageVisibilityRecurring(receiptHandle: string, jobId: string) {
+export function changeMessageVisibilityRecurring(priority: string, receiptHandle: string, jobId: string) {
   return setInterval(() => {
     if (getCurrentJobId() === jobId) {
-      changeMessageVisibility(receiptHandle).catch(err => {
+      changeMessageVisibility(priority, receiptHandle).catch(err => {
         logger.warn('Error at change msg visibility', err);
       });
     }

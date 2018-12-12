@@ -2,12 +2,13 @@ import os from 'os';
 import path from 'path';
 
 import { env, envNum, envOptional, envTransform } from 'turtle/utils/env';
+import { PLATFORMS } from 'turtle/constants';
 
 export default {
   env: env('NODE_ENV'),
   hostname: env('HOSTNAME', os.hostname()),
   deploymentEnv: env('ENVIRONMENT'),
-  platform: env('PLATFORM', 'ios'),
+  platform: env('PLATFORM', PLATFORMS.IOS),
   aws: {
     accessKeyId: env('AWS_ACCESS_KEY_ID'),
     secretAccessKey: env('AWS_SECRET_ACCESS_KEY'),
@@ -19,8 +20,14 @@ export default {
   sqs: {
     region: env('AWS_SQS_REGION'),
     queues: {
-      ios: env('AWS_SQS_IOS_QUEUE_URL'),
-      android: env('AWS_SQS_ANDROID_QUEUE_URL'),
+      normalPriority: {
+        ios: env('AWS_SQS_IOS_QUEUE_URL'),
+        android: env('AWS_SQS_ANDROID_QUEUE_URL'),
+      },
+      highPriority: {
+        ios: env('AWS_SQS_IOS_PRIORITY_QUEUE_URL'),
+        android: env('AWS_SQS_ANDROID_PRIORITY_QUEUE_URL'),
+      },
       out: env('AWS_SQS_OUT_QUEUE_URL'),
     },
   },
@@ -32,6 +39,7 @@ export default {
   },
   redis: {
     url: env('REDIS_URL'),
+    configUrl: env('REDIS_CONFIG_URL'),
   },
   logger: {
     level: env('LOGGER_LEVEL', 'info'),

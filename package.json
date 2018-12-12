@@ -32,7 +32,11 @@
     "secrets:init-private": "./scripts/initPrivateSecrets.sh",
     "ssh:android:pods-names": "./scripts/ssh/findAndroidPods.sh",
     "ssh:android:connect": "./scripts/ssh/connectToAndroidPod.sh",
-    "ssh:ios:ips": "./scripts/ssh/findIosIps.sh"
+    "ssh:ios:ips": "./scripts/ssh/findIosIps.sh",
+    "set-priorities": "yarn set-priorities:local",
+    "set-priorities:local": "EXPENV_OVERRIDES=local-common,local expenv babel-node scripts/setConfigurations.js",
+    "set-priorities:staging": "expenv babel-node scripts/setConfigurations.js",
+    "set-priorities:production": "EXPENV_OVERRIDES=prod expenv babel-node scripts/setConfigurations.js"
   },
   "bin": {
     "turtle": "./bin/turtle.js"

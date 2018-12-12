@@ -3,6 +3,7 @@ import _ from 'lodash';
 import logger from 'turtle/logger';
 import setup from 'turtle/bin/setup/setup';
 import { ErrorWithCommandHelp, ErrorWithProgramHelp } from 'turtle/bin/commands/errors';
+import { PLATFORMS } from 'turtle/constants';
 
 const l = logger.withFields({ buildPhase: 'setting up environment' });
 
@@ -43,6 +44,6 @@ async function setupAction(program: any, cmd: any, platform: string, os?: string
 }
 
 export default {
-  ios: createSetupCommand('ios', 'darwin'),
-  android: createSetupCommand('android'),
+  ios: createSetupCommand(PLATFORMS.IOS, 'darwin'),
+  android: createSetupCommand(PLATFORMS.ANDROID),
 };

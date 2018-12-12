@@ -12,6 +12,7 @@ import { checkSystem, ensureShellAppIsPresent } from 'turtle/bin/setup/utils/com
 import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
 import ensureAndroidSDKIsPresent from 'turtle/bin/setup/android/sdk';
 import ensureAndroidNDKIsPresent from 'turtle/bin/setup/android/ndk';
+import { PLATFORMS } from 'turtle/constants';
 
 const which = util.promisify(_which);
 const REQUIRED_TOOLS: Array<IToolDefinition> = [
@@ -63,7 +64,7 @@ async function prepareAndroidEnv() {
 }
 
 function formatShellAppTarballUriPath(sdkMajorVersion: string) {
-  return path.join(config.directories.shellTarballsDir, 'android', `sdk${sdkMajorVersion}`);
+  return path.join(config.directories.shellTarballsDir, PLATFORMS.ANDROID, `sdk${sdkMajorVersion}`);
 }
 
 async function _shellAppPostDownloadAction(workingdir: string) {

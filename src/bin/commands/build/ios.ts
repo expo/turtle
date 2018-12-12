@@ -4,7 +4,7 @@ import fs from 'fs-extra';
 
 import builder from 'turtle/builders/ios';
 import { ErrorWithCommandHelp } from 'turtle/bin/commands/errors';
-import { PLATFORMS, IOS } from 'turtle/constants';
+import { IOS, PLATFORMS } from 'turtle/constants';
 import { createBuilderAction } from 'turtle/bin/utils/builder';
 
 export default (program: any, setCommonCommandOptions: any) => {
@@ -38,7 +38,7 @@ export default (program: any, setCommonCommandOptions: any) => {
         prepareCredentials,
         buildJobObject,
         builder,
-        platform: 'ios',
+        platform: PLATFORMS.IOS,
         os: 'darwin',
       })
     );

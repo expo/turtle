@@ -11,6 +11,7 @@ import * as redis from 'turtle/utils/redis';
 import { checkShouldExit, setCurrentJobId } from 'turtle/turtleContext';
 import * as buildStatusMetric from 'turtle/metrics/buildStatus';
 import * as buildDurationMetric from 'turtle/metrics/buildDuration';
+import { getPriorities } from 'turtle/utils/priorities';
 
 function _maybeExit() {
   if (checkShouldExit()) {
@@ -31,7 +32,16 @@ export async function getJob() {
   // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
-      const job = await sqs.receiveMessage();
+      let job = null;
+      const priorities = await getPriorities();
+      for (const priority of priorities) {
+        job = await sqs.receiveMessage(priority);
+        _maybeExit();
+        if (job != null) {
+          job.priority = priority;
+          break;
+        }
+      }
       _maybeExit();
       if (job !== null) {
         return job;
@@ -44,14 +54,15 @@ export async function getJob() {
 
 async function processJob(jobData: any) {
   const receiptHandle = jobData.ReceiptHandle;
+  const { priority } = jobData;
   let timeoutId;
   try {
     const rawJob = JSON.parse(jobData.Body);
-    timeoutId = failAfterMaxJobTime(receiptHandle, rawJob);
+    timeoutId = failAfterMaxJobTime(priority, receiptHandle, rawJob);
     const job = await sanitizeJob(rawJob);
 
     setCurrentJobId(job.id);
-    const pingerHandle = sqs.changeMessageVisibilityRecurring(jobData.ReceiptHandle, job.id);
+    const pingerHandle = sqs.changeMessageVisibilityRecurring(priority, jobData.ReceiptHandle, job.id);
 
     logger.info(`Doing job MessageId=${jobData.MessageId} BuildId=${job.id} ${Date.now()}`);
 
@@ -59,7 +70,7 @@ async function processJob(jobData: any) {
     if (cancelled) {
       logger.info('The job has been cancelled');
     } else {
-      redis.registerListener(job.id, () => deleteMessage(receiptHandle));
+      redis.registerListener(job.id, () => deleteMessage(priority, receiptHandle));
       const startTimestamp = +new Date();
       let buildFailed = false;
       const buildType = _.get(job, 'config.buildType', 'default');
@@ -77,7 +88,7 @@ async function processJob(jobData: any) {
         buildDurationMetric.addTurtleDuration(buildType, turtleBuildDurationSecs, !buildFailed);
         if (job.messageCreatedTimestamp) {
           const totalBuildDurationSecs = Math.ceil(
-            (endTimestamp - job.messageCreatedTimestamp) / 1000
+            (endTimestamp - job.messageCreatedTimestamp) / 1000,
           );
           buildDurationMetric.addTotalDuration(buildType, totalBuildDurationSecs, !buildFailed);
         }
@@ -87,7 +98,7 @@ async function processJob(jobData: any) {
     }
     clearInterval(pingerHandle);
   } finally {
-    await deleteMessage(receiptHandle);
+    await deleteMessage(priority, receiptHandle);
     if (timeoutId) {
       logger.info('Clearing job failer timeout...');
       clearTimeout(timeoutId);
@@ -95,13 +106,13 @@ async function processJob(jobData: any) {
   }
 }
 
-function failAfterMaxJobTime(receiptHandle: string, job: any) {
+function failAfterMaxJobTime(priority: string, receiptHandle: string, job: any) {
   return setTimeout(async () => {
     try {
       sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, {
         turtleVersion: job.config.turtleVersion,
       });
-      await deleteMessage(receiptHandle);
+      await deleteMessage(priority, receiptHandle);
     } finally {
       logger.error('Going to terminate turtle agent, just in case...');
       process.exit(1);
@@ -131,10 +142,10 @@ async function build(job: any) {
   }
 }
 
-async function deleteMessage(receiptHandle: string) {
+async function deleteMessage(priority: string, receiptHandle: string) {
   try {
     setCurrentJobId(null);
-    await sqs.deleteMessage(receiptHandle);
+    await sqs.deleteMessage(priority, receiptHandle);
   } catch (err) {
     logger.error('Error at deleting msg', err);
   }

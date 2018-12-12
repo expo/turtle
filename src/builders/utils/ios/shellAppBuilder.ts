@@ -10,6 +10,7 @@ import * as imageHelpers from 'turtle/builders/utils/image';
 import logger from 'turtle/logger/index';
 import { IContext } from 'turtle/builders/ios/context';
 import { IJob } from 'turtle/job';
+import { PLATFORMS } from 'turtle/constants';
 
 const copyAsync = util.promisify(copy);
 
@@ -42,7 +43,7 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
     privateConfigData: job.config,
     verbose: true,
     output: ctx.outputPath,
-    expoSourcePath: path.join(ctx.workingDir, 'ios'),
+    expoSourcePath: path.join(ctx.workingDir, PLATFORMS.IOS),
     manifest,
   };
 

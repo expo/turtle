@@ -5,6 +5,7 @@ import nock from 'nock';
 import config from 'turtle/config';
 import * as jobManager from 'turtle/jobManager';
 import logger from 'turtle/logger';
+import { PLATFORMS } from 'turtle/constants';
 
 
 jest.mock('../builders/utils/uploader.ts', () => ({
@@ -83,8 +84,8 @@ async function testPlatform(platform: string) {
   process.env.PLATFORM = platform;
 
   const utils = require('turtle/aws/utils');
-  utils.QUEUE_URL = jest.fn(() => {
-    return (config.sqs.queues as any)[platform];
+  utils.QUEUE_URL = jest.fn((priority) => {
+    return (config.sqs.queues as any)[priority][platform];
   });
 
   nock.cleanAll();
@@ -98,9 +99,9 @@ async function testPlatform(platform: string) {
 }
 
 test('Android builds', async () => {
-  await testPlatform('android');
+  await testPlatform(PLATFORMS.ANDROID);
 });
 
 test('iOS builds', async () => {
-  await testPlatform('ios');
+  await testPlatform(PLATFORMS.IOS);
 });

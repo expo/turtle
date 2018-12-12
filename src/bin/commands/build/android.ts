@@ -27,7 +27,7 @@ export default (program: any, setCommonCommandOptions: any) => {
         prepareCredentials,
         buildJobObject,
         builder,
-        platform: 'android',
+        platform: PLATFORMS.ANDROID,
         os: ['darwin', 'linux'],
       })
     );

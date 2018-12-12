@@ -4,11 +4,26 @@ import logger from 'turtle/logger';
 import config from 'turtle/config';
 
 const MILLIS_TO_UPLOAD_LOGS = 3000;
-const MILLIS_CONNECTION_TIMEOUT = 10000;
+export const MILLIS_CONNECTION_TIMEOUT = 10000;
 
-function connect(timeoutMs: number) {
+
+export enum RedisClient {
+  Subscriber = 'REDIS_CLIENT_SUBSCRIBER',
+  Default = 'REDIS_CLIENT_DEFAULT',
+  Configuration = 'REDIS_CLIENT_CONFIGURATION',
+}
+
+type ClientConfig = { [key: string]: string; };
+
+const clientToUrl: ClientConfig = {
+  [RedisClient.Subscriber]: config.redis.url,
+  [RedisClient.Default]: config.redis.url,
+  [RedisClient.Configuration]: config.redis.configUrl,
+};
+
+export function connect(timeoutMs: number, type: string) {
   return new Promise((resolve, reject) => {
-    const redisClient = new Redis(config.redis.url, {
+    const redisClient = new Redis(clientToUrl[type], {
       maxRetriesPerRequest: 2,
     });
     const timer = setTimeout(() => reject(new Error('Timeout at connecting to Redis')), timeoutMs);
@@ -23,22 +38,20 @@ function connect(timeoutMs: number) {
   });
 }
 
-const REDIS_CLIENT_SUBSCRIBER = 'REDIS_CLIENT_SUBSCRIBER';
-const REDIS_CLIENT_DEFAULT = 'REDIS_CLIENT_DEFAULT';
-
 interface IRedisClients {
   [key: string]: any;
 }
 
 const _redisClients: IRedisClients = {
-  [REDIS_CLIENT_SUBSCRIBER]: null,
-  [REDIS_CLIENT_DEFAULT]: null,
+  [RedisClient.Subscriber]: null,
+  [RedisClient.Default]: null,
+  [RedisClient.Configuration]: null,
 };
 
-async function getRedisClient(type = REDIS_CLIENT_DEFAULT) {
+export async function getRedisClient(type = RedisClient.Default) {
   if (!_redisClients[type]) {
     try {
-      _redisClients[type] = await connect(MILLIS_CONNECTION_TIMEOUT);
+      _redisClients[type] = await connect(MILLIS_CONNECTION_TIMEOUT, type);
     } catch (err) {
       logger.error(err);
     }
@@ -61,7 +74,7 @@ export async function checkIfCancelled(jobId: string) {
 
 export async function registerListener(jobId: string, deleteMessage: any) {
   try {
-    const redis = await getRedisClient(REDIS_CLIENT_SUBSCRIBER);
+    const redis = await getRedisClient(RedisClient.Subscriber);
     redis.subscribe('jobs:cancelled');
     redis.on('message', async function(_: any, message: any) {
       if (message === jobId) {
@@ -71,7 +84,7 @@ export async function registerListener(jobId: string, deleteMessage: any) {
       }
     });
   } catch (err) {
-    logger.info("Couldn't connect to Redis - job will be continued even if cancelled during build");
+    logger.info('Couldn\'t connect to Redis - job will be continued even if cancelled during build');
     logger.error(err);
   }
 }

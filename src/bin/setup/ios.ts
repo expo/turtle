@@ -6,6 +6,7 @@ import config from 'turtle/config';
 import { checkSystem, ensureShellAppIsPresent } from 'turtle/bin/setup/utils/common';
 import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
 import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
+import { PLATFORMS } from 'turtle/constants';
 
 const REQUIRED_TOOLS: Array<IToolDefinition> = [
   {
@@ -44,5 +45,5 @@ export default async function setup(sdkVersion?: string) {
 }
 
 function formatShellAppTarballUriPath(sdkMajorVersion: string) {
-  return path.join(config.directories.shellTarballsDir, 'ios', `sdk${sdkMajorVersion}`);
+  return path.join(config.directories.shellTarballsDir, PLATFORMS.IOS, `sdk${sdkMajorVersion}`);
 }

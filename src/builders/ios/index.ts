@@ -5,13 +5,12 @@ import * as path from 'path';
 import { ExponentTools } from 'xdl';
 
 import buildArchive from 'turtle/builders/ios/archive';
-import { createBuilderContext } from 'turtle/builders/ios/context';
+import { createBuilderContext, IContext } from 'turtle/builders/ios/context';
 import buildSimulator from 'turtle/builders/ios/simulator';
 import { logErrorOnce } from 'turtle/builders/utils/common';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import config from 'turtle/config';
-import { IOS } from 'turtle/constants/index';
-import { IContext } from 'turtle/builders/ios/context';
+import { IOS, PLATFORMS } from 'turtle/constants/index';
 import { IJob, IJobResult } from 'turtle/job';
 
 const { BUILD_TYPES } = IOS;
@@ -79,7 +78,7 @@ async function ensureCanBuildSdkVersion(job: IJob) {
 
 async function findSupportedSdkVersions(): Promise<Array<number>> {
   const SDK_DIR_PREFIX = 'sdk';
-  const files = await fs.readdir(path.join(config.directories.workingDir, 'ios'));
+  const files = await fs.readdir(path.join(config.directories.workingDir, PLATFORMS.IOS));
   const sdks = files.filter(file => file.startsWith(SDK_DIR_PREFIX));
   return sdks.map(sdk => parseInt(sdk.substr(SDK_DIR_PREFIX.length)));
 }
