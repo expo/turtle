@@ -13,14 +13,16 @@ export const HIGH_CONFIGURATION = [HIGH, NORMAL];
 const REDIS_GET_CONFIG = `
   local i = 0
   local current
+  local configuration_index_key
   while i < 20 do
-    current = redis.call("get", KEYS[1].."."..i)
+    configuration_index_key = KEYS[1].."."..i
+    current = redis.call("get", configuration_index_key)
     if (current == false or current == KEYS[2]) then
       break
     end
     i = i + 1
   end
-  redis.call("setex", KEYS[1]..":configurations."..i, 60 * 30, KEYS[2])
+  redis.call("setex", configuration_index_key, 60 * 30, KEYS[2])
   return i
 `;
 const configSchema = Joi.array().items(Joi.string().only(NORMAL, HIGH));
