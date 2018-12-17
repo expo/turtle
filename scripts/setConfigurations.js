@@ -10,9 +10,6 @@ import {
 
 const TIMEOUT = 3000;
 
-const environment = env('ENVIRONMENT');
-
-
 // Turtle before doing anything (and after every build) checks for the first config
 // (an element in config table with key=i) that is not taken (config.i is null/outdated)
 // or is taken by this process itself.

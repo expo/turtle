@@ -81,6 +81,7 @@ To perform a successful deploy to staging (and then to production), follow these
 - Run `yarn init-workingdir:local` in `server/turtle` directory to initialize Turtle's working directory. This script create symlinks to the shell app from `exponent` directory.
 - Run `yarn secrets:init-private ${YOUR_NICKNAME_HERE}` in `server/turtle` directory to init your private secrets (with your queues urls).
 - Run `yarn` to install node modules.
+- Run `yarn set-priorities:local` to set priorities' configuration. This is not mandatory, but you'll get a lot of annoying messages without this.
 - Run `yarn start:ios` or `yarn start:android` to run Turtle.
 
 **Additional step:**
