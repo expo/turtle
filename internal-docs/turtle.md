@@ -114,4 +114,6 @@ Turtle uploads build artifacts to S3. This could take some time if you have poor
 Smoke tests are powered by `Nock` which uses JSON files which contain responses to the HTTP requests fired by the build process.
 
 To record new responses remove old `recording.json` and start test and manually schedule build with `expo-cli` tool.
-As a precaution, remember to revoke Apple certificates that were used for the build after recording HTTP requests/responses with `Nock`.
+
+As a precaution, the file with HTTP requests containing, inter alia, iOS certificates used for the test build, are 
+encrypted with `git-crypt`. Try to not revoke them, because then the test will fail.
