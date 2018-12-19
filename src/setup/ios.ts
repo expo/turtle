@@ -8,10 +8,13 @@ import commonSetup from 'turtle/setup/common';
 
 async function deleteProvisioningProfilesFromHomedir() {
   const provisioningProfilesDir = path.join(os.homedir(), 'Library/MobileDevice/Provisioning Profiles');
-  const provisioningProfiles = (await fs.readdir(provisioningProfilesDir)).filter(
-    filename => path.extname(filename) === '.mobileprovision',
-  );
-  await Promise.all(provisioningProfiles.map(file => fs.remove(path.join(provisioningProfilesDir, file))));
+  const exists = await fs.pathExists(provisioningProfilesDir);
+  if (exists) {
+    const provisioningProfiles = (await fs.readdir(provisioningProfilesDir)).filter(
+      filename => path.extname(filename) === '.mobileprovision',
+    );
+    await Promise.all(provisioningProfiles.map(file => fs.remove(path.join(provisioningProfilesDir, file))));
+  }
 }
 
 export default async function setup() {
