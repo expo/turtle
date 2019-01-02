@@ -25,9 +25,7 @@ ln -s ${EXPO_UNIVERSE_DIR}/package.json $TEMP_DIR/universe-package.json
 # generate dynamic macros
 mkdir -p $TEMP_DIR/android/expoview/src/main/java/host/exp/exponent/generated/
 cd $TEMP_DIR/tools-public
-gulp generate-dynamic-macros \
-  --buildConstantsPath ../android/expoview/src/main/java/host/exp/exponent/generated/ExponentBuildConstants.java \
-  --platform android
+./generate-dynamic-macros-android.sh
 rm -rf $TEMP_DIR/secrets
 
 cd $TEMP_DIR; tar -czhf $ARTIFACTS_DIR/android-shell-builder.tar.gz .
