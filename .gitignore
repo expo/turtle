@@ -4,3 +4,5 @@
 /workingdir/*
 /artifacts/*
 shell.apk
+node_modules
+.secrets*
