@@ -1,0 +1,382 @@
+version: 2.1
+
+commands:
+  universe_env:
+    parameters:
+      git_crypt_key:
+        type: env_var_name
+        default: false
+      git_crypt_working_directory:
+        type: string
+        default: .
+    steps:
+      - run:
+          name: teach ci github is ok on boxes where checkout isn't happening
+          command: |
+            mkdir -p ~/.ssh
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run: mkdir -p $HOME/.expo
+      - run:
+          name: setup nix
+          command: |
+            mkdir -p ~/.config/nix/
+            export NIX_SECRET_KEY_PATH="$HOME/.config/nix/secret-key"
+            echo $NIX_SECRET_KEY > $NIX_SECRET_KEY_PATH
+
+            mkdir -p /etc/nix
+
+            if [[ $OSTYPE =~ darwin.* ]]; then
+              sudo install -d -o $(whoami) -g admin -m 775 /usr/local/tmp
+
+              sudo cp nixpkgs/nix.conf /etc/nix/nix.conf
+              sudo sh -c "echo 'secret-key-files = $NIX_SECRET_KEY_PATH' >> /etc/nix/nix.conf"
+
+              # nix daemon needs AWS credentials to push to cache
+              # TODO: use PlistBuddy to add to daemon service definition instead
+              sudo launchctl setenv AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
+              sudo launchctl setenv AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
+
+              sudo launchctl kickstart -k system/org.nixos.nix-daemon
+            else
+              install -d -m 775 /usr/local/tmp
+              cp nixpkgs/nix.conf /etc/nix/nix.conf
+              echo "secret-key-files = $NIX_SECRET_KEY_PATH" >> /etc/nix/nix.conf
+            fi
+      - run: echo 'eval "$(direnv hook bash)"' >> ~/.profile
+      - run:
+          name: write a block to $BASH_ENV
+          command: |
+            cat \<< 'EOF' >> $BASH_ENV
+            # now we can run every command in ci with direnv runner prefix
+            function r() {
+              # TODO do the eval and exec in a subshell?
+              direnv allow .
+              eval "$(direnv export bash)"
+              # iOS tooling expects to be able to find this
+              echo $PATH > ~/.expo/PATH
+              "$@"
+            }
+
+            export PATH=$PATH:$(npm config get prefix)/bin
+            EOF
+      - run: echo "export EXPO_CI_JOB_DEPS_HASH=\"$($EXPO_UNIVERSE_DIR/tools/ci/bin/ci-job-deps-hash)\"" >> $BASH_ENV
+      - run:
+          name: make sure that ssh sessions also get the above setup
+          command: echo 'source $BASH_ENV' >> ~/.bashrc
+      - run: echo '--frozen-lockfile true' >> ~/.yarnrc
+      - run:
+          name: make sure we trust all of the direnv files
+          command: find . -name '.envrc' -exec direnv allow {} \;
+      - run:
+          name: remove direnv hook from bashrc if present
+          command: if [ -f ~/.bashrc ]; then sed -i.bak '/direnv/d' ~/.bashrc; fi
+      - when:
+          condition: << parameters.git_crypt_key >>
+          steps:
+            - run:
+                working_directory: << parameters.git_crypt_working_directory >>
+                command: git-crypt unlock <(base64 --decode \<<< "${<< parameters.git_crypt_key >>}")
+      - run:
+          name: Remove files not marked explicitly as dependencies
+          command: r $EXPO_UNIVERSE_DIR/tools/ci/bin/ci-rm-non-deps
+      - run:
+          name: skip build if not needed
+          command: |
+            if tools/bin/aws s3api head-object --bucket expo-ci-skip-tokens --key "$CIRCLE_JOB-$EXPO_CI_JOB_DEPS_HASH"; then
+              circleci step halt
+            fi
+  notify_slack_on_fail_or_recover:
+    parameters:
+      channel:
+        type: string
+    steps:
+      - run:
+          name: mark job as successful
+          command: |
+            touch /tmp/empty
+            tools/bin/aws s3 cp /tmp/empty "s3://expo-ci-skip-tokens/$CIRCLE_JOB-$EXPO_CI_JOB_DEPS_HASH"
+      - run:
+          when: always
+          command: echo $CIRCLE_JOB > ~/job_name
+      - run:
+          when: on_fail
+          command: |
+            # TODO configure announcements for release branches
+            if [[ "$CIRCLE_BRANCH" != "master" ]]; then
+              echo "Run on branch $CIRCLE_BRANCH, skipping notification"
+              exit 0
+            fi
+            tools/bin/slack \
+              --channel "<< parameters.channel >>" \
+              --color danger \
+              --text "Failed" \
+              --title "$CIRCLE_JOB #$CIRCLE_BUILD_NUM on $CIRCLE_BRANCH" \
+              --title-link "$CIRCLE_BUILD_URL" \
+              --fallback "$CIRCLE_USERNAME's build failed." \
+              --field "Committer" "$CIRCLE_USERNAME" \
+              --field "Subject" "$(git show --format=%s --quiet)" \
+              --field "Diff URL" "https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1"
+      - restore_cache:
+          when: on_success
+          key: build-status-v1-{{ .Branch }}-{{ checksum "~/job_name" }}-
+      - run:
+          when: on_success
+          command: |
+            export PREVIOUS_JOB_STATUS=$(cat ~/job_status)
+            if [ "${PREVIOUS_JOB_STATUS:-0}" -eq 0 ]; then
+              echo "Previous job was also successful, skipping notification"
+              exit 0;
+            fi
+            if [[ "$CIRCLE_BRANCH" != "master" ]]; then
+              echo "Run on branch $CIRCLE_BRANCH, skipping notification"
+              exit 0
+            fi
+            tools/bin/slack \
+              --channel "<< parameters.channel >>" \
+              --color good \
+              --text "Fixed, was failing" \
+              --title "$CIRCLE_JOB #$CIRCLE_BUILD_NUM on $CIRCLE_BRANCH" \
+              --title-link "$CIRCLE_BUILD_URL" \
+              --fallback "$CIRCLE_USERNAME's build fixed the previously failing build." \
+              --field "Committer" "$CIRCLE_USERNAME" \
+              --field "Subject" "$(git show --format=%s --quiet)" \
+              --field "Diff URL" "https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/commit/$CIRCLE_SHA1" \
+            || tools/bin/slack --channel "@nick" --title "slack command failed!" --title-link "$CIRCLE_BUILD_URL" \
+            || true # Never let notification failures determine job status
+      - run:
+          when: on_fail
+          command: echo "1" > ~/job_status
+      - run:
+          when: on_success
+          command: echo "0" > ~/job_status
+      - save_cache:
+          when: always
+          key: build-status-v1-{{ .Branch }}-{{ checksum "~/job_name" }}-{{ epoch }}
+          paths:
+            - ~/job_status
+
+# docker config shouldn't be added to, so this should be the whole thing
+default_docker: &default_docker
+  working_directory: /wrk
+  docker:
+    - image: gcr.io/exponentjs/ci-base:0.2.0
+      auth:
+        username: _json_key
+        password: $GCLOUD_KEYFILE_JSON
+
+default_android: &default_android
+  working_directory: /wrk
+  resource_class: xlarge
+  docker:
+    - image: gcr.io/exponentjs/ci-android:0.2.0
+      auth:
+        username: _json_key
+        # TODO remove the base64 one and document replacing $ with \$
+        password: $GCLOUD_KEYFILE_JSON
+
+default_mac: &default_mac
+  working_directory: /Users/distiller/project
+  macos: # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
+    xcode: "10.0.0"
+
+# should be splatted into an env
+default_env: &default_env
+  EXPO_CI_DEP_DIRS_BASE: .circleci nixpkgs tools libraries/eslint-config-universe
+  YARN_CACHE_FOLDER: ~/yarn_cache
+  EXPO_IN_UNIVERSE: 1
+  EXPO_UNIVERSE_DIR: /wrk
+  EXPO_YARNU_ENABLED: 1
+  EXPO_AUTO_YARNU: 1
+  EXPO_PT_NO_BOOTSTRAP: 1
+  EXPO_UNIGULP_DEPRECATED: 1
+  EXPO_UNIVERSE_TOOLS_DIR: /wrk/tools
+  EXPO_UNIVERSE_POWERTOOLS_DIR: /wrk/tools/powertools
+  NODE_ENV: development
+  GRADLE_USER_HOME: /.gradle
+  GRADLE_OPTS: >
+    -Dorg.gradle.caching=true
+    -Dorg.gradle.workers.max=8
+
+default_env_mac: &default_env_mac
+  EXPO_CI_DEP_DIRS_BASE: .circleci nixpkgs tools libraries/eslint-config-universe
+  YARN_CACHE_FOLDER: /Users/distiller/yarn_cache
+  EXPO_IN_UNIVERSE: 1
+  EXPO_UNIVERSE_DIR: /Users/distiller/project
+  EXPO_YARNU_ENABLED: 1
+  EXPO_AUTO_YARNU: 1
+  EXPO_PT_NO_BOOTSTRAP: 1
+  EXPO_UNIVERSE_TOOLS_DIR: /Users/distiller/project/tools
+  EXPO_UNIVERSE_POWERTOOLS_DIR: /Users/distiller/project/tools/powertools
+  HOMEBREW_NO_AUTO_UPDATE: 1
+
+# this is handled on the linux side inside of a docker image, circle doesn't currently let us
+# specify our own mac image
+install_mac_deps: &install_mac_deps
+  run:
+    name: Install mac-specific dependencies
+    command: |
+      curl https://nixos.org/releases/nix/nix-$(cat nixpkgs/.nix-version)/install | bash -s -- --daemon
+      # enable nix in future steps
+      echo ". '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'" >> $BASH_ENV
+      # enable nix right now
+      . $BASH_ENV
+      # TODO: replace global dependencies with package- and script-specific ones
+      # (especially git-crypt, which is only used from the exponent submodule)
+      nix-env --install --attr nodejs-8_x yarn direnv gnutar jq git-crypt --file .
+      # TODO: either package expo-cli or move all relevant CI jobs to expo/expo
+      yarn global add expo-cli@2.3.3
+
+restore_yarn_cache: &restore_yarn_cache
+  restore_cache:
+    key: yarn-v3-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ arch }}-
+
+save_yarn_cache: &save_yarn_cache
+  save_cache:
+    key: yarn-v3-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ arch }}-{{ epoch }}
+    paths:
+      - ~/yarn_cache
+
+
+universe_src_checkout: &universe_src_checkout
+  run:
+    name: Checkout Universe
+    command: |
+      set -e
+
+      mkdir -p ~/.ssh
+
+      echo 'github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+      ' >> ~/.ssh/known_hosts
+
+      (umask 077; touch ~/.ssh/id_rsa)
+      chmod 0600 ~/.ssh/id_rsa
+      (cat \<<EOF > ~/.ssh/id_rsa
+      $CHECKOUT_KEY
+      EOF
+      )
+
+      # use git+ssh instead of https for universe
+      git config --global url."ssh://git@github.com:expo/universe.git".insteadOf "https://github.com/expo/universe.git" || true
+
+      # use git+ssh instead of https for expo
+      git config --global url."https://github.com/expo/expo.git".insteadOf "ssh://git@github.com:expo/expo.git" || true
+
+      git clone \
+        --depth 100 \
+        --branch "$CIRCLE_BRANCH" \
+        "$CIRCLE_REPOSITORY_URL" "$EXPO_UNIVERSE_DIR"
+
+      cd "$EXPO_UNIVERSE_DIR"
+
+      # i'm not entirely sure why this is done before *and* after the checkouts,
+      # but it's what circleci does in their script so i'm just copying it
+      git reset --hard "$CIRCLE_SHA1"
+
+      if [ -n "$CIRCLE_TAG" ]
+      then
+        git checkout -q "$CIRCLE_TAG"
+      elif [ -n "$CIRCLE_BRANCH" ]
+      then
+        git checkout -q -B "$CIRCLE_BRANCH"
+      fi
+
+      git reset --hard "$CIRCLE_SHA1"
+      git submodule update --init --recursive
+
+
+#######################################################
+# BUILD GRAPH
+#######################################################
+workflows:
+  turtle:
+    jobs:
+      - turtle_android_build
+      - turtle_tests_mac
+      - turtle_tests_android:
+          requires:
+            - turtle_android_build
+
+#######################################################
+# BUILD SPECIFICATIONS
+#######################################################
+jobs:
+
+  #####################################################
+  # TURTLE BUILD
+  #####################################################
+
+  turtle_android_build:
+    <<: *default_docker
+    environment:
+      <<: *default_env
+      EXPO_CI_DEP_DIRS: server/turtle
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - *universe_src_checkout
+      - universe_env
+      - restore_cache:
+          key: yarn-v3-{{ checksum "server/turtle/yarn.lock" }}
+      - run:
+          name: build Android shell app docker image
+          working_directory: /wrk/server/turtle
+          command: |
+            r export TAG="$EXPO_CI_JOB_DEPS_HASH"
+            r retry5 yarn docker:build
+            r retry5 yarn docker:push
+      - save_cache:
+          key: yarn-v3-{{ checksum "server/turtle/yarn.lock" }}
+          paths:
+            - ~/yarn_cache
+      - notify_slack_on_fail_or_recover:
+          channel: "#tmnt"
+
+  turtle_tests_mac:
+    <<: *default_mac
+    environment:
+      <<: *default_env_mac
+      EXPO_CI_DEP_DIRS: server/turtle
+    steps:
+      - *universe_src_checkout
+      - *install_mac_deps
+      - universe_env:
+          git_crypt_key: TURTLE_GIT_CRYPT_KEY_BASE64
+          git_crypt_working_directory: server/turtle
+      - restore_cache:
+          key: yarn-v3-{{ checksum "server/turtle/yarn.lock" }}
+      - run:
+          name: Install yarn dependencies
+          working_directory: ~/project/server/turtle
+          no_output_timeout: 20m
+          command: r yarn
+      - run:
+          name: Run tests
+          working_directory: ~/project/server/turtle
+          no_output_timeout: 20m
+          command: r ./test-ci-ios.sh
+      - save_cache:
+          key: yarn-v3-{{ checksum "server/turtle/yarn.lock" }}
+          paths:
+            - ~/yarn_cache
+      - notify_slack_on_fail_or_recover:
+          channel: "#tmnt"
+
+  turtle_tests_android:
+    <<: *default_docker
+    environment:
+      <<: *default_env
+      EXPO_CI_DEP_DIRS: server/turtle
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - *universe_src_checkout
+      - universe_env
+      - run:
+          name: Run tests
+          working_directory: /wrk/server/turtle
+          command: |
+            r export TAG="$EXPO_CI_JOB_DEPS_HASH"
+            r retry5 yarn docker:pull:tag
+            r docker run gcr.io/exponentjs/turtle-android:${TAG} ./test-ci-android.sh
+      - notify_slack_on_fail_or_recover:
+          channel: "#tmnt"
