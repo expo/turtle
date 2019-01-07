@@ -35,6 +35,7 @@ export default (program: any, setCommonCommandOptions: any) => {
 
 const buildJobObject = (appJSON: any, { releaseChannel, username, projectDir, publicUrl }: any, credentials: any) => ({
   config: {
+    ..._.get(appJSON, 'expo.android.config', {}),
     releaseChannel,
     publicUrl,
   },

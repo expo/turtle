@@ -46,6 +46,7 @@ export default (program: any, setCommonCommandOptions: any) => {
 
 const buildJobObject = (appJSON: any, { releaseChannel, buildType, username, publicUrl }: any, credentials: any) => ({
   config: {
+    ..._.get(appJSON, 'expo.ios.config', {}),
     buildType,
     releaseChannel,
     bundleIdentifier: _.get(appJSON, 'expo.ios.bundleIdentifier'),
