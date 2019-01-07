@@ -25,7 +25,7 @@ const REDIS_GET_CONFIG = `
   redis.call("setex", configuration_index_key, 60 * 30, KEYS[2])
   return i
 `;
-const configSchema = Joi.array().items(Joi.string().only(NORMAL, HIGH));
+const configSchema = Joi.array().required().items(Joi.string().only(NORMAL, HIGH));
 
 function configPrefix(platform: string) {
   return `${config.deploymentEnv}:${platform}`;
