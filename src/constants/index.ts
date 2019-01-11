@@ -8,8 +8,3 @@ export const PLATFORMS = {
 
 export { IOS, BUILD };
 
-export const TURTLE_VERSIONS = {
-  NEW: 'new',
-  OLD: 'old',
-  BOTH: 'both',
-};

@@ -96,7 +96,8 @@
     "source-map-loader": "^0.2.3",
     "ts-jest": "^23.10.4",
     "tslint": "^5.10.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "typescript-eslint-parser": "^21.0.2"
   },
   "dependencies": {
     "async-retry": "^1.2.1",
