@@ -23,10 +23,6 @@ export default (program: any, setCommonCommandOptions: any) => {
       '--dist-p12-path <dist.p12>',
       'path to your Distribution Certificate P12 (please provide password as EXPO_IOS_DIST_P12_PASSWORD env variable)'
     )
-    .option(
-      '--push-p12-path <push.p12>',
-      'path to your Push Notification Certificate P12 (please provide password as EXPO_IOS_PUSH_P12_PASSWORD env variable)'
-    )
     .option('--provisioning-profile-path <.mobileprovision>', 'path to your Provisioning Profile')
     .description(
       'Build a standalone IPA for your project, signed and ready for submission to the Apple App Store.'
@@ -64,16 +60,15 @@ const prepareCredentials = async (cmd: any) => {
     return null;
   }
 
-  const { teamId, distP12Path, pushP12Path, provisioningProfilePath } = cmd;
+  const { teamId, distP12Path, provisioningProfilePath } = cmd;
   const certPassword = process.env.EXPO_IOS_DIST_P12_PASSWORD;
-  const pushPassword = process.env.EXPO_IOS_PUSH_P12_PASSWORD;
 
   const credentialsExist =
-    teamId && distP12Path && certPassword && pushP12Path && pushPassword && provisioningProfilePath;
+    teamId && distP12Path && certPassword && provisioningProfilePath;
 
   if (!credentialsExist) {
     throw new ErrorWithCommandHelp(
-      'Please provide all required credentials - Apple Team ID, Distribution Certificate P12 (with password), Push Notification Certificate P12 (with password) and Provisioning Profile'
+      'Please provide all required credentials - Apple Team ID, Distribution Certificate P12 (with password) and Provisioning Profile'
     );
   }
 
@@ -81,8 +76,6 @@ const prepareCredentials = async (cmd: any) => {
     teamId,
     certP12: (await fs.readFile(distP12Path)).toString('base64'),
     certPassword,
-    pushP12: (await fs.readFile(pushP12Path)).toString('base64'),
-    pushPassword,
     provisioningProfile: (await fs.readFile(provisioningProfilePath)).toString('base64'),
   };
 };
