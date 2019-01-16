@@ -1,7 +1,7 @@
-import * as fs from 'fs-extra';
-import * as _ from 'lodash';
-import * as path from 'path';
+import path from 'path';
 
+import fs from 'fs-extra';
+import pick from 'lodash/pick';
 import { ExponentTools } from 'xdl';
 
 import buildArchive from 'turtle/builders/ios/archive';
@@ -59,7 +59,7 @@ async function cleanup(ctx: IContext) {
 }
 
 const getTemporaryDirs = (ctx: IContext) =>
-  Object.values(_.pick(ctx, ['appDir', 'provisioningProfileDir']));
+  Object.values(pick(ctx, ['appDir', 'provisioningProfileDir']));
 
 async function ensureCanBuildSdkVersion(job: IJob) {
   if (config.builder.useLocalWorkingDir) {
@@ -71,7 +71,7 @@ async function ensureCanBuildSdkVersion(job: IJob) {
   }
 
   const targetMajorSdkVersion = ExponentTools.parseSdkMajorVersion(job.sdkVersion || job.manifest.sdkVersion);
-  if (!_.includes(SUPPORTED_SDK_VERSIONS, targetMajorSdkVersion)) {
+  if (!SUPPORTED_SDK_VERSIONS.includes(targetMajorSdkVersion)) {
     throw new Error(`Unsupported SDK Version!`);
   }
 }
