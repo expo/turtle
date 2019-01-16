@@ -13,6 +13,8 @@ import * as buildStatusMetric from 'turtle/metrics/buildStatus';
 import * as buildDurationMetric from 'turtle/metrics/buildDuration';
 import { getPriorities } from 'turtle/utils/priorities';
 
+const { version: turtleVersion } = require('../package.json');
+
 function _maybeExit() {
   if (checkShouldExit()) {
     logger.warn('Exiting due to previously received termination signal.');
@@ -109,9 +111,7 @@ async function processJob(jobData: any) {
 function failAfterMaxJobTime(priority: string, receiptHandle: string, job: any) {
   return setTimeout(async () => {
     try {
-      sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, {
-        turtleVersion: job.config.turtleVersion,
-      });
+      sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, { turtleVersion });
       await deleteMessage(priority, receiptHandle);
     } finally {
       logger.error('Going to terminate turtle agent, just in case...');
@@ -122,13 +122,11 @@ function failAfterMaxJobTime(priority: string, receiptHandle: string, job: any) 
 
 async function build(job: any) {
   const s3Url = await logger.init(job);
-  const { turtleVersion } = job.config;
 
   try {
     await sqs.sendMessage(job.id, BUILD.JOB_STATES.IN_PROGRESS, {
       logUrl: s3Url,
       logFormat: 'json',
-      turtleVersion,
     });
     const result = await (builders as any)[job.platform](job);
     sqs.sendMessage(job.id, BUILD.JOB_STATES.FINISHED, { ...result, turtleVersion });

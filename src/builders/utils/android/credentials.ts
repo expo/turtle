@@ -42,7 +42,6 @@ async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredential
     } else {
       await sqs.sendMessage(jobData.id, UPDATE_CREDENTIALS, {
         ...credentials,
-        turtleVersion: jobData.config.turtleVersion,
       });
       l.info('Keystore sent to storage successfully');
     }
