@@ -18,7 +18,7 @@ export API_PORT="443"
 export REDIS_URL="noop"
 export REDIS_CONFIG_URL="noop"
 
-yarn init-workingdir:remote-ios
+yarn set-workingdir:remote
 
 yarn test:smoke:ios
 smoke_result=$?

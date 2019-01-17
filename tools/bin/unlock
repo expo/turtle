@@ -8,4 +8,9 @@ if [ ! -f "$KEYFILE" ]; then
   update-local-secrets --keyfile-only
 fi
 
+if ! command -v git-crypt >/dev/null 2>&1 ; then
+  echo "You need to have git-crypt installed."
+  exit 1
+fi
+
 git-crypt unlock "$KEYFILE"
