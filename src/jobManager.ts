@@ -31,7 +31,6 @@ export async function doJob() {
 export async function getJob() {
   _maybeExit();
   logger.info('Fetching job');
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
       let job = null;

@@ -29,7 +29,6 @@ async function main() {
   if (setup[config.platform]) {
     await setup[config.platform]();
   }
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
       await doJob();
