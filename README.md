@@ -13,6 +13,9 @@ You can use it both on your CI and your private computer.
 
 [Installation instructions and documentation here.](https://docs.expo.io/versions/latest/distribution/turtle-cli)
 
+## Usage example
+See the [expo/turtle-cli-example](https://github.com/expo/turtle-cli-example) repository to learn how to use Turtle CLI in order to build Expo standalone apps on your CI.
+
 ## License
 The Turtle CLI source code is made available under the [MIT license](LICENSE).
 Some of the dependencies are licensed differently, with the BSD license, for example.
