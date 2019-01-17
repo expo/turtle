@@ -23,5 +23,5 @@ export default baseJobSchema.concat(
         then: Joi.optional(),
         otherwise: Joi.required(),
       }),
-  })
+  }),
 );

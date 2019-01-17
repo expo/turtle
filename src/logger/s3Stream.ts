@@ -1,6 +1,6 @@
 
-import path from 'path';
 import EventEmitter from 'events';
+import path from 'path';
 
 import fs from 'fs-extra';
 import _ from 'lodash';
@@ -11,13 +11,13 @@ import * as constants from 'turtle/constants/logger';
 import { IJob } from 'turtle/job';
 
 export default class S3Stream extends EventEmitter {
-  s3Url: string | null;
-  lastFlush: number | null;
-  filePath: string | null;
-  fileHandle: number | null;
-  finishedPromise: Promise<any> | null;
-  finishedPromiseResolveFn: any;
-  secrets: any;
+  private s3Url: string | null;
+  private lastFlush: number | null;
+  private filePath: string | null;
+  private fileHandle: number | null;
+  private finishedPromise: Promise<any> | null;
+  private finishedPromiseResolveFn: any;
+  private secrets: any;
 
   constructor() {
     super();
@@ -29,7 +29,7 @@ export default class S3Stream extends EventEmitter {
     this.finishedPromiseResolveFn = null;
   }
 
-  async init(job: IJob) {
+  public async init(job: IJob) {
     this.s3Url = `logs/${job.experienceName}/${job.id}`;
     const dir = config.directories.tempS3LogsDir;
     const exists = await fs.pathExists(dir);
@@ -39,12 +39,12 @@ export default class S3Stream extends EventEmitter {
     this.filePath = path.join(dir, job.id);
     this.fileHandle = await fs.open(this.filePath, 'w+', 0o660);
     this.secrets = {};
-    this.finishedPromise = new Promise(res => (this.finishedPromiseResolveFn = res));
+    this.finishedPromise = new Promise((resolveFn) => (this.finishedPromiseResolveFn = resolveFn));
     const res = await this.flush() as any;
     return res.Location;
   }
 
-  async cleanup() {
+  public async cleanup() {
     const res = this.finishedPromiseResolveFn;
     try {
       await this.flush(true);
@@ -59,7 +59,7 @@ export default class S3Stream extends EventEmitter {
     }
   }
 
-  flush(force = false) {
+  public flush(force = false) {
     if (force || !this.lastFlush) {
       return this._flush();
     }
@@ -69,15 +69,7 @@ export default class S3Stream extends EventEmitter {
     }
   }
 
-  _flush() {
-    this.lastFlush = Date.now();
-    return uploadFile({
-      srcPath: this.filePath as string,
-      key: this.s3Url as string,
-    });
-  }
-
-  write(recRaw: any) {
+  public write(recRaw: any) {
     if (this.fileHandle) {
       const rec = JSON.stringify({
         ...recRaw,
@@ -88,7 +80,7 @@ export default class S3Stream extends EventEmitter {
       }
       const recSanitized = Object.keys(this.secrets).reduce(
         (acc, secret) => acc.replace(new RegExp(secret, 'g'), this.secrets[secret]),
-        rec
+        rec,
       );
       fs
         .write(this.fileHandle as number, `${recSanitized}\n`)
@@ -98,14 +90,22 @@ export default class S3Stream extends EventEmitter {
     }
   }
 
-  addSecretsToFilter(secrets: any) {
+  public addSecretsToFilter(secrets: any) {
     const filteredSecrets = secrets.filter((i: any) => i !== undefined && i !== null);
     const replacements = filteredSecrets.map((i: any) => 'X'.repeat(i.length));
     const toAdd = _.zipObject(filteredSecrets, replacements);
     this.secrets = Object.assign({}, this.secrets, toAdd);
   }
 
-  waitForLogger() {
+  public waitForLogger() {
     return this.finishedPromise;
+  }
+
+  private _flush() {
+    this.lastFlush = Date.now();
+    return uploadFile({
+      srcPath: this.filePath as string,
+      key: this.s3Url as string,
+    });
   }
 }

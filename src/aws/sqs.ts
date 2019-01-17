@@ -2,11 +2,11 @@ import retry from 'async-retry';
 import AWS from 'aws-sdk';
 import _ from 'lodash';
 
+import { OUTPUT_QUEUE_URL, QUEUE_URL } from 'turtle/aws/utils';
 import config from 'turtle/config';
 import { JOB_UPDATE_TYPE } from 'turtle/constants/build';
 import logger from 'turtle/logger';
 import { getCurrentJobId } from 'turtle/turtleContext';
-import { QUEUE_URL, OUTPUT_QUEUE_URL } from 'turtle/aws/utils';
 
 const sqs = new AWS.SQS({
   apiVersion: '2012-11-05',
@@ -26,7 +26,7 @@ export async function receiveMessage(priority: string) {
     return sqs
       .receiveMessage(params)
       .promise()
-      .then(data => {
+      .then((data) => {
         if (data.Messages) {
           logger.info(`Received a message`);
           return data.Messages[0];
@@ -35,7 +35,7 @@ export async function receiveMessage(priority: string) {
           return null;
         }
       })
-      .catch(err => {
+      .catch((err) => {
         logger.error('Receive error', err);
         throw err;
       });
@@ -67,7 +67,7 @@ export async function changeMessageVisibility(priority: string, receiptHandle: s
 export function changeMessageVisibilityRecurring(priority: string, receiptHandle: string, jobId: string) {
   return setInterval(() => {
     if (getCurrentJobId() === jobId) {
-      changeMessageVisibility(priority, receiptHandle).catch(err => {
+      changeMessageVisibility(priority, receiptHandle).catch((err) => {
         logger.warn('Error at change msg visibility', err);
       });
     }

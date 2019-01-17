@@ -1,10 +1,10 @@
-import { Metric } from 'turtle/aws/cloudwatch/types';
+import { IMetric } from 'turtle/aws/cloudwatch/types';
 
-export function sum(metrics: Array<Metric>) {
+export function sum(metrics: IMetric[]) {
   if (metrics.length === 0) {
     return [];
   }
-  const reduced = metrics.reduce((acc: Metric | null, i: Metric) => {
+  const reduced = metrics.reduce((acc: IMetric | null, i: IMetric) => {
     let result = acc;
     if (!result) {
       result = {...i};
@@ -16,12 +16,12 @@ export function sum(metrics: Array<Metric>) {
   return [reduced];
 }
 
-export function avg(metrics: Array<Metric>) {
+export function avg(metrics: IMetric[]) {
   if (!metrics.length) {
     return [];
   }
 
-  const metric = sum(metrics)[0] as Metric;
+  const metric = sum(metrics)[0] as IMetric;
   metric.Value = metric.Value / metrics.length;
   return [metric];
 }

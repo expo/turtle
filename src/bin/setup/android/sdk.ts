@@ -5,10 +5,10 @@ import decompress from 'decompress';
 import fs from 'fs-extra';
 import { ExponentTools } from 'xdl';
 
+import { formatArtifactDownloadPath } from 'turtle/bin/setup/utils/common';
+import download from 'turtle/bin/setup/utils/downloader';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
-import download from 'turtle/bin/setup/utils/downloader';
-import { formatArtifactDownloadPath } from 'turtle/bin/setup/utils/common';
 
 const ANDROID_SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip';
 
@@ -26,7 +26,7 @@ export default async function ensureAndroidSDKIsPresent() {
       await fs.ensureDir(config.directories.artifactsDir);
       await download(ANDROID_SDK_URL, androidSdkDownloadPath);
       await fs.ensureDir(androidSdkDir);
-      l.info('Decompressing Android SDK')
+      l.info('Decompressing Android SDK');
       await decompress(androidSdkDownloadPath, androidSdkDir);
       await fs.remove(androidSdkDownloadPath);
       l.info('Configuring Android SDK, this may take a while');

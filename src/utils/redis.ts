@@ -1,11 +1,10 @@
 import Redis from 'ioredis';
 
-import logger from 'turtle/logger';
 import config from 'turtle/config';
+import logger from 'turtle/logger';
 
 const MILLIS_TO_UPLOAD_LOGS = 3000;
 export const MILLIS_CONNECTION_TIMEOUT = 10000;
-
 
 export enum RedisClient {
   Subscriber = 'REDIS_CLIENT_SUBSCRIBER',
@@ -13,9 +12,9 @@ export enum RedisClient {
   Configuration = 'REDIS_CLIENT_CONFIGURATION',
 }
 
-type ClientConfig = { [key: string]: string; };
+interface IClientConfig { [key: string]: string; }
 
-const clientToUrl: ClientConfig = {
+const clientToUrl: IClientConfig = {
   [RedisClient.Subscriber]: config.redis.url,
   [RedisClient.Default]: config.redis.url,
   [RedisClient.Configuration]: config.redis.configUrl,
@@ -42,21 +41,21 @@ interface IRedisClients {
   [key: string]: any;
 }
 
-const _redisClients: IRedisClients = {
+const redisClients: IRedisClients = {
   [RedisClient.Subscriber]: null,
   [RedisClient.Default]: null,
   [RedisClient.Configuration]: null,
 };
 
 export async function getRedisClient(type = RedisClient.Default) {
-  if (!_redisClients[type]) {
+  if (!redisClients[type]) {
     try {
-      _redisClients[type] = await connect(MILLIS_CONNECTION_TIMEOUT, type);
+      redisClients[type] = await connect(MILLIS_CONNECTION_TIMEOUT, type);
     } catch (err) {
       logger.error(err);
     }
   }
-  return _redisClients[type];
+  return redisClients[type];
 }
 
 export async function checkIfCancelled(jobId: string) {
@@ -76,7 +75,7 @@ export async function registerListener(jobId: string, deleteMessage: any) {
   try {
     const redis = await getRedisClient(RedisClient.Subscriber);
     redis.subscribe('jobs:cancelled');
-    redis.on('message', async function(_: any, message: any) {
+    redis.on('message', async (_: any, message: any) => {
       if (message === jobId) {
         logger.info({ lastBuildLog: true }, 'Job cancelled - killing process');
         await deleteMessage();

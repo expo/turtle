@@ -1,21 +1,17 @@
 version: 2
 
-machine:
-  node:
-    # Circle will use node v4.0.0
-    version: 4.0.0
-
 jobs:
   build:
     docker:
-      - image: circleci/node:10.15.0
+      - image: circleci/node:8.12
     steps:
       - checkout
       - run: yarn
+      - run: yarn lint
       - run: yarn build
   test:
     docker:
-      - image: circleci/node:10.15.0
+      - image: circleci/node:8.12
     steps:
       - checkout
       - run: yarn

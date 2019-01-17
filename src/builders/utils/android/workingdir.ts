@@ -1,6 +1,8 @@
 import path from 'path';
-import config from 'turtle/config';
+
 import { ExponentTools } from 'xdl';
+
+import config from 'turtle/config';
 import { PLATFORMS } from 'turtle/constants';
 
 export function formatShellAppDirectory(sdkVersion: string) {

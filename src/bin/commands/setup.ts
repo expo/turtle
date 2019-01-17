@@ -1,9 +1,10 @@
 import _ from 'lodash';
 
-import logger from 'turtle/logger';
+import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
+import { ErrorWithProgramHelp } from 'turtle/bin/commands/ErrorWithProgramHelp';
 import setup from 'turtle/bin/setup/setup';
-import { ErrorWithCommandHelp, ErrorWithProgramHelp } from 'turtle/bin/commands/errors';
 import { PLATFORMS } from 'turtle/constants';
+import logger from 'turtle/logger';
 
 const l = logger.withFields({ buildPhase: 'setting up environment' });
 
@@ -16,7 +17,7 @@ function createSetupCommand(platform: string, os?: string) {
       .description(`Setup environment for building ${_.capitalize(platform)} standalone apps.`)
       .option(
         '--sdk-version <sdk-version>',
-        'version of Expo SDK shell app to download (optional)'
+        'version of Expo SDK shell app to download (optional)',
       )
       .asyncAction(async (cmd: any) => await setupAction(program, cmd, platform, os));
   };
@@ -30,7 +31,7 @@ async function setupAction(program: any, cmd: any, platform: string, os?: string
 
     const { sdkVersion } = cmd;
     await setup(platform, sdkVersion);
-    l.info('it\'s all set!')
+    l.info('it\'s all set!');
   } catch (err) {
     logger.error(`Failed to setup environment for ${platform} builds`);
     logger.error(err.stack);

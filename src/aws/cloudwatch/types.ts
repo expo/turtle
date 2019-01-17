@@ -1,6 +1,6 @@
 import { EXTRA_DIMENSIONS, GROUP_HASH } from 'turtle/aws/cloudwatch/constants';
 
-export interface Metric {
+export interface IMetric {
   MetricName: string;
   Unit: string;
   Value: number;
@@ -11,8 +11,8 @@ export interface Metric {
     SampleCount: number;
     Sum: number;
   };
-  [EXTRA_DIMENSIONS]: any,
-  [GROUP_HASH]: string,
+  [EXTRA_DIMENSIONS]: any;
+  [GROUP_HASH]: string;
 }
 
 export type MetricWithStats = {
@@ -21,10 +21,10 @@ export type MetricWithStats = {
     Minimum: number;
     SampleCount: number;
     Sum: number;
-  }
-} & Metric;
+  },
+} & IMetric;
 
-export interface MetricData {
+export interface IMetricData {
   name: string;
   value: number;
   success?: boolean;
@@ -32,17 +32,17 @@ export interface MetricData {
   extraDimensions?: any;
 }
 
-export interface MetricConfiguration {
+export interface IMetricConfiguration {
   unit: string;
   statistics?: boolean;
   reducer?: any;
   addEmpty?: boolean;
   dimensions?: any;
-};
+}
 
-export type MetricRegistrationObject = { metricName: string, explicitName?: boolean } & MetricConfiguration;
+export type MetricRegistrationObject = { metricName: string, explicitName?: boolean } & IMetricConfiguration;
 
-export interface MetricsChunk {
+export interface IMetricsChunk {
   Namespace: string;
-  MetricData: Array<Metric>;
-};
+  MetricData: IMetric[];
+}

@@ -1,6 +1,6 @@
+import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import fs from 'fs-extra';
 
 import * as keychain from 'turtle/builders/utils/ios/keychain';
 import logger from 'turtle/logger';
@@ -11,9 +11,9 @@ async function deleteProvisioningProfilesFromHomedir() {
   const exists = await fs.pathExists(provisioningProfilesDir);
   if (exists) {
     const provisioningProfiles = (await fs.readdir(provisioningProfilesDir)).filter(
-      filename => path.extname(filename) === '.mobileprovision',
+      (filename) => path.extname(filename) === '.mobileprovision',
     );
-    await Promise.all(provisioningProfiles.map(file => fs.remove(path.join(provisioningProfilesDir, file))));
+    await Promise.all(provisioningProfiles.map((file) => fs.remove(path.join(provisioningProfilesDir, file))));
   }
 }
 

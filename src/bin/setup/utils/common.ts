@@ -1,14 +1,13 @@
 import path from 'path';
 
-import { ExponentTools } from 'xdl';
 import fs from 'fs-extra';
 import tar from 'tar';
-
-import config from 'turtle/config';
-import logger from 'turtle/logger';
-import { IToolDefinition, ensureToolsAreInstalled } from 'turtle/bin/setup/utils/toolsDetector';
+import { ExponentTools } from 'xdl';
 
 import download from 'turtle/bin/setup/utils/downloader';
+import { ensureToolsAreInstalled, IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
+import config from 'turtle/config';
+import logger from 'turtle/logger';
 
 const l = logger.withFields({ buildPhase: 'setting up environment' });
 
@@ -19,11 +18,15 @@ interface IShellAppFormaters {
 
 type PostDownloadAction = (workingdir: string) => void;
 
-export async function checkSystem(requiredTools: Array<IToolDefinition>) {
+export async function checkSystem(requiredTools: IToolDefinition[]) {
   await ensureToolsAreInstalled(requiredTools);
 }
 
-export async function ensureShellAppIsPresent(sdkVersion: string, formatters: IShellAppFormaters, postDownloadAction?: PostDownloadAction) {
+export async function ensureShellAppIsPresent(
+  sdkVersion: string,
+  formatters: IShellAppFormaters,
+  postDownloadAction?: PostDownloadAction,
+) {
   const workingdir = formatters.formatShellAppDirectory(sdkVersion);
   if (await fs.pathExists(workingdir)) {
     return;
@@ -45,11 +48,10 @@ async function _downloadShellApp(sdkVersion: string, targetDirectory: string, fo
   l.info('extracting shell app (this may take a while)...');
   await tar.x({
     file: tarballDownloadTargetPath,
-    C: targetDirectory
+    C: targetDirectory,
   });
   l.info('shell app extracted');
 }
-
 
 export function formatArtifactDownloadPath(uri: string) {
   const { base } = path.parse(uri);

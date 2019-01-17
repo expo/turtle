@@ -1,9 +1,9 @@
-import { URL } from 'url';
 import fs from 'fs';
+import { URL } from 'url';
 
+import ProgressBar from 'progress';
 import request from 'request';
 import requestProgress from 'request-progress';
-import ProgressBar from 'progress';
 
 const S3_PROTOCOL = 's3:';
 const PROGRESS_BAR_CONFIG = {
@@ -37,7 +37,6 @@ export default async function download(url: string, destPath: string) {
       .pipe(fs.createWriteStream(destPath));
   });
 }
-
 
 function convertS3ToHttpsUrl(s3UrlRaw: string) {
   const { host: s3Bucket, pathname: s3Path, protocol } = new URL(s3UrlRaw);

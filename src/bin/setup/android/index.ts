@@ -2,20 +2,20 @@ import path from 'path';
 import util from 'util';
 
 import fs from 'fs-extra';
-import { ExponentTools } from 'xdl';
 import _which from 'which';
+import { ExponentTools } from 'xdl';
 
-import logger from 'turtle/logger';
-import config from 'turtle/config';
-import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
-import { checkSystem, ensureShellAppIsPresent } from 'turtle/bin/setup/utils/common';
-import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
-import ensureAndroidSDKIsPresent from 'turtle/bin/setup/android/sdk';
 import ensureAndroidNDKIsPresent from 'turtle/bin/setup/android/ndk';
+import ensureAndroidSDKIsPresent from 'turtle/bin/setup/android/sdk';
+import { checkSystem, ensureShellAppIsPresent } from 'turtle/bin/setup/utils/common';
+import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
+import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
+import config from 'turtle/config';
 import { PLATFORMS } from 'turtle/constants';
+import logger from 'turtle/logger';
 
 const which = util.promisify(_which);
-const REQUIRED_TOOLS: Array<IToolDefinition> = [
+const REQUIRED_TOOLS: IToolDefinition[] = [
   {
     command: 'bash',
     missingDescription: 'Please install bash',
@@ -31,13 +31,13 @@ const REQUIRED_TOOLS: Array<IToolDefinition> = [
       const { status, stdout } = await ExponentTools.spawnAsyncThrowError(
         'javac',
         ['-version'],
-        { stdio: 'pipe' }
+        { stdio: 'pipe' },
       );
       if (stdout.match(/no java runtime present/i)) {
         return false;
       }
       return status === 0;
-    }
+    },
   },
 ];
 const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
@@ -50,7 +50,7 @@ export default async function setup(sdkVersion?: string) {
     await ensureShellAppIsPresent(
       sdkVersion,
       { formatShellAppDirectory, formatShellAppTarballUriPath },
-      _shellAppPostDownloadAction
+      _shellAppPostDownloadAction,
     );
   }
 }
@@ -107,7 +107,7 @@ function _setEnvVars(envVars: object) {
     .forEach(([key, value]) => process.env[key] = value);
 }
 
-function _alterPath(newPaths: Array<string>) {
+function _alterPath(newPaths: string[]) {
   const currentPaths = process.env.PATH ? process.env.PATH.split(':') : [];
   const paths = [...newPaths, ...currentPaths];
   process.env.PATH = paths.join(':');

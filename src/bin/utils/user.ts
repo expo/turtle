@@ -1,6 +1,6 @@
 import { User as UserManager } from 'xdl';
 
-import { ErrorWithProgramHelp } from 'turtle/bin/commands/errors';
+import { ErrorWithProgramHelp } from 'turtle/bin/commands/ErrorWithProgramHelp';
 
 interface IUserData {
   username?: string;

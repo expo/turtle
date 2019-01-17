@@ -2,17 +2,17 @@ import path from 'path';
 
 import fs from 'fs-extra';
 import _ from 'lodash';
-import { AndroidShellApp, ImageUtils } from 'xdl';
 import uuidv4 from 'uuid/v4';
+import { AndroidShellApp, ImageUtils } from 'xdl';
 
 import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
+import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
 import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/image';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import config from 'turtle/config';
-import logger from 'turtle/logger';
 import { IAndroidCredentials, IJob, IJobResult } from 'turtle/job';
-import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
+import logger from 'turtle/logger';
 
 export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
   const credentials = await getOrCreateCredentials(jobData);
@@ -25,7 +25,10 @@ export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
     uploadPath: apkFilePath,
     s3FileKey,
     ...config.builder.fakeUpload && {
-      fakeUploadBuildPath: jobData.fakeUploadBuildPath ? jobData.fakeUploadBuildPath : path.join(jobData.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename)
+      fakeUploadBuildPath:
+        jobData.fakeUploadBuildPath
+        ? jobData.fakeUploadBuildPath
+        : path.join(jobData.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename),
     },
   });
 

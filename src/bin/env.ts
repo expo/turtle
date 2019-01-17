@@ -1,5 +1,5 @@
-import path from 'path';
 import os from 'os';
+import path from 'path';
 
 import _ from 'lodash';
 
@@ -16,8 +16,8 @@ const resolveEnv = () => {
 };
 
 const currentEnv = resolveEnv();
-const isLocal = (env: string) => env === 'local';
-const isStaging = (env: string) => env === 'staging';
+const isLocal = (envName: string) => envName === 'local';
+const isStaging = (envName: string) => envName === 'staging';
 
 const apiConfig = {
   protocol: 'https',

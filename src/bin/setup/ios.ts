@@ -2,13 +2,13 @@ import path from 'path';
 
 import { ExponentTools } from 'xdl';
 
-import config from 'turtle/config';
 import { checkSystem, ensureShellAppIsPresent } from 'turtle/bin/setup/utils/common';
 import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
 import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
+import config from 'turtle/config';
 import { PLATFORMS } from 'turtle/constants';
 
-const REQUIRED_TOOLS: Array<IToolDefinition> = [
+const REQUIRED_TOOLS: IToolDefinition[] = [
   {
     command: 'bash',
     missingDescription: 'Please install bash',
@@ -24,13 +24,13 @@ const REQUIRED_TOOLS: Array<IToolDefinition> = [
       const { status, stdout } = await ExponentTools.spawnAsyncThrowError(
         'xcodebuild',
         ['-version'],
-        { stdio: 'pipe' }
+        { stdio: 'pipe' },
       );
       if (stdout.match(/requires xcode/i)) {
         return false;
       }
       return status === 0;
-    }
+    },
   },
 ];
 

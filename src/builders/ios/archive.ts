@@ -1,13 +1,13 @@
 import _ from 'lodash';
 import { IosIPABuilder as createIPABuilder } from 'xdl';
 
-import runShellAppBuilder from 'turtle/builders/utils/ios/shellAppBuilder';
+import { IContext } from 'turtle/builders/ios/context';
 import { logErrorOnce } from 'turtle/builders/utils/common';
 import * as fileUtils from 'turtle/builders/utils/file';
 import * as keychain from 'turtle/builders/utils/ios/keychain';
-import logger from 'turtle/logger/index';
-import { IContext } from 'turtle/builders/ios/context';
+import runShellAppBuilder from 'turtle/builders/utils/ios/shellAppBuilder';
 import { IJob } from 'turtle/job';
+import logger from 'turtle/logger/index';
 
 export default async function buildArchive(ctx: IContext, job: IJob) {
   let keychainInfo;
@@ -34,11 +34,11 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string, m
 
   const {
     credentials: { provisioningProfile, certPassword, teamId, password },
-    config: { bundleIdentifier: _bundleIdentifierFromConfig },
+    config: { bundleIdentifier: bundleIdentifierFromConfig },
   } = job;
 
-  const _bundleIdentifierFromManifest = _.get(manifest, 'ios.bundleIdentifier');
-  const bundleIdentifier = _bundleIdentifierFromConfig || _bundleIdentifierFromManifest;
+  const bundleIdentifierFromManifest = _.get(manifest, 'ios.bundleIdentifier');
+  const bundleIdentifier = bundleIdentifierFromConfig || bundleIdentifierFromManifest;
 
   const { provisioningProfilePath } = ctx;
   await fileUtils.writeBase64ToBinaryFile(provisioningProfilePath, provisioningProfile as string);

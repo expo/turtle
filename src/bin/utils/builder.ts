@@ -1,11 +1,12 @@
 import _ from 'lodash';
 
+import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
+import { ErrorWithProgramHelp } from 'turtle/bin/commands/ErrorWithProgramHelp';
+import setup from 'turtle/bin/setup/setup';
+import * as ProjectUtils from 'turtle/bin/utils/project';
+import * as UserUtils from 'turtle/bin/utils/user';
 import logger from 'turtle/logger';
 import { sanitizeJob } from 'turtle/validator';
-import * as UserUtils from 'turtle/bin/utils/user';
-import * as ProjectUtils from 'turtle/bin/utils/project';
-import { ErrorWithCommandHelp, ErrorWithProgramHelp } from 'turtle/bin/commands/errors';
-import setup from 'turtle/bin/setup/setup';
 
 export function createBuilderAction({
   program,
@@ -29,7 +30,9 @@ export function createBuilderAction({
       }
 
       if (cmd.buildDir && cmd.output) {
-        throw new ErrorWithCommandHelp('You can\'t provide both --build-dir and --output parameters, please choose one');
+        throw new ErrorWithCommandHelp(
+          'You can\'t provide both --build-dir and --output parameters, please choose one',
+        );
       }
 
       const userData = {
@@ -44,9 +47,10 @@ export function createBuilderAction({
           throw new ErrorWithCommandHelp('You must provide both Expo username and password');
         }
       } else if (!cmd.publicUrl) {
-        throw new ErrorWithCommandHelp('You must provide your Expo username and password unless you specify --public-url to your project manifest.');
+        throw new ErrorWithCommandHelp(
+          'You must provide your Expo username and password unless you specify --public-url to your project manifest.',
+        );
       }
-
 
       const args = {
         releaseChannel: cmd.releaseChannel || 'default',

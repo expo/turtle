@@ -1,7 +1,7 @@
 import isSemver from 'is-semver';
 
-import setupIos from 'turtle/bin/setup/ios';
 import setupAndroid from 'turtle/bin/setup/android';
+import setupIos from 'turtle/bin/setup/ios';
 import { PLATFORMS } from 'turtle/constants';
 
 export default async function setup(platform: string, sdkVersion?: string) {

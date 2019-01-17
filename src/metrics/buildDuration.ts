@@ -1,6 +1,6 @@
-import logger from 'turtle/logger';
 import * as cloudwatch from 'turtle/aws/cloudwatch';
 import { TYPE_DIMENSIONS } from 'turtle/aws/cloudwatch/dimensions';
+import logger from 'turtle/logger';
 
 const TURTLE_BUILD_DURATION_METRIC_NAME = 'turtleBuildDuration';
 const TOTAL_BUILD_DURATION_METRIC_NAME = 'totalBuildDuration';

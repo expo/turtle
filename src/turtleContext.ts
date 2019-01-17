@@ -1,7 +1,7 @@
 import config from 'turtle/config';
 
 let shouldExit = false;
-let _currentJobId: string | null = null;
+let currentJobId: string | null = null;
 
 export const setShouldExit = () => {
   shouldExit = true;
@@ -12,11 +12,11 @@ export const checkShouldExit = () => {
 };
 
 export const getCurrentJobId = () => {
-  return _currentJobId;
+  return currentJobId;
 };
 
 export const setCurrentJobId = (id: string | null) => {
-  _currentJobId = id;
+  currentJobId = id;
 };
 
 export const isOffline = () => config.builder.mode === 'offline';

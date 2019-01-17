@@ -1,16 +1,16 @@
 import bunyan from 'bunyan';
-import { Client as RavenClient } from 'raven';
-import { SentryStream } from 'bunyan-sentry-stream';
 import bunyanDebugStream from 'bunyan-debug-stream';
+import { SentryStream } from 'bunyan-sentry-stream';
+import { Client as RavenClient } from 'raven';
 
 import config from 'turtle/config';
-import S3Stream from 'turtle/logger/s3Stream';
-import HackyLogglyStream from 'turtle/logger/hackyLogglyStream';
 import * as constants from 'turtle/constants/logger';
-import { isOffline } from 'turtle/turtleContext';
 import { IJob } from 'turtle/job';
+import HackyLogglyStream from 'turtle/logger/hackyLogglyStream';
+import S3Stream from 'turtle/logger/s3Stream';
+import { isOffline } from 'turtle/turtleContext';
 
-interface Stream {
+interface IStream {
   stream: any;
   type?: string;
   level?: string;
@@ -20,7 +20,7 @@ interface Stream {
 export const s3logger = new S3Stream();
 let logglyStream: HackyLogglyStream;
 
-const streams: Stream[] = [];
+const streams: IStream[] = [];
 
 if (isOffline()) {
   const prettyStdOut = new bunyanDebugStream({ forceColor: true });
@@ -33,7 +33,7 @@ if (isOffline()) {
       stream: s3logger,
       reemitErrorEvents: true,
       level: config.logger.client.level,
-    }
+    },
   );
 }
 
@@ -56,7 +56,7 @@ if (config.logger.loggly.token) {
       'app-shell-apps',
       `platform.${config.platform}`,
       `environment.${config.deploymentEnv}`,
-    ]
+    ],
   };
   logglyStream = new HackyLogglyStream(logglyConfig);
   streams.push({
@@ -91,9 +91,9 @@ logger.cleanup = async () => {
 
 export default logger;
 
-export function withFields(_logger: any, extraFields: any) {
+export function withFields(loggerObj: any, extraFields: any) {
   return constants.LEVELS.reduce((obj, level) => {
-    obj[level] = (...args: any[]) => _logger[level](extraFields, ...args);
+    obj[level] = (...args: any[]) => loggerObj[level](extraFields, ...args);
     return obj;
   }, {} as any);
 }

@@ -1,8 +1,8 @@
 import os from 'os';
 import path from 'path';
 
-import { env, envNum, envOptional, envTransform } from 'turtle/utils/env';
 import { PLATFORMS } from 'turtle/constants';
+import { env, envNum, envOptional, envTransform } from 'turtle/utils/env';
 
 export default {
   env: env('NODE_ENV'),
@@ -66,7 +66,7 @@ export default {
     skipCleanup: envTransform(
       'TURTLE_SKIP_CLEANUP',
       '0',
-      (val: string) => env('NODE_ENV') === 'development' && val === '1'
+      (val: string) => env('NODE_ENV') === 'development' && val === '1',
     ),
     fakeUpload: envTransform('TURTLE_FAKE_UPLOAD', '0', (val: string) => val === '1'),
     maxJobTimeMs: envNum('TURTLE_MAX_JOB_TIME_MS', 60 * 60 * 1000),
@@ -77,9 +77,15 @@ export default {
     workingDir: env('TURTLE_WORKING_DIR_PATH', path.join(__dirname, '../workingdir')),
     shellTarballsDir: env('TURTLE_SHELL_TARBALLS_DIR', path.join(__dirname, '../shellTarballs')),
     artifactsDir: env('TURTLE_ARTIFACTS_DIR', path.join(__dirname, '../artifacts')),
-    androidDependenciesDir: env('TURTLE_ANDROID_DEPENDENCIES_DIR', path.join(os.homedir(), '.turtle/androidDependencies')),
+    androidDependenciesDir: env(
+      'TURTLE_ANDROID_DEPENDENCIES_DIR',
+      path.join(os.homedir(), '.turtle/androidDependencies'),
+      ),
     tempS3LogsDir: env('TURTLE_TEMP_S3_LOGS_DIR', '/tmp/logs'),
     fakeUploadDir: envOptional('TURTLE_FAKE_UPLOAD_DIR'),
-    temporaryFilesRoot: env('TURTLE_TEMPORARY_FILES_DIR', path.join(os.platform() === 'darwin' ? '/private' : '/', 'tmp', 'turtle')),
+    temporaryFilesRoot: env(
+      'TURTLE_TEMPORARY_FILES_DIR',
+      path.join(os.platform() === 'darwin' ? '/private' : '/', 'tmp', 'turtle'),
+    ),
   },
 };

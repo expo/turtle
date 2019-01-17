@@ -7,4 +7,3 @@ export const PLATFORMS = {
 };
 
 export { IOS, BUILD };
-

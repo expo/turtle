@@ -1,16 +1,22 @@
 import aws from 'aws-sdk';
 import _ from 'lodash';
 
+import { EXTRA_DIMENSIONS, GROUP_HASH } from 'turtle/aws/cloudwatch/constants';
+import calculateStatistics from 'turtle/aws/cloudwatch/statistics';
+import {
+  IMetric,
+  IMetricConfiguration,
+  IMetricData,
+  IMetricsChunk,
+  MetricRegistrationObject,
+} from 'turtle/aws/cloudwatch/types';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
-import calculateStatistics from 'turtle/aws/cloudwatch/statistics';
-import { EXTRA_DIMENSIONS, GROUP_HASH } from 'turtle/aws/cloudwatch/constants';
-import { Metric, MetricData, MetricConfiguration, MetricRegistrationObject, MetricsChunk } from 'turtle/aws/cloudwatch/types';
 
-interface State {
-  metrics: Array<Metric>;
+interface IState {
+  metrics: IMetric[];
   registeredMetrics: {
-    [key: string]: MetricConfiguration;
+    [key: string]: IMetricConfiguration;
   };
   intervalId: NodeJS.Timer | null;
 }
@@ -19,7 +25,7 @@ const SUCCESS_SUFFIX = '.success';
 const FAIL_SUFFIX = '.fail';
 const CHUNK_SIZE = 20;
 
-const state: State = {
+const state: IState = {
   metrics: [],
   registeredMetrics: {},
   intervalId: null,
@@ -46,7 +52,7 @@ export function addMetricData({
   success = true,
   explicitName = false,
   extraDimensions = [],
-}: MetricData) {
+}: IMetricData) {
   if (config.cloudwatch.disabled) {
     return;
   }
@@ -57,7 +63,7 @@ export function addMetricData({
     return;
   }
   const { unit } = registeredMetric;
-  const metric: Metric = {
+  const metric: IMetric = {
     MetricName: metricName,
     Unit: unit,
     Value: value,
@@ -114,7 +120,7 @@ function _dumpMetrics() {
   logger.trace(
     '[cloudwatch] lenghts for state.metrics=%d, state.registeredMetrics=%d',
     state.metrics.length,
-    Object.keys(state.registeredMetrics).length
+    Object.keys(state.registeredMetrics).length,
   );
 
   _addEmptyMetrics(state.metrics);
@@ -124,7 +130,7 @@ function _dumpMetrics() {
   state.metrics = [];
 }
 
-function _addEmptyMetrics(metrics: Array<Metric>) {
+function _addEmptyMetrics(metrics: IMetric[]) {
   const seenMetrics = metrics.reduce((acc, i) => {
     if (!acc.has(i.MetricName)) {
       acc.add(i.MetricName);
@@ -134,44 +140,44 @@ function _addEmptyMetrics(metrics: Array<Metric>) {
 
   const nonEmptyMetrics = _.omitBy(state.registeredMetrics, ({ addEmpty }) => !addEmpty);
   const toAdd = _.difference(Object.keys(nonEmptyMetrics), Array.from(seenMetrics));
-  toAdd.forEach(name => addMetricData({ name, value: 0, explicitName: true }));
+  toAdd.forEach((name) => addMetricData({ name, value: 0, explicitName: true }));
 }
 
-function _formatMetrics(metrics: Array<Metric>) {
+function _formatMetrics(metrics: IMetric[]) {
   const reducedMetrics = _reduceMetrics(metrics);
-  const metricsWithDimensions = reducedMetrics.map(metric => {
+  const metricsWithDimensions = reducedMetrics.map((metric) => {
     const { dimensions } = state.registeredMetrics[metric.MetricName];
     const joinedDimensions = [...dimensions, ...metric[EXTRA_DIMENSIONS]];
-    return joinedDimensions.map(i => Object.assign({}, metric, { Dimensions: i }));
+    return joinedDimensions.map((i) => Object.assign({}, metric, { Dimensions: i }));
   });
   const metricData = _.flatten(metricsWithDimensions);
   const chunks = _.chunk(metricData, CHUNK_SIZE);
-  return chunks.map(chunk => ({
+  return chunks.map((chunk) => ({
     Namespace: config.cloudwatch.namespace,
     MetricData: chunk,
   }));
 }
 
-function _reduceMetrics(metrics: Array<Metric>) {
+function _reduceMetrics(metrics: IMetric[]) {
   const grouped = _.groupBy(metrics, GROUP_HASH);
   return _.reduce(
     grouped,
-    (acc: Array<Metric>, val: any) => {
-      const { MetricName: key } = val[0] as Metric;
+    (acc: IMetric[], val: any) => {
+      const { MetricName: key } = val[0] as IMetric;
       const { reducer, statistics } = state.registeredMetrics[key];
       const reduced = reducer ? reducer(val) : val;
       const withStats = statistics ? calculateStatistics(reduced) : reduced;
       acc.push(...withStats);
       return acc;
     },
-    []
+    [],
   );
 }
 
-function _pushMetrics(metrics: Array<MetricsChunk>) {
+function _pushMetrics(metrics: IMetricsChunk[]) {
   logger.trace('[cloudwatch] pushing metrics', JSON.stringify(metrics, null, '\t'));
-  metrics.forEach(metricsChunk => {
-    cloudWatch.putMetricData(metricsChunk, err => {
+  metrics.forEach((metricsChunk) => {
+    cloudWatch.putMetricData(metricsChunk, (err) => {
       if (err) {
         logger.warn('[cloudwatch]', err);
       }

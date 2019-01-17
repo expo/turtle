@@ -1,11 +1,11 @@
-import { Metric, MetricWithStats } from 'turtle/aws/cloudwatch/types';
+import { IMetric, MetricWithStats } from 'turtle/aws/cloudwatch/types';
 
-export default function calculateStatistics(metrics: Array<Metric>) {
+export default function calculateStatistics(metrics: IMetric[]) {
   if (!metrics.length) {
     return [];
   }
 
-  const reduced = metrics.reduce((acc: MetricWithStats | null, i: Metric) => {
+  const reduced = metrics.reduce((acc: MetricWithStats | null, i: IMetric) => {
     let result = acc;
     if (!result) {
       result = Object.assign({}, i, {

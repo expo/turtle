@@ -6,36 +6,36 @@ import config from 'turtle/config';
 import * as constants from 'turtle/constants/logger';
 import { IJob } from 'turtle/job';
 
-export interface LogglyConfig {
+export interface ILogglyConfig {
   token: string;
   subdomain: string;
-  tags: Array<string>;
+  tags: string[];
 }
 
-interface LogglyExtraFields {
-  jobID: string,
+interface ILogglyExtraFields {
+  jobID: string;
   experienceName: string;
 }
 
 export default class HackyLogglyStream extends EventEmitter {
-  logglyStream: BunyanLoggly;
-  extraFields: LogglyExtraFields | null;
+  private logglyStream: BunyanLoggly;
+  private extraFields: ILogglyExtraFields | null;
 
-  constructor(logglyConfig: LogglyConfig) {
+  constructor(logglyConfig: ILogglyConfig) {
     super();
     this.logglyStream = new BunyanLoggly(logglyConfig, config.logger.loggly.buffer);
     this.extraFields = null;
   }
-  init(job: IJob) {
+  public init(job: IJob) {
     this.extraFields = {
       jobID: job.id,
-      experienceName: job.experienceName
+      experienceName: job.experienceName,
     };
   }
-  cleanup() {
+  public cleanup() {
     this.extraFields = null;
   }
-  write(rec: any) {
+  public write(rec: any) {
     const { msg: message, hostname: host, level, ...other } = rec;
     this.logglyStream.write({
       message,
