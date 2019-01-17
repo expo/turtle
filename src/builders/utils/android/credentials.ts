@@ -1,14 +1,14 @@
 import path from 'path';
 
-import uuidv4 from 'uuid/v4';
 import fs from 'fs-extra';
+import uuidv4 from 'uuid/v4';
 import { AndroidKeystore } from 'xdl';
 
 import * as sqs from 'turtle/aws/sqs';
 import { UPDATE_CREDENTIALS } from 'turtle/constants/build';
+import { IAndroidCredentials, IJob } from 'turtle/job';
 import logger from 'turtle/logger';
 import { isOffline } from 'turtle/turtleContext';
-import { IAndroidCredentials, IJob } from 'turtle/job';
 
 async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredentials> {
   if (!jobData.credentials) {

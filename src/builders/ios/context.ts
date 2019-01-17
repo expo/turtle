@@ -3,10 +3,10 @@ import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { IosShellApp } from 'xdl';
 
+import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
 import config from 'turtle/config';
 import { IOS, PLATFORMS } from 'turtle/constants/index';
 import { IJob } from 'turtle/job';
-import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
 
 export interface IContext {
   appDir: string;
@@ -30,9 +30,15 @@ const { BUILD_TYPES } = IOS;
 export function createBuilderContext(job: IJob): IContext {
   const { join } = path;
   const appUUID = uuidv4();
-  const { manifest: { sdkVersion: _sdkVersionFromManifest = null } = {}, sdkVersion: _sdkVersionFromJob, config: { buildType } } = job;
+  const {
+    manifest: {
+      sdkVersion: sdkVersionFromManifest = null,
+    } = {},
+    sdkVersion: sdkVersionFromJob,
+    config: { buildType },
+  } = job;
 
-  const sdkVersion = _sdkVersionFromJob || _sdkVersionFromManifest;
+  const sdkVersion = sdkVersionFromJob || sdkVersionFromManifest;
   const workingDir = formatShellAppDirectory(sdkVersion);
 
   const context: any = {
@@ -44,7 +50,7 @@ export function createBuilderContext(job: IJob): IContext {
   context.provisioningProfileDir = join(context.appDir, 'provisioning');
   context.provisioningProfilePath = join(
     context.provisioningProfileDir,
-    `${appUUID}.mobileprovision`
+    `${appUUID}.mobileprovision`,
   );
   context.tempCertPath = join(context.appDir, 'cert.p12');
   context.baseArchiveDir = join(context.appDir, 'archive');
@@ -55,7 +61,7 @@ export function createBuilderContext(job: IJob): IContext {
     context.archiveDir = join(
       context.baseArchiveDir,
       'Release',
-      `${DEFAULT_EXPOKIT_WORKSPACE_NAME}.app`
+      `${DEFAULT_EXPOKIT_WORKSPACE_NAME}.app`,
     );
   } else if (buildType === BUILD_TYPES.ARCHIVE) {
     context.outputPath = join(context.appDir, 'archive.xcarchive');
@@ -66,7 +72,7 @@ export function createBuilderContext(job: IJob): IContext {
       `${DEFAULT_EXPOKIT_WORKSPACE_NAME}.xcarchive`,
       'Products',
       'Applications',
-      `${DEFAULT_EXPOKIT_WORKSPACE_NAME}.app`
+      `${DEFAULT_EXPOKIT_WORKSPACE_NAME}.app`,
     );
   }
 
@@ -74,7 +80,9 @@ export function createBuilderContext(job: IJob): IContext {
   const s3Filename = `${job.experienceName}-${appUUID}-${buildType}.${s3FileExtension}`;
   if (config.builder.fakeUpload) {
     const fakeUploadFilename = s3Filename.replace('/', '\\');
-    context.fakeUploadBuildPath = job.fakeUploadBuildPath ? job.fakeUploadBuildPath : join(job.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename);
+    context.fakeUploadBuildPath = job.fakeUploadBuildPath
+      ? job.fakeUploadBuildPath
+      : join(job.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename);
   } else {
     context.s3FileKey = join(PLATFORMS.IOS, s3Filename);
   }

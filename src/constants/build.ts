@@ -5,7 +5,7 @@ export enum JOB_STATES {
   FINISHED = 'finished',
   ERRORED = 'errored',
   SENT_TO_QUEUE = 'sent-to-queue',
-};
+}
 
 export const UPDATE_CREDENTIALS = 'update-credentials';
 

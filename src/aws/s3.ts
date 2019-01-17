@@ -1,10 +1,10 @@
 import AWS from 'aws-sdk';
-import _ from 'lodash';
 import fs from 'fs-extra';
+import _ from 'lodash';
 
 import config from 'turtle/config';
 
-interface FileUploadParams {
+interface IFileUploadParams {
   bucketName?: string;
   key: string;
   srcPath: string;
@@ -17,7 +17,7 @@ const s3 = new AWS.S3({
 
 export default s3;
 
-export async function uploadFile({ bucketName = config.s3.bucket, key, srcPath }: FileUploadParams) {
+export async function uploadFile({ bucketName = config.s3.bucket, key, srcPath }: IFileUploadParams) {
   return await s3
     .upload({
       Bucket: bucketName,

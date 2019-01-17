@@ -1,5 +1,5 @@
-import { default as buildIOS } from 'turtle/bin/commands/build/ios';
 import { default as buildAndroid } from 'turtle/bin/commands/build/android';
+import { default as buildIOS } from 'turtle/bin/commands/build/ios';
 
 function createCommand(builder: any) {
   return (program: any) => {
@@ -15,15 +15,15 @@ function setCommonCommandOptions(cmd: any) {
     .option('-o --output <output-file-path>', 'output file path')
     .option(
       '--public-url <url>',
-      'the URL of an externally hosted manifest (for self-hosted apps).'
+      'the URL of an externally hosted manifest (for self-hosted apps).',
     )
     .option(
       '--release-channel <channel-name>',
-      'pull from specified release channel (default: default)'
+      'pull from specified release channel (default: default)',
     );
 }
 
 export default {
   ios: createCommand(buildIOS),
   android: createCommand(buildAndroid),
-}
+};

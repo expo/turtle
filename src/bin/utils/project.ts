@@ -1,5 +1,5 @@
-import path from 'path';
 import fs from 'fs-extra';
+import path from 'path';
 
 export async function loadAppJSON(projectDirArg: string) {
   const projectDir = resolveAbsoluteDir(projectDirArg);

@@ -1,11 +1,11 @@
+import fs from 'fs-extra';
 import _ from 'lodash';
 import uuid from 'uuid';
-import fs from 'fs-extra';
 
-import builder from 'turtle/builders/ios';
-import { ErrorWithCommandHelp } from 'turtle/bin/commands/errors';
-import { IOS, PLATFORMS } from 'turtle/constants';
+import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
 import { createBuilderAction } from 'turtle/bin/utils/builder';
+import builder from 'turtle/builders/ios';
+import { IOS, PLATFORMS } from 'turtle/constants';
 
 export default (program: any, setCommonCommandOptions: any) => {
   const command = program.command('build:ios [project-dir]');
@@ -16,16 +16,16 @@ export default (program: any, setCommonCommandOptions: any) => {
       '-t --type <build>',
       'type of build: archive|simulator',
       /^(archive|simulator)$/i,
-      'archive'
+      'archive',
     )
     .option('--team-id <apple-teamId>', 'Apple Team ID')
     .option(
       '--dist-p12-path <dist.p12>',
-      'path to your Distribution Certificate P12 (please provide password as EXPO_IOS_DIST_P12_PASSWORD env variable)'
+      'path to your Distribution Certificate P12 (please provide password as EXPO_IOS_DIST_P12_PASSWORD env variable)',
     )
     .option('--provisioning-profile-path <.mobileprovision>', 'path to your Provisioning Profile')
     .description(
-      'Build a standalone IPA for your project, signed and ready for submission to the Apple App Store.'
+      'Build a standalone IPA for your project, signed and ready for submission to the Apple App Store.',
     )
     .asyncAction(
       createBuilderAction({
@@ -36,7 +36,7 @@ export default (program: any, setCommonCommandOptions: any) => {
         builder,
         platform: PLATFORMS.IOS,
         os: 'darwin',
-      })
+      }),
     );
 };
 
@@ -68,7 +68,8 @@ const prepareCredentials = async (cmd: any) => {
 
   if (!credentialsExist) {
     throw new ErrorWithCommandHelp(
-      'Please provide all required credentials - Apple Team ID, Distribution Certificate P12 (with password) and Provisioning Profile'
+      'Please provide all required credentials'
+      + '- Apple Team ID, Distribution Certificate P12 (with password) and Provisioning Profile',
     );
   }
 

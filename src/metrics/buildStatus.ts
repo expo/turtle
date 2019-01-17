@@ -1,8 +1,8 @@
+import * as cloudwatch from 'turtle/aws/cloudwatch';
+import { TYPE_DIMENSIONS } from 'turtle/aws/cloudwatch/dimensions';
+import * as reducers from 'turtle/aws/cloudwatch/reducers';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
-import * as cloudwatch from 'turtle/aws/cloudwatch';
-import * as reducers from 'turtle/aws/cloudwatch/reducers';
-import { TYPE_DIMENSIONS } from 'turtle/aws/cloudwatch/dimensions';
 
 const BUILD_METRIC_NAME = 'build';
 

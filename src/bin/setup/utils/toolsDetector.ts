@@ -12,7 +12,7 @@ export interface IToolDefinition {
   testFn?: () => Promise<boolean>;
 }
 
-export async function ensureToolsAreInstalled(tools: Array<IToolDefinition>) {
+export async function ensureToolsAreInstalled(tools: IToolDefinition[]) {
   let isAnyToolMissing = false;
   for (const { command, missingDescription, testFn } of tools) {
     try {

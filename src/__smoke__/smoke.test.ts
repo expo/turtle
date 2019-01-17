@@ -3,14 +3,13 @@ import fs from 'fs-extra';
 import nock from 'nock';
 
 import config from 'turtle/config';
+import { PLATFORMS } from 'turtle/constants';
 import * as jobManager from 'turtle/jobManager';
 import logger from 'turtle/logger';
-import { PLATFORMS } from 'turtle/constants';
-
 
 jest.mock('../builders/utils/uploader.ts', () => ({
   uploadBuildToS3: jest.fn(() => {
-    console.log('Faking uploading build');
+    logger.debug('Faking uploading build');
     return 'legit_path';
   }),
 }));
@@ -68,11 +67,11 @@ function mockFinish() {
     .post('/', (body: any) => {
       const keys = Object.keys(body);
       if (keys.includes('MessageBody')) {
-        const mb = JSON.parse(body['MessageBody']);
+        const mb = JSON.parse(body.MessageBody);
         if (mb.status === 'finished') {
           return true;
         } else if (mb.status === 'errored') {
-          fail('Build ended with error')
+          fail('Build ended with error');
         }
       }
       return false;

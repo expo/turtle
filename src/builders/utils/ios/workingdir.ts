@@ -1,5 +1,7 @@
 import path from 'path';
+
 import { ExponentTools } from 'xdl';
+
 import config from 'turtle/config';
 import { PLATFORMS } from 'turtle/constants';
 

@@ -12,5 +12,5 @@ export default baseJobSchema.concat(
       keystoreAlias: Joi.string(),
       keystore: Joi.string(),
     }),
-  })
+  }),
 );

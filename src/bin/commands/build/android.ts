@@ -1,11 +1,11 @@
-import _ from 'lodash';
 import fs from 'fs-extra';
+import _ from 'lodash';
 import uuid from 'uuid';
 
-import builder from 'turtle/builders/android';
-import { ErrorWithCommandHelp } from 'turtle/bin/commands/errors';
-import { PLATFORMS } from 'turtle/constants';
+import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
 import { createBuilderAction } from 'turtle/bin/utils/builder';
+import builder from 'turtle/builders/android';
+import { PLATFORMS } from 'turtle/constants';
 
 export default (program: any, setCommonCommandOptions: any) => {
   const command = program.command('build:android [project-dir]');
@@ -14,11 +14,12 @@ export default (program: any, setCommonCommandOptions: any) => {
     .alias('ba')
     .option(
       '--keystore-path <app.jks>',
-      'path to your Keystore (please provide Keystore password and Key password as EXPO_ANDROID_KEYSTORE_PASSWORD and EXPO_ANDROID_KEY_PASSWORD env variables)'
+      'path to your Keystore (please provide Keystore password and Key password as EXPO_ANDROID_KEYSTORE_PASSWORD'
+      + 'and EXPO_ANDROID_KEY_PASSWORD env variables)',
     )
     .option('--keystore-alias <alias>', 'keystore Alias')
     .description(
-      'Build a standalone APK for your project, signed and ready for submission to the Google Play Store.'
+      'Build a standalone APK for your project, signed and ready for submission to the Google Play Store.',
     )
     .asyncAction(
       createBuilderAction({
@@ -29,7 +30,7 @@ export default (program: any, setCommonCommandOptions: any) => {
         builder,
         platform: PLATFORMS.ANDROID,
         os: ['darwin', 'linux'],
-      })
+      }),
     );
 };
 
@@ -57,7 +58,7 @@ const prepareCredentials = async (cmd: any) => {
   if (!credentialsExist) {
     if (someCredentialsExist) {
       throw new ErrorWithCommandHelp(
-        'Please provide all required credentials - Keystore (with password), Keystore alias and Key password'
+        'Please provide all required credentials - Keystore (with password), Keystore alias and Key password',
       );
     } else {
       return null;

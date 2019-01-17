@@ -9,6 +9,7 @@
     "start:android": "PLATFORM=android yarn start",
     "watch": "EXPENV_OVERRIDES=local-common,local expenv gulp watch:source",
     "bin:turtle": "./bin/turtle.js",
+    "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "prepare": "yarn build",
     "build": "gulp build:server",
     "build:production": "./scripts/build.sh",

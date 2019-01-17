@@ -1,11 +1,13 @@
-import { LoggerDetach, ModuleVersion } from 'xdl';
+import path from 'path';
+
 import program, { Command } from 'commander';
-import _ from 'lodash';
+import fs from 'fs-extra';
+import { LoggerDetach, ModuleVersion } from 'xdl';
 
-import logger from 'turtle/logger';
 import * as commands from 'turtle/bin/commands';
+import logger from 'turtle/logger';
 
-const { name, version } = require('../../package.json');
+const { name, version } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf-8'));
 
 const ModuleVersionChecker = ModuleVersion.createModuleVersionChecker(name, version);
 
@@ -15,13 +17,15 @@ Command.prototype.asyncAction = function asyncAction(asyncFn: (...asyncFnArgs: a
   return this.action(async (...args) => {
     try {
       await checkForUpdateAsync();
-    } catch (e) {}
+    } catch (e) {
+      logger.warn('Failed to check for turtle-cli update.');
+    }
     return await asyncFn(...args);
   });
-}
+};
 
 export function run(programName: string) {
-  runAsync(programName).catch(e => {
+  runAsync(programName).catch((e) => {
     logger.error('Uncaught Error', e);
     process.exit(1);
   });
@@ -29,22 +33,22 @@ export function run(programName: string) {
 
 async function runAsync(programName: string) {
   program.version(version);
-  Object.values(commands).forEach(command => registerCommand(program, command));
+  Object.values(commands).forEach((command) => registerCommand(program, command));
   program.parse(process.argv);
 
   const subCommand = process.argv[2];
   if (subCommand) {
-    const commands = program.commands.reduce((acc: Array<string>, command: any) => {
-      acc.push(command['_name']);
-      const alias = command['_alias'];
+    const commandNames = program.commands.reduce((acc: string[], command: any) => {
+      acc.push(command._name);
+      const alias = command._alias;
       if (alias) {
         acc.push(alias);
       }
       return acc;
     }, []);
-    if (!_.includes(commands, subCommand)) {
+    if (!commandNames.includes(subCommand)) {
       logger.error(
-        `"${subCommand}" is not an ${programName} command. See "${programName} --help" for the full list of commands.`
+        `"${subCommand}" is not an ${programName} command. See "${programName} --help" for the full list of commands.`,
       );
     }
   } else {
@@ -60,7 +64,7 @@ async function checkForUpdateAsync() {
     logger.warn(
       `There is a new version of ${name} available (${latest}).
 You are currently using ${name} ${current}
-Run \`npm install -g ${name}\` to get the latest version`
+Run \`npm install -g ${name}\` to get the latest version`,
     );
   }
 }

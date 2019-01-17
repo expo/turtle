@@ -1,8 +1,8 @@
 import * as url from 'url';
 
 import config from 'turtle/config';
-import logger from 'turtle/logger';
 import { IJob } from 'turtle/job';
+import logger from 'turtle/logger';
 
 export function getExperienceUrl(job: IJob) {
   const { experienceName, config: jobConfig } = job;

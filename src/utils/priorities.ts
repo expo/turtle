@@ -1,7 +1,8 @@
-import config from 'turtle/config';
-import os from 'os';
-import logger from 'turtle/logger';
 import Joi from 'joi';
+import os from 'os';
+
+import config from 'turtle/config';
+import logger from 'turtle/logger';
 import { getRedisClient, RedisClient } from 'turtle/utils/redis';
 
 export const NORMAL = 'normalPriority';
