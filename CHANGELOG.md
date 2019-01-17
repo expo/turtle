@@ -6,14 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.5.0] - 2019-10-16
+## [0.5.1] - 2019-01-16
+### Changed
+- Update Android shell app for SDK32 that includes react-native-screens@1.0.0-alpha.22
+
+## [0.5.0] - 2019-01-16
 ### Added
-- turtle version is added to onFinish and onError build messages
+- Turtle version is added to onFinish and onError build messages.
 ### Removed
 - `--push-p12-path` parameter for `turtle build:ios` command,
 a Push Notifications Certificate is no longer required to perform a successful
 iOS standalone app build.
-- new/old turtle version build argument
+- new/old Turtle version build argument
 
 ## [0.4.3] - 2019-01-09
 ### Changed
