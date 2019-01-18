@@ -2,8 +2,8 @@
 
 ## How to contribute
 You can contribute to Turtle CLI in various ways, including:
-- [Reporting bugs or issues](https://github.com/expo/turtle/issues/new) on GitHub. Please make sure to include fill in all the details in the issue template to make sure the issue can be addressed as quickly as possible.
-- [Submitting improvements to the documentation](https://github.com/expo/expo/tree/master/docs). Updates, enhancements, new guides, spelling fixes...
+- [Reporting bugs or issues](https://github.com/expo/turtle/issues/new) on GitHub. Please make sure to fill in all the details suggested by the template to make sure the issue can be addressed as quickly as possible.
+- [Submitting improvements to the documentation](https://github.com/expo/expo/tree/master/docs). Updates, enhancements, new guides, spelling fixes…
 - Helping other people on [Expo Forums](https://forums.expo.io/) and on [Expo Developers Slack](http://slack.expo.io).
 - Looking at existing [issues](https://github.com/expo/turtle/issues) and adding more information, particularly helping to reproduce the issues.
 - [Submitting a pull request](#submitting-a-pull-request) with a bug fix or an improvement.
