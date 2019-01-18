@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.5.2] - 2019-01-18
 ### Added
 - The link (in README) to the repository containing `turtle-cli` usage example.
+- [Contributing guide](CONTRIBUTING.md).
+- [Code of Conduct](CODE_OF_CONDUCT.md).
 ### Removed
 - `eslint`
 ### Changed
