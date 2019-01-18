@@ -20,7 +20,8 @@ export API_PORT="3000"
 export REDIS_URL="noop"
 export REDIS_CONFIG_URL="noop"
 
-PLATFORM=android yarn set-workingdir:remote
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. && pwd )"
+$ROOT_DIR/scripts/android/fetchRemoteAndroidTarball.sh
 
 yarn test:smoke:android
 smoke_result=$?

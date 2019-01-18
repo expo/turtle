@@ -18,7 +18,8 @@ export API_PORT="443"
 export REDIS_URL="noop"
 export REDIS_CONFIG_URL="noop"
 
-PLATFORM=ios yarn set-workingdir:remote
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. && pwd )"
+$ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
 
 yarn test:smoke:ios
 smoke_result=$?

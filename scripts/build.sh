@@ -2,16 +2,23 @@
 
 set -xeo pipefail
 
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. && pwd )"
+
 if [ -z "$1" ]; then
   echo "Please specify a platform to build"
   exit 1
 fi
 
-export PLATFORM=$1
+PLATFORM=$1
 
 yarn
 yarn run build
-yarn set-workingdir:remote
+if [ "$PLATFORM" = "android" ]; then
+  $ROOT_DIR/scripts/android/fetchRemoteAndroidTarball.sh
+elif [ "$PLATFORM" = "ios" ]; then
+  $ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
+fi
+
 
 if [[ -z "${TARBALL}" ]]; then
   echo "TARBALL is not set, building tarball skipped"
