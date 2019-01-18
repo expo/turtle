@@ -6,3 +6,6 @@
 shell.apk
 node_modules
 .secrets*
+
+*.swp
+*.swo

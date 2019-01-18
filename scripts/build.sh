@@ -7,11 +7,11 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-PLATFORM=$1
+export PLATFORM=$1
 
 yarn
 yarn run build
-yarn init-workingdir:remote-$PLATFORM
+yarn set-workingdir:remote
 
 if [[ -z "${TARBALL}" ]]; then
   echo "TARBALL is not set, building tarball skipped"
