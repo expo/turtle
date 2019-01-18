@@ -1,7 +1,7 @@
 # Turtle CLI
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/expo/turtle/blob/master/LICENSE)
-[![NPM](https://img.shields.io/npm/v/turtle-cli/latest.svg)](https://rubygems.org/gems/fastlane)
+[![NPM](https://img.shields.io/npm/v/turtle-cli/latest.svg)](https://npmjs.com/package/turtle-cli)
 [![CircleCI](https://img.shields.io/circleci/project/github/expo/turtle/master.svg)](https://circleci.com/gh/expo/turtle)
 
 Turtle CLI is a command line interface for building Expo standalone apps.
