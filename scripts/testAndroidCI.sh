@@ -20,7 +20,7 @@ export API_PORT="3000"
 export REDIS_URL="noop"
 export REDIS_CONFIG_URL="noop"
 
-yarn set-workingdir:remote
+PLATFORM=android yarn set-workingdir:remote
 
 yarn test:smoke:android
 smoke_result=$?

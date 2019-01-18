@@ -2,15 +2,12 @@
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. && pwd )"
 
-if [ -z "$EXPO_DOWNLOAD_DIR" ]; then
-  DOWNLOAD_DIR="$HOME/Downloads"
-else
-  DOWNLOAD_DIR=$EXPO_DOWNLOAD_DIR
-fi
+DOWNLOAD_DIR="${EXPO_DOWNLOAD_DIR:-$HOME/Downloads}"
+
 mkdir -p $DOWNLOAD_DIR
 
 if [ ! -f "$ROOT_DIR/.secrets.local-queue" ]; then 
-  echo "You need to run \"yarn secrets:init-private [SQS_NAME]\" or create .secrets.local-queue file yourself with variables AWS_SQS_ANDROID_QUEUE_URL, AWS_SQS_IOS_QUEUE_URL and AWS_SQS_OUT_QUEUE_URL."
+  echo "You need to run \"yarn secrets:init-private [SQS_NAME]\" or create .secrets.local-queue file yourself with AWS_SQS_ANDROID_QUEUE_URL, AWS_SQS_IOS_QUEUE_URL and AWS_SQS_OUT_QUEUE_URL variables."
   exit 1
 fi
 
@@ -24,7 +21,7 @@ setup_local() {
   WORKINGDIR="$ROOT_DIR/workingdir/local"
   
   if [[ -d $WORKINGDIR ]]; then
-    echo "Lokal workingdir already prepared"
+    echo "Local workingdir already prepared"
     return
   fi
 
@@ -48,11 +45,15 @@ setup_local() {
 
 setup_remote() {
   if [[ -d $ROOT_DIR/workingdir/android && -d $ROOT_DIR/workingdir/ios ]]; then
-    echo "Shellapps already fetched"
+    echo "Shell apps already fetched"
   else
-    echo "Fetching shellapps"
-    $ROOT_DIR/scripts/android/fetchRemoteAndroidTarball.sh
-    $ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
+    echo "Fetching shell apps"
+    if [ "$PLATFORM" != 'ios']; then
+      $ROOT_DIR/scripts/android/fetchRemoteAndroidTarball.sh
+    fi
+    if [ "$PLATFORM" != 'android']; then
+      $ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
+    fi
   fi
 }
 

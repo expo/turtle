@@ -19,7 +19,7 @@ jobs:
     steps:
       - checkout
       - run: yarn
-      - run: ./test-ci-unit.sh
+      - run: ./scripts/testUnitCI.sh
 
 workflows:
   version: 2

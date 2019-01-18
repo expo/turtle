@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ -z "$EXPO_UNIVERSE_DIR" ]; then
-  echo "You need to specify EXPO_UNIVERSE_DIR to use this script. Alternatively you can create .secrets.local-queue file yourself with variables AWS_SQS_ANDROID_QUEUE_URL, AWS_SQS_IOS_QUEUE_URL and AWS_SQS_OUT_QUEUE_URL."
+  echo "You need to specify EXPO_UNIVERSE_DIR to use this script. Alternatively you can create .secrets.local-queue file yourself with AWS_SQS_ANDROID_QUEUE_URL, AWS_SQS_IOS_QUEUE_URL and AWS_SQS_OUT_QUEUE_URL variables."
   exit 1
 fi
 
