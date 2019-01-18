@@ -1,0 +1,12 @@
+{
+  "npm": {
+    "tag": "latest"
+  },
+  "git": {
+    "requireUpstream": false,
+    "tagName": "v${version}"
+  },
+  "github": {
+    "release": true
+  }
+}
