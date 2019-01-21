@@ -36,7 +36,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 # Download and untar SDK
 ENV ANDROID_HOME /usr/local/android-sdk-linux
 ENV ANDROID_SDK /usr/local/android-sdk-linux
-ENV ANDROID_SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
+ENV ANDROID_SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 RUN mkdir -p ${ANDROID_HOME} && \
   curl -L "${ANDROID_SDK_URL}" > ${ANDROID_HOME}/sdk.zip && \
   cd ${ANDROID_HOME} && \
@@ -50,6 +50,9 @@ ENV PATH ${ANDROID_HOME}/platform-tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools/bin:${PATH}
 ENV PATH ${ANDROID_HOME}/build-tools/25.0.0/:${PATH}
+
+# Update Android SDK manager
+RUN sdkmanager --update
 
 # Install Android SDK components
 RUN sdkmanager \
