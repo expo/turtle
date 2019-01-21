@@ -65,6 +65,29 @@ RUN yes | sdkmanager \
   "extras;google;m2repository" \
   "extras;google;google_play_services" \
 
+# Install Android NDK
+ENV ANDROID_NDK_VERSION android-ndk-r10e
+ENV ANDROID_NDK_FILE ${ANDROID_NDK_VERSION}-linux-x86_64.bin
+ENV ANDROID_NDK_URL https://dl.google.com/android/ndk/${ANDROID_NDK_FILE}
+ENV ANDROID_NDK /opt/${ANDROID_NDK_VERSION}
+ENV PATH $ANDROID_NDK:$PATH
+
+# i have no clue why some of this is here, but it's working elsewhere
+# it appears to install the NDK version expo needs, so that's cool
+RUN mkdir /ndk_setup && cd /ndk_setup && \
+  curl -L ${ANDROID_NDK_URL} > ${ANDROID_NDK_FILE} && \
+  chmod +x ${ANDROID_NDK_FILE} && \
+  sync && \
+  ./${ANDROID_NDK_FILE} && \
+  mv ./${ANDROID_NDK_VERSION} ${ANDROID_NDK} && \
+  cp -R \
+  ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86_64 \
+  ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86 && \
+  cp -R \
+  ${ANDROID_NDK}/toolchains/x86-4.8/prebuilt/linux-x86_64 \
+  ${ANDROID_NDK}/toolchains/x86-4.8/prebuilt/linux-x86 && \
+  cd && rm -rf /ndk_setup
+
 # Support Gradle
 ENV TERM dumb
 
