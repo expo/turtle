@@ -10,7 +10,7 @@ import download from 'turtle/bin/setup/utils/downloader';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
 
-const ANDROID_SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip';
+const ANDROID_SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip';
 
 const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
 const l = logger.withFields(LOGGER_FIELDS);
@@ -73,6 +73,6 @@ function _createPaths(androidSdkDir: string) {
     path.join(androidSdkDir, 'platform-tools'),
     path.join(androidSdkDir, 'tools'),
     path.join(androidSdkDir, 'tools/bin'),
-    path.join(androidSdkDir, 'build-tools/25.0.0'),
+    path.join(androidSdkDir, 'build-tools/28.0.3'),
   ];
 }

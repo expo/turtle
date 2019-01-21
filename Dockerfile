@@ -36,30 +36,34 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 # Download and untar SDK
 ENV ANDROID_HOME /usr/local/android-sdk-linux
 ENV ANDROID_SDK /usr/local/android-sdk-linux
-ENV ANDROID_SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
+ENV ANDROID_SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
 RUN mkdir -p ${ANDROID_HOME} && \
   curl -L "${ANDROID_SDK_URL}" > ${ANDROID_HOME}/sdk.zip && \
   cd ${ANDROID_HOME} && \
   unzip -qq sdk.zip && \
   rm sdk.zip && \
-  # prevents warnings about missing repo config
   mkdir -p ${HOME}/.android && \
   touch ${HOME}/.android/repositories.cfg
 
 ENV PATH ${ANDROID_HOME}/platform-tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools/bin:${PATH}
-ENV PATH ${ANDROID_HOME}/build-tools/25.0.0/:${PATH}
+ENV PATH ${ANDROID_HOME}/build-tools/28.0.3/:${PATH}
 
 RUN yes | sdkmanager --licenses > /dev/null
-
-# Install Android SDK components
-RUN sdkmanager \
-  "platform-tools" \
+RUN yes | sdkmanager \
   "platforms;android-23" \
-  "build-tools;25.0.0" \
+  "platforms;android-24" \
+  "platforms;android-25" \
+  "platforms;android-26" \
+  "platforms;android-27" \
+  "platforms;android-28"
+RUN yes | sdkmanager "platform-tools"
+RUN yes | sdkmanager "build-tools;28.0.3"
+RUN yes | sdkmanager \
   "extras;android;m2repository" \
-  "extras;google;m2repository"
+  "extras;google;m2repository" \
+  "extras;google;google_play_services"
 
 # Install Android NDK
 ENV ANDROID_NDK_VERSION android-ndk-r10e
