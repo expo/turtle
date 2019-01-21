@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.3] - 2019-01-21
+### Fixed
+- Building Android standalone apps ([not accepted license issue](https://github.com/expo/expo/issues/3266)) - updated Android build tools (`build-tools;28.0.3`, `platforms;android-28`).
+
 ## [0.5.2] - 2019-01-18
 ### Added
 - The link (in README) to the repository containing `turtle-cli` usage example.
