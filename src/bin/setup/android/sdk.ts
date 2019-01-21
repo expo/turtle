@@ -73,6 +73,6 @@ function _createPaths(androidSdkDir: string) {
     path.join(androidSdkDir, 'platform-tools'),
     path.join(androidSdkDir, 'tools'),
     path.join(androidSdkDir, 'tools/bin'),
-    path.join(androidSdkDir, 'build-tools/25.0.0'),
+    path.join(androidSdkDir, 'build-tools/28.0.3'),
   ];
 }
