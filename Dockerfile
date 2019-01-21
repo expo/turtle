@@ -48,7 +48,7 @@ RUN mkdir -p ${ANDROID_HOME} && \
 ENV PATH ${ANDROID_HOME}/platform-tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools/bin:${PATH}
-ENV PATH ${ANDROID_HOME}/build-tools/25.0.0/:${PATH}
+ENV PATH ${ANDROID_HOME}/build-tools/28.0.3/:${PATH}
 
 RUN mkdir -p $ANDROID_HOME/licenses/ \
   && echo "8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > $ANDROID_HOME/licenses/android-sdk-license \
