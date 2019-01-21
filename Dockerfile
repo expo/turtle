@@ -55,7 +55,7 @@ ENV PATH ${ANDROID_HOME}/build-tools/25.0.0/:${PATH}
 RUN sdkmanager --update
 
 # Install Android SDK components
-RUN sdkmanager \
+RUN yes | sdkmanager \
   "build-tools;28.0.3" \
   "extras;android;m2repository" \
   "extras;google;m2repository" \
