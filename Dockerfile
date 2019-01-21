@@ -50,51 +50,20 @@ ENV PATH ${ANDROID_HOME}/tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools/bin:${PATH}
 ENV PATH ${ANDROID_HOME}/build-tools/28.0.3/:${PATH}
 
-RUN mkdir -p $ANDROID_HOME/licenses/ \
-  && echo "8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > $ANDROID_HOME/licenses/android-sdk-license \
-  && echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_HOME/licenses/android-sdk-preview-licens
-
-RUN yes | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-28"
-
-# Update Android SDK manager
-RUN sdkmanager --update
-
-# Install Android SDK components
-RUN sdkmanager \
-  "build-tools;28.0.3" \
-  "extras;android;m2repository" \
-  "extras;google;m2repository" \
-  "extras;google;google_play_services" \
-  "platform-tools" \
+RUN yes | sdkmanager --licenses > /dev/null
+RUN yes | sdkmanager \
   "platforms;android-23" \
   "platforms;android-24" \
   "platforms;android-25" \
   "platforms;android-26" \
   "platforms;android-27" \
   "platforms;android-28"
-
-# Install Android NDK
-ENV ANDROID_NDK_VERSION android-ndk-r10e
-ENV ANDROID_NDK_FILE ${ANDROID_NDK_VERSION}-linux-x86_64.bin
-ENV ANDROID_NDK_URL https://dl.google.com/android/ndk/${ANDROID_NDK_FILE}
-ENV ANDROID_NDK /opt/${ANDROID_NDK_VERSION}
-ENV PATH $ANDROID_NDK:$PATH
-
-# i have no clue why some of this is here, but it's working elsewhere
-# it appears to install the NDK version expo needs, so that's cool
-RUN mkdir /ndk_setup && cd /ndk_setup && \
-  curl -L ${ANDROID_NDK_URL} > ${ANDROID_NDK_FILE} && \
-  chmod +x ${ANDROID_NDK_FILE} && \
-  sync && \
-  ./${ANDROID_NDK_FILE} && \
-  mv ./${ANDROID_NDK_VERSION} ${ANDROID_NDK} && \
-  cp -R \
-  ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86_64 \
-  ${ANDROID_NDK}/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86 && \
-  cp -R \
-  ${ANDROID_NDK}/toolchains/x86-4.8/prebuilt/linux-x86_64 \
-  ${ANDROID_NDK}/toolchains/x86-4.8/prebuilt/linux-x86 && \
-  cd && rm -rf /ndk_setup
+RUN yes | sdkmanager "platform-tools"
+RUN yes | sdkmanager "build-tools;28.0.3"
+RUN yes | sdkmanager \
+  "extras;android;m2repository" \
+  "extras;google;m2repository" \
+  "extras;google;google_play_services" \
 
 # Support Gradle
 ENV TERM dumb
