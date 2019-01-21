@@ -63,7 +63,7 @@ RUN yes | sdkmanager "build-tools;28.0.3"
 RUN yes | sdkmanager \
   "extras;android;m2repository" \
   "extras;google;m2repository" \
-  "extras;google;google_play_services" \
+  "extras;google;google_play_services"
 
 # Install Android NDK
 ENV ANDROID_NDK_VERSION android-ndk-r10e
