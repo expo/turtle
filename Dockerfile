@@ -42,7 +42,6 @@ RUN mkdir -p ${ANDROID_HOME} && \
   cd ${ANDROID_HOME} && \
   unzip -qq sdk.zip && \
   rm sdk.zip && \
-  # prevents warnings about missing repo config
   mkdir -p ${HOME}/.android && \
   touch ${HOME}/.android/repositories.cfg
 
@@ -51,11 +50,15 @@ ENV PATH ${ANDROID_HOME}/tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools/bin:${PATH}
 ENV PATH ${ANDROID_HOME}/build-tools/25.0.0/:${PATH}
 
+RUN mkdir -p $ANDROID_HOME/licenses/ \
+  && echo "8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > $ANDROID_HOME/licenses/android-sdk-license \
+  && echo "84831b9409646a918e30573bab4c9c91346d8abd" > $ANDROID_HOME/licenses/android-sdk-preview-licens
+
 # Update Android SDK manager
 RUN sdkmanager --update
 
 # Install Android SDK components
-RUN yes | sdkmanager \
+RUN sdkmanager \
   "build-tools;28.0.3" \
   "extras;android;m2repository" \
   "extras;google;m2repository" \
@@ -67,8 +70,6 @@ RUN yes | sdkmanager \
   "platforms;android-26" \
   "platforms;android-27" \
   "platforms;android-28"
-
-RUN yes | sdkmanager --licenses > /dev/null
 
 # Install Android NDK
 ENV ANDROID_NDK_VERSION android-ndk-r10e
