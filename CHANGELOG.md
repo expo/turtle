@@ -22,11 +22,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.5.1] - 2019-01-16
 ### Changed
-- Update Android shell app for SDK32 that includes react-native-screens@1.0.0-alpha.22
+- Update Android shell app for SDK32 that includes `react-native-screens@1.0.0-alpha.22`.
 
 ## [0.5.0] - 2019-01-16
 ### Added
-- Turtle version is added to onFinish and onError build messages.
+- Turtle version is added to the `onFinish` and `onError` build messages.
 ### Changed
 - A version property value being sent to the queue. It's now the version number
 from `package.json` instead of `new`/`old` indicator.
