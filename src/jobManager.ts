@@ -75,20 +75,21 @@ async function processJob(jobData: any) {
       logger.info('The job has been cancelled');
     } else {
       redis.registerListener(job.id, () => deleteMessage(priority, receiptHandle));
-      const startTimestamp = +new Date();
+      const startTimestamp = Date.now();
       let buildFailed = false;
       const buildType = _.get(job, 'config.buildType', 'default');
       try {
-        const success = await build(job);
-        buildStatusMetric.add(buildType, success);
-        buildFailed = !success;
+        const status = await build(job);
+        buildStatusMetric.add(buildType, status);
+        buildFailed = !status;
       } catch (err) {
         buildStatusMetric.add(buildType, false);
         buildFailed = true;
         throw err;
       } finally {
-        const endTimestamp = +new Date();
+        const endTimestamp = Date.now();
         const turtleBuildDurationSecs = Math.ceil((endTimestamp - startTimestamp) / 1000);
+        logger.info(`BuildID=${job.id} Build duration=${turtleBuildDurationSecs}`);
         buildDurationMetric.addTurtleDuration(buildType, turtleBuildDurationSecs, !buildFailed);
         if (job.messageCreatedTimestamp) {
           const totalBuildDurationSecs = Math.ceil(
@@ -123,7 +124,9 @@ function failAfterMaxJobTime(priority: string, receiptHandle: string, job: any) 
 }
 
 async function build(job: any) {
+  const startTimestamp = Date.now();
   const s3Url = await logger.init(job);
+  const calculateBuildDuration = () => Math.ceil((Date.now() - startTimestamp) / 1000);
 
   try {
     await sqs.sendMessage(job.id, BUILD.JOB_STATES.IN_PROGRESS, {
@@ -131,11 +134,17 @@ async function build(job: any) {
       logFormat: 'json',
     });
     const result = await (builders as any)[job.platform](job);
-    sqs.sendMessage(job.id, BUILD.JOB_STATES.FINISHED, { ...result, turtleVersion });
+    const buildDuration = calculateBuildDuration();
+    sqs.sendMessage(job.id, BUILD.JOB_STATES.FINISHED, {
+      ...result,
+      turtleVersion,
+      buildDuration,
+    });
     return true;
   } catch (err) {
     logErrorOnce(err);
-    sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, { turtleVersion });
+    const buildDuration = calculateBuildDuration();
+    sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, { turtleVersion, buildDuration });
     return false;
   } finally {
     await logger.cleanup(job);
