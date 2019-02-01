@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.7] - 2019-01-31
+- Update Android shell app for SDK 32 to fix bundled assets issue.
+
 ## [0.5.6] - 2019-01-25
 - Update iOS shell app for SDK 30, 31 and 32 (built with xcode 10.1).
 
