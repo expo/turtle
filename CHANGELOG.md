@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.8] - 2019-02-06
+- Update iOS shell app for SDK 32 (fixes bare notifications [issue](https://github.com/expo/expo/issues/3223)).
+
 ## [0.5.7] - 2019-01-31
 - Update Android shell app for SDK 32 to fix bundled assets issue.
 
