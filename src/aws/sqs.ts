@@ -62,7 +62,7 @@ export async function changeMessageVisibility(priority: string, receiptHandle: s
 }
 
 // Every VISIBILITY_TIMEOUT_SEC / 3 seconds we are telling AWS SQS
-// that we're still proccessing the message, so it does not
+// that we're still processing the message, so it does not
 // send the build job to another turtle agent
 export function changeMessageVisibilityRecurring(priority: string, receiptHandle: string, jobId: string) {
   return setInterval(() => {

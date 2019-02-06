@@ -16,7 +16,6 @@ export default baseJobSchema.concat(
         certPassword: Joi.string(),
         teamId: Joi.string(),
         provisioningProfile: Joi.string(),
-        password: Joi.string(),
       })
       .when('config.buildType', {
         is: IOS.BUILD_TYPES.SIMULATOR,

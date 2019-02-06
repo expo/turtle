@@ -18,7 +18,9 @@ const { BUILD_TYPES } = IOS;
 let SUPPORTED_SDK_VERSIONS: number[];
 
 export default async function iosBuilder(job: IJob): Promise<IJobResult> {
-  await ensureCanBuildSdkVersion(job);
+  if (job.config.buildType !== BUILD_TYPES.CLIENT) {
+    await ensureCanBuildSdkVersion(job);
+  }
 
   const ctx = createBuilderContext(job);
 
@@ -26,10 +28,10 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
     await initBuilder(ctx);
 
     const { buildType } = job.config;
-    if (buildType === BUILD_TYPES.SIMULATOR) {
-      await buildSimulator(ctx, job);
-    } else if (buildType === BUILD_TYPES.ARCHIVE) {
+    if ([BUILD_TYPES.ARCHIVE, BUILD_TYPES.CLIENT].includes(buildType!)) {
       await buildArchive(ctx, job);
+    } else if (buildType === BUILD_TYPES.SIMULATOR) {
+      await buildSimulator(ctx, job);
     } else {
       throw new Error(`Unsupported iOS build type: ${buildType}`);
     }

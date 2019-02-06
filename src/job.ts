@@ -1,3 +1,5 @@
+import { IOS } from 'turtle/constants';
+
 export interface IJob {
   platform: 'android' | 'ios';
   experienceName: string;
@@ -8,7 +10,7 @@ export interface IJob {
     releaseChannel: string;
     publicUrl?: string;
     // ios
-    buildType?: string;
+    buildType?: IOS.BUILD_TYPES;
     bundleIdentifier?: string;
   };
   credentials: {
@@ -16,12 +18,11 @@ export interface IJob {
     keystore?: string;
     keystoreAlias?: string;
     keystorePassword?: string;
-    // ios
     keyPassword?: string;
+    // ios
     certP12?: string;
     certPassword?: string;
     provisioningProfile?: string;
-    password?: string;
     teamId?: string;
   };
   projectDir: string;

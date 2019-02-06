@@ -33,7 +33,7 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string, m
   l.info('building and signing IPA');
 
   const {
-    credentials: { provisioningProfile, certPassword, teamId, password },
+    credentials: { provisioningProfile, certPassword, teamId },
     config: { bundleIdentifier: bundleIdentifierFromConfig },
   } = job;
 
@@ -51,9 +51,8 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string, m
     certPath: ctx.tempCertPath,
     certPassword,
     teamID: teamId,
-    password,
     bundleIdentifier,
-    workingDir: ctx.workingDir,
+    workspacePath: ctx.workspacePath,
     manifest,
   });
   await ipaBuilder.build();

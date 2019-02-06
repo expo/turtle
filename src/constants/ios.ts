@@ -1,4 +1,5 @@
-export const BUILD_TYPES = {
-  ARCHIVE: 'archive',
-  SIMULATOR: 'simulator',
-};
+export enum BUILD_TYPES {
+  ARCHIVE = 'archive',
+  CLIENT = 'client',
+  SIMULATOR = 'simulator',
+}

@@ -6,13 +6,14 @@ import { ExponentTools } from 'xdl';
 
 import download from 'turtle/bin/setup/utils/downloader';
 import { ensureToolsAreInstalled, IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
+import { IShellAppDirectoryConfig } from 'turtle/builders/utils/workingdir';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
 
 const l = logger.withFields({ buildPhase: 'setting up environment' });
 
 interface IShellAppFormaters {
-  formatShellAppDirectory: (sdkVersion: string) => string;
+  formatShellAppDirectory: (config: IShellAppDirectoryConfig) => string;
   formatShellAppTarballUriPath: (sdkMajorVersion: string) => string;
 }
 
@@ -27,7 +28,7 @@ export async function ensureShellAppIsPresent(
   formatters: IShellAppFormaters,
   postDownloadAction?: PostDownloadAction,
 ) {
-  const workingdir = formatters.formatShellAppDirectory(sdkVersion);
+  const workingdir = formatters.formatShellAppDirectory({ sdkVersion });
   if (await fs.pathExists(workingdir)) {
     return;
   }
