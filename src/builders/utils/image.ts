@@ -18,15 +18,15 @@ export async function resizeIconWithSharpAsync(iconSizePx: number, iconFilename:
   await fs.writeFile(filename, buffer);
 }
 
-export async function getImageDimensionsWithSharpAsync(basename: string, dirname: string) {
+export async function getImageDimensionsWithSharpAsync(dirname: string, basename: string) {
   const filename = path.join(dirname, basename);
 
   // PLEASE DON'T REMOVE THE FOLLOWING LINE (sharp caches files taking path as the cache key)
   sharp.cache(false);
 
   try {
-    const meta = await sharp(filename).metadata();
-    return [meta.width, meta.height];
+    const { width, height } = await sharp(filename).metadata();
+    return { width, height };
   } catch (e) {
     return null;
   }
