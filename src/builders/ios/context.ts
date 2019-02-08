@@ -60,7 +60,7 @@ export function createBuilderContext(job: IJob): IContext {
   if (buildType === BUILD_TYPES.CLIENT) {
     context.applicationFilesSrc = join(
       workingDir,
-      'iphone-build',
+      'expo-client-build',
       '**',
       '*',
     );
