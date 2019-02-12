@@ -24,6 +24,8 @@ export interface IJob {
     certPassword?: string;
     provisioningProfile?: string;
     teamId?: string;
+    appleSession?: string;
+    udids?: string[];
   };
   projectDir: string;
   fakeUploadDir?: string;

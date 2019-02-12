@@ -8,6 +8,7 @@ import buildArchive from 'turtle/builders/ios/archive';
 import { createBuilderContext, IContext } from 'turtle/builders/ios/context';
 import buildSimulator from 'turtle/builders/ios/simulator';
 import { logErrorOnce } from 'turtle/builders/utils/common';
+import prepareAdHocBuildCredentials from 'turtle/builders/utils/ios/adhocBuild';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import config from 'turtle/config';
 import { IOS, PLATFORMS } from 'turtle/constants/index';
@@ -28,6 +29,11 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
     await initBuilder(ctx);
 
     const { buildType } = job.config;
+
+    if (buildType === BUILD_TYPES.CLIENT) {
+      await prepareAdHocBuildCredentials(job);
+    }
+
     if ([BUILD_TYPES.ARCHIVE, BUILD_TYPES.CLIENT].includes(buildType!)) {
       await buildArchive(ctx, job);
     } else if (buildType === BUILD_TYPES.SIMULATOR) {
