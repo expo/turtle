@@ -1,4 +1,9 @@
+import fs from 'fs-extra';
+import path from 'path';
 import config from 'turtle/config';
+
+const { version: turtleVersion } = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf-8'));
+export { turtleVersion };
 
 let shouldExit = false;
 let currentJobId: string | null = null;
