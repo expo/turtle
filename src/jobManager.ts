@@ -1,6 +1,3 @@
-import path from 'path';
-
-import fs from 'fs-extra';
 import _ from 'lodash';
 
 import * as sqs from 'turtle/aws/sqs';
@@ -11,12 +8,10 @@ import { BUILD } from 'turtle/constants/index';
 import logger from 'turtle/logger';
 import * as buildDurationMetric from 'turtle/metrics/buildDuration';
 import * as buildStatusMetric from 'turtle/metrics/buildStatus';
-import { checkShouldExit, setCurrentJobId } from 'turtle/turtleContext';
+import { checkShouldExit, setCurrentJobId, turtleVersion } from 'turtle/turtleContext';
 import { getPriorities } from 'turtle/utils/priorities';
 import * as redis from 'turtle/utils/redis';
 import { sanitizeJob } from 'turtle/validator';
-
-const { version: turtleVersion } = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf-8'));
 
 function _maybeExit() {
   if (checkShouldExit()) {
