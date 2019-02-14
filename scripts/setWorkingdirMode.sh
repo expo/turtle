@@ -48,10 +48,10 @@ setup_remote() {
     echo "Shell apps already fetched"
   else
     echo "Fetching shell apps"
-    if [ "$PLATFORM" != 'ios']; then
+    if [ "$PLATFORM" != 'ios' ]; then
       $ROOT_DIR/scripts/android/fetchRemoteAndroidTarball.sh
     fi
-    if [ "$PLATFORM" != 'android']; then
+    if [ "$PLATFORM" != 'android' ]; then
       $ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
     fi
   fi
