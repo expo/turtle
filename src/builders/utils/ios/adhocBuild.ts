@@ -49,8 +49,6 @@ async function prepareAdHocBuildCredentials(job: IJob) {
     }
 
     logger.info('New ad hoc provisioning profile successfully created');
-    console.log(credentials.provisioningProfile);
-
     job.credentials.provisioningProfile = credentials.provisioningProfile;
 
     if (isOffline()) {
