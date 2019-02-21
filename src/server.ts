@@ -4,7 +4,10 @@ import config from 'turtle/config';
 import { doJob } from 'turtle/jobManager';
 import logger from 'turtle/logger';
 import setup from 'turtle/setup';
-import { checkShouldExit, setShouldExit } from 'turtle/turtleContext';
+import { checkShouldExit, setShouldExit, turtleVersion } from 'turtle/turtleContext';
+import { getRedisClient, RedisClient } from 'turtle/utils/redis';
+
+const REDIS_TURTLE_VERSION_KEY = 'turtle:version';
 
 process.on('unhandledRejection', (err) => logger.error('Unhandled promise rejection:', err));
 
@@ -30,6 +33,15 @@ async function main() {
   if (setup[config.platform]) {
     await setup[config.platform]();
   }
+
+  try {
+    const redis = await getRedisClient(RedisClient.Configuration);
+    await redis.set(REDIS_TURTLE_VERSION_KEY, turtleVersion);
+    logger.info(`Register Turtle version ${turtleVersion} in Redis`);
+  } catch (err) {
+    logger.error('Failed to register Turtle version in Redis', err);
+  }
+
   while (true) {
     try {
       await doJob();
