@@ -10,6 +10,11 @@ import HackyLogglyStream from 'turtle/logger/hackyLogglyStream';
 import S3Stream from 'turtle/logger/s3Stream';
 import { isOffline } from 'turtle/turtleContext';
 
+// type error when using import
+// https://github.com/googleapis/nodejs-logging-bunyan/issues/241
+// tslint:disable-next-line:no-var-requires
+const { LoggingBunyan } = require('@google-cloud/logging-bunyan');
+
 interface IStream {
   stream: any;
   type?: string;
@@ -54,8 +59,6 @@ if (config.logger.loggly.token) {
     // prettier-ignore
     tags: [
       'app-shell-apps',
-      `platform.${config.platform}`,
-      `environment.${config.deploymentEnv}`,
     ],
   };
   logglyStream = new HackyLogglyStream(logglyConfig);
@@ -65,9 +68,23 @@ if (config.logger.loggly.token) {
   });
 }
 
+if (config.google.credentials) {
+  const resource = {
+    type: 'generic_node',
+    labels: {
+      node_id: config.hostname,
+      location: '', // default value
+      namespace: '', // default value
+    },
+  };
+  streams.push(new LoggingBunyan({ name: 'turtle', resource }).stream('info'));
+}
+
 const logger = bunyan.createLogger({
   name: 'turtle',
   level: config.logger.level,
+  platform: config.platform,
+  environment: config.deploymentEnv,
   streams,
 });
 

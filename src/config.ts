@@ -53,6 +53,9 @@ export default {
       buffer: envNum('LOGGLY_BUFFER', 100),
     },
   },
+  google: {
+    credentials: env('GOOGLE_APPLICATION_CREDENTIALS', ''),
+  },
   sentry: {
     dsn: env('SENTRY_DSN', ''),
   },
