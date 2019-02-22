@@ -62,7 +62,7 @@ async function runShellAppBuilder(
 
   const { manifest: { sdkVersion: sdkVersionFromManifest = null } = {}, sdkVersion: sdkVersionFromJob } = jobData;
   const sdkVersion = sdkVersionFromJob || sdkVersionFromManifest;
-  const workingDir = formatShellAppDirectory(sdkVersion);
+  const workingDir = formatShellAppDirectory({ sdkVersion });
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({

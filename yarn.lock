@@ -9813,10 +9813,10 @@ xdg-basedir@^3.0.0:
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-3.0.0.tgz#496b2cc109eca8dbacfe2dc72b603c17c5870ad4"
   integrity sha1-SWsswQnsqNus/i3HK2A8F8WHCtQ=
 
-xdl@53.1.0:
-  version "53.1.0"
-  resolved "https://registry.yarnpkg.com/xdl/-/xdl-53.1.0.tgz#8fe13af902235cd5589c6a610efa940d9385240a"
-  integrity sha512-+jDHnIMVO5/tDhUtpoddPoBOrj2xAGOtjAwcu1hHP18xi4mKqGFNLDDEDyGKecYpRWKY2hS0J187AioIh0kPSg==
+xdl@53.1.1:
+  version "53.1.1"
+  resolved "https://registry.yarnpkg.com/xdl/-/xdl-53.1.1.tgz#276639af1f7ac6daae42e709c9736d27bb06dd08"
+  integrity sha512-a6BzEEa06GXVBs4aDjho07pFxnjxykByTfZ4rjPGJ3MAVWErBJEEoov54AUThl8wxstif4nYziqtYNiVYDcO2g==
   dependencies:
     "@expo/bunyan" "3.0.2"
     "@expo/json-file" "8.1.0"
@@ -9855,7 +9855,6 @@ xdl@53.1.0:
     mv "2.1.1"
     ncp "2.0.0"
     node-forge "0.7.6"
-    node-pty-prebuilt "^0.7.6"
     opn "5.4.0"
     p-timeout "2.0.1"
     pacote "9.2.3"
@@ -9881,6 +9880,8 @@ xdl@53.1.0:
     util.promisify "1.0.0"
     uuid "3.3.2"
     xmldom "0.1.27"
+  optionalDependencies:
+    node-pty-prebuilt "^0.7.6"
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
