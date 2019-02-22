@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.11] - 2019-02-22
+### Added
+- Builder for iOS client apps
+
 ## [0.5.10] - 2019-02-19
 ### Added
 - Register Turtle version in Redis
