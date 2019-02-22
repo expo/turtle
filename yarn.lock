@@ -163,10 +163,10 @@
     "@types/cross-spawn" "^6.0.0"
     cross-spawn "^6.0.5"
 
-"@expo/traveling-fastlane-darwin@^1.8.0":
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-darwin/-/traveling-fastlane-darwin-1.8.0.tgz#da48889a73f555f4d1b7a3cfa33bb76af829d2a8"
-  integrity sha512-bPBWLRVjvbRczhprwL10GPW9WCuAG/vQ+FtrvyCZDOetWNR2IOJUGJCRPjjItLCKZ/FLk4BFb+/yZ0RDjRPv/A==
+"@expo/traveling-fastlane-darwin@^1.8.1":
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-darwin/-/traveling-fastlane-darwin-1.8.1.tgz#37c16a253e92d3ef6f543e7271b7239e6edbbb5f"
+  integrity sha512-Nt+579oBMrMEzVn0Esv7c8nIOwoDX/xS6CThoWPRFMVIeQ52aK1mf7wu91/+FCU/fvfUFZ/evERIDWS1lObRxA==
 
 "@gulp-sourcemaps/identity-map@1.X":
   version "1.0.2"

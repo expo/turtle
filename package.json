@@ -126,6 +126,6 @@
     "xdl": "53.1.1"
   },
   "optionalDependencies": {
-    "@expo/traveling-fastlane-darwin": "^1.8.0"
+    "@expo/traveling-fastlane-darwin": "^1.8.1"
   }
 }
