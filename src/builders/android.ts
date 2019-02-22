@@ -60,20 +60,21 @@ async function runShellAppBuilder(
 
   const outputFilePath = path.join(temporaryFilesRoot, `shell-signed-${jobData.id}.apk`);
 
-  const { manifest: { sdkVersion: sdkVersionFromManifest = null } = {}, sdkVersion: sdkVersionFromJob } = jobData;
-  const sdkVersion = sdkVersionFromJob || sdkVersionFromManifest;
+  const { config: jobConfig, manifest, sdkVersion: sdkVersionFromJob } = jobData;
+  const sdkVersion = _.get(manifest, 'sdkVersion', sdkVersionFromJob);
   const workingDir = formatShellAppDirectory({ sdkVersion });
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
       url: commonUtils.getExperienceUrl(jobData),
-      sdkVersion: _.get(jobData, 'manifest.sdkVersion') || jobData.sdkVersion,
+      sdkVersion,
       keystore: tempKeystorePath,
+      manifest,
       alias: credentials.keystoreAlias,
       keystorePassword: credentials.keystorePassword,
       keyPassword: credentials.keyPassword,
       privateConfigFile: tempShellAppConfigPath,
-      releaseChannel: jobData.config.releaseChannel,
+      releaseChannel: jobConfig.releaseChannel,
       workingDir,
       outputFile: outputFilePath,
     });
