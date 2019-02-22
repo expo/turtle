@@ -12,11 +12,13 @@ export default baseJobSchema.concat(
     }),
     credentials: Joi.object()
       .keys({
-        certP12: Joi.string(),
-        certPassword: Joi.string(),
-        teamId: Joi.string(),
+        certP12: Joi.string().required(),
+        certPassword: Joi.string().required(),
+        teamId: Joi.string().required(),
+        // it's not required for adhoc Expo Client builds
         provisioningProfile: Joi.string(),
-        password: Joi.string(),
+        appleSession: Joi.string(),
+        udids: Joi.array().items(Joi.string()),
       })
       .when('config.buildType', {
         is: IOS.BUILD_TYPES.SIMULATOR,

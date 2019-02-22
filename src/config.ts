@@ -8,7 +8,7 @@ export default {
   env: env('NODE_ENV'),
   hostname: env('HOSTNAME', os.hostname()),
   deploymentEnv: env('ENVIRONMENT'),
-  platform: env('PLATFORM', PLATFORMS.IOS),
+  platform: env('PLATFORM', PLATFORMS.IOS) as PLATFORMS,
   aws: {
     accessKeyId: env('AWS_ACCESS_KEY_ID'),
     secretAccessKey: env('AWS_SECRET_ACCESS_KEY'),

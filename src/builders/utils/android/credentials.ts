@@ -2,7 +2,7 @@ import path from 'path';
 
 import fs from 'fs-extra';
 import uuidv4 from 'uuid/v4';
-import { AndroidKeystore } from 'xdl';
+import { Credentials } from 'xdl';
 
 import * as sqs from 'turtle/aws/sqs';
 import { UPDATE_CREDENTIALS } from 'turtle/constants/build';
@@ -21,13 +21,15 @@ async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredential
     credentials.keystoreAlias = Buffer.from(jobData.experienceName).toString('base64');
     const androidPackage = jobData.manifest.android.package;
 
-    await AndroidKeystore.createKeystore({
-      keystorePassword: credentials.keystorePassword,
-      keyPassword: credentials.keyPassword,
-      keystoreFilename,
-      keystoreAlias: credentials.keystoreAlias,
+    await Credentials.Android.createKeystore(
+      {
+        keystorePath: keystoreFilename,
+        keystorePassword: credentials.keystorePassword,
+        keyPassword: credentials.keyPassword,
+        keyAlias: credentials.keystoreAlias,
+      },
       androidPackage,
-    });
+    );
 
     credentials.keystore = (await fs.readFile(keystoreFilename)).toString('base64');
     l.info('Keystore created successfully');

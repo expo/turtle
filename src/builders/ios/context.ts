@@ -22,9 +22,11 @@ export interface IContext {
   tempCertPath: string;
   uploadPath: string;
   workingDir: string;
+  workspacePath: string;
+  applicationFilesSrc: string;
 }
 
-const { DEFAULT_EXPOKIT_WORKSPACE_NAME } = IosShellApp;
+const { EXPOKIT_APP, EXPONENT_APP } = IosShellApp;
 const { BUILD_TYPES } = IOS;
 
 export function createBuilderContext(job: IJob): IContext {
@@ -39,7 +41,7 @@ export function createBuilderContext(job: IJob): IContext {
   } = job;
 
   const sdkVersion = sdkVersionFromJob || sdkVersionFromManifest;
-  const workingDir = formatShellAppDirectory(sdkVersion);
+  const workingDir = formatShellAppDirectory({ sdkVersion, buildType: buildType! });
 
   const context: any = {
     appDir: join(config.directories.temporaryFilesRoot, appUUID),
@@ -55,24 +57,63 @@ export function createBuilderContext(job: IJob): IContext {
   context.tempCertPath = join(context.appDir, 'cert.p12');
   context.baseArchiveDir = join(context.appDir, 'archive');
 
-  if (buildType === BUILD_TYPES.SIMULATOR) {
-    context.outputPath = join(context.appDir, 'archive.tar.gz');
-    context.uploadPath = join(context.appDir, 'archive.tar.gz');
-    context.archiveDir = join(
-      context.baseArchiveDir,
-      'Release',
-      `${DEFAULT_EXPOKIT_WORKSPACE_NAME}.app`,
+  if (buildType === BUILD_TYPES.CLIENT) {
+    context.applicationFilesSrc = join(
+      workingDir,
+      'expo-client-build',
+      '**',
+      '*',
     );
-  } else if (buildType === BUILD_TYPES.ARCHIVE) {
+  } else {
+    context.applicationFilesSrc = join(
+      workingDir,
+      'shellAppBase-builds',
+      buildType as string,
+      '**',
+      '*',
+    );
+  }
+
+  if (buildType === BUILD_TYPES.ARCHIVE) {
     context.outputPath = join(context.appDir, 'archive.xcarchive');
     context.uploadPath = join(context.buildDir, 'archive.ipa');
     context.archiveDir = join(
       context.baseArchiveDir,
       'Release',
-      `${DEFAULT_EXPOKIT_WORKSPACE_NAME}.xcarchive`,
+      `${EXPOKIT_APP}.xcarchive`,
       'Products',
       'Applications',
-      `${DEFAULT_EXPOKIT_WORKSPACE_NAME}.app`,
+      `${EXPOKIT_APP}.app`,
+    );
+    context.workspacePath = path.join(
+      workingDir,
+      'shellAppWorkspaces',
+      'ios',
+      'default',
+      `${EXPOKIT_APP}.xcworkspace`,
+    );
+  } else if (buildType === BUILD_TYPES.CLIENT) {
+    context.outputPath = join(context.appDir, 'archive.xcarchive');
+    context.uploadPath = join(context.buildDir, 'archive.ipa');
+    context.archiveDir = join(
+      context.baseArchiveDir,
+      `${EXPONENT_APP}.xcarchive`,
+      'Products',
+      'Applications',
+      `${EXPONENT_APP}.app`,
+    );
+    context.workspacePath = path.join(
+      workingDir,
+      'ios',
+      `${EXPONENT_APP}.xcworkspace`,
+    );
+  } else if (buildType === BUILD_TYPES.SIMULATOR) {
+    context.outputPath = join(context.appDir, 'archive.tar.gz');
+    context.uploadPath = join(context.appDir, 'archive.tar.gz');
+    context.archiveDir = join(
+      context.baseArchiveDir,
+      'Release',
+      `${EXPOKIT_APP}.app`,
     );
   }
 

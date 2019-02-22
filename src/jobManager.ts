@@ -2,6 +2,7 @@ import _ from 'lodash';
 
 import * as sqs from 'turtle/aws/sqs';
 import builders from 'turtle/builders';
+import BuildError from 'turtle/builders/BuildError';
 import { logErrorOnce } from 'turtle/builders/utils/common';
 import config from 'turtle/config';
 import { BUILD } from 'turtle/constants/index';
@@ -139,7 +140,15 @@ async function build(job: any) {
   } catch (err) {
     logErrorOnce(err);
     const buildDuration = calculateBuildDuration();
-    sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, { turtleVersion, buildDuration });
+    let reason;
+    if (err instanceof BuildError) {
+      reason = err.reason;
+    }
+    sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, {
+      turtleVersion,
+      buildDuration,
+      ...reason && { reason },
+    });
     return false;
   } finally {
     await logger.cleanup(job);
