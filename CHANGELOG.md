@@ -6,13 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.12] - 2019-02-26
+### Added
+- Google Cloud logger (as a bunyan stream).
+### Changed
+- Android builder passes the manifest from a build job message if it's available.
+
 ## [0.5.11] - 2019-02-22
 ### Added
-- Builder for iOS client apps
+- Builder for iOS client apps.
 
 ## [0.5.10] - 2019-02-19
 ### Added
-- Register Turtle version in Redis
+- Register Turtle version in Redis.
 ### Changed
 - Update Android shell app for SDK 32 to fix [update](https://github.com/expo/expo/issues/3504) and [back button](https://github.com/expo/expo/issues/1786) issues.
 
