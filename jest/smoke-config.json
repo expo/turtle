@@ -9,6 +9,6 @@
     "^.+\\.ts$": "ts-jest"
   },
   "testMatch": [ "**/__smoke__/*.test.ts" ],
-  "moduleFileExtensions": ["ts", "js"],
+  "moduleFileExtensions": ["ts", "js", "json"],
   "verbose": true
 }

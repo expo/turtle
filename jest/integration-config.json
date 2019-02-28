@@ -9,6 +9,6 @@
     "^.+\\.ts$": "ts-jest"
   },
   "testRegex": "(test|spec)\\.ts$",
-  "moduleFileExtensions": ["ts", "js"],
+  "moduleFileExtensions": ["ts", "js", "json"],
   "verbose": true
 }
