@@ -10,11 +10,13 @@ import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdi
 import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/image';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
+import { ensureCanBuildSdkVersion } from 'turtle/builders/utils/version';
 import config from 'turtle/config';
 import { IAndroidCredentials, IJob, IJobResult } from 'turtle/job';
 import logger from 'turtle/logger';
 
 export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
+  await ensureCanBuildSdkVersion(jobData);
   const credentials = await getOrCreateCredentials(jobData);
   const apkFilePath = await runShellAppBuilder(jobData, credentials);
   const randomHex = uuidv4().replace(/-/g, '');
