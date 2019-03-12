@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.13] - 2019-03-12
+### Added
+- Android SDK version support validation.
+### Changed
+- iOS Enterprise builds don't compile bitcode now.
+
 ## [0.5.12] - 2019-02-26
 ### Added
 - Google Cloud logger (as a bunyan stream).
