@@ -1,12 +1,17 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-export async function loadAppJSON(projectDirArg: string) {
-  const projectDir = resolveAbsoluteDir(projectDirArg);
-  const appJSONPath = path.join(projectDir, 'app.json');
+export async function loadAppJSON(projectDirArg: string, config: string | null) {
+  let appJSONPath;
+  if (config) {
+    appJSONPath = resolveAbsoluteDir(config);
+  } else {
+    const projectDir = resolveAbsoluteDir(projectDirArg);
+    appJSONPath = path.join(projectDir, 'app.json');
+  }
   const appJSONExists = await fs.pathExists(appJSONPath);
   if (!appJSONExists) {
-    throw new Error(`Couldn't find app.json in ${projectDir} directory.`);
+    throw new Error(`Couldn't find app.json.`);
   } else {
     return require(appJSONPath);
   }

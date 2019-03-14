@@ -60,7 +60,7 @@ export function createBuilderAction({
         publicUrl: cmd.publicUrl,
       };
 
-      const appJSON = await ProjectUtils.loadAppJSON(projectDirArg);
+      const appJSON = await ProjectUtils.loadAppJSON(projectDirArg, cmd.config);
       const sdkVersion = _.get(appJSON, 'expo.sdkVersion');
       await setup(platform, sdkVersion);
       const credentials = await prepareCredentials(cmd);

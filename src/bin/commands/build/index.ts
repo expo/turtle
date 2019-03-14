@@ -20,7 +20,8 @@ function setCommonCommandOptions(cmd: any) {
     .option(
       '--release-channel <channel-name>',
       'pull from specified release channel (default: default)',
-    );
+    )
+    .option('-c --config <config-file>', 'specify a path to app.json');
 }
 
 export default {
