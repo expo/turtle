@@ -41,6 +41,10 @@ export function createDefaultConfigurationKey(platform = config.platform) {
 }
 
 export async function getPriorities() {
+  if (config.env === 'test') {
+    return NORMAL_CONFIGURATION;
+  }
+
   try {
     const redis = await getRedisClient(RedisClient.Configuration);
     if (redis.getConfig === undefined) {
