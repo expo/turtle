@@ -16,6 +16,12 @@ jobs:
       - checkout
       - run: yarn
       - run: ./scripts/testUnitCI.sh
+  abc:
+    docker:
+      - image: circleci/node:8.12
+    steps:
+      - checkout
+      - run: echo "123"
 
 workflows:
   version: 2
