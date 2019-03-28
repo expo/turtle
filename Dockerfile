@@ -102,13 +102,6 @@ ENV PATH ${GRADLE_HOME}/bin:$PATH
 # Install Gulp
 RUN npm install -g gulp-cli
 
-# Install Git
-RUN echo 'deb http://http.debian.net/debian wheezy-backports main' >> /etc/apt/sources.list && \
-  apt-get update && \
-  apt-get -t wheezy-backports install git-core && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
-
 ADD . /app
 
 RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
