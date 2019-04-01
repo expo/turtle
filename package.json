@@ -26,7 +26,7 @@
     "test:integration": "yarn test --config jest/integration-config.json",
     "test:unit": "yarn test --config jest/unit-config.json",
     "test:smoke": "yarn test --config jest/smoke-config.json --forceExit",
-    "test:smoke:android": "yarn test:smoke --testNamePattern=android",
+    "test:smoke:android": "PLATFORM=android yarn test:smoke --testNamePattern=android",
     "test:smoke:ios": "PLATFORM=ios yarn test:smoke --testNamePattern=iOS",
     "release": "./scripts/release.sh",
     "release:beta": "./scripts/releaseBeta.sh",
