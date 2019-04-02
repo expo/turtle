@@ -9,7 +9,7 @@ import { getRedisClient, RedisClient } from 'turtle/utils/redis';
 
 const REDIS_TURTLE_VERSION_KEY = 'turtle:version';
 
-process.on('unhandledRejection', (err) => logger.error('Unhandled promise rejection:', err));
+process.on('unhandledRejection', (err) => logger.error({err}, 'Unhandled promise rejection'));
 
 function handleExit() {
   if (checkShouldExit()) {
@@ -39,19 +39,19 @@ async function main() {
     await redis.set(REDIS_TURTLE_VERSION_KEY, turtleVersion);
     logger.info(`Register Turtle version ${turtleVersion} in Redis`);
   } catch (err) {
-    logger.error('Failed to register Turtle version in Redis', err);
+    logger.error({err}, 'Failed to register Turtle version in Redis');
   }
 
   while (true) {
     try {
       await doJob();
     } catch (err) {
-      logger.error('Failed to do a job', err);
+      logger.error({err}, 'Failed to do a job');
     }
   }
 }
 
 main()
   .then(() => logger.error('This should never happen...'))
-  .catch((err) => logger.error('Something went terribly wrong :(', err))
+  .catch((err) => logger.error({err}, 'Something went terribly wrong'))
   .then(() => process.exit(1));
