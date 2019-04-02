@@ -105,7 +105,6 @@
     "aws-sdk": "^2.226.1",
     "bunyan": "^1.8.12",
     "bunyan-debug-stream": "^1.0.8",
-    "bunyan-loggly": "^1.3.4",
     "bunyan-sentry-stream": "^1.2.1",
     "commander": "^2.15.1",
     "copy": "^0.3.1",

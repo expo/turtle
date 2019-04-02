@@ -47,11 +47,6 @@ export default {
     client: {
       level: env('CLIENT_LOGGER_LEVEL', 'info'),
     },
-    loggly: {
-      token: env('LOGGLY_TOKEN', ''),
-      subdomain: env('LOGGLY_SUBDOMAIN', ''),
-      buffer: envNum('LOGGLY_BUFFER', 100),
-    },
   },
   google: {
     credentials: env('GOOGLE_APPLICATION_CREDENTIALS', ''),
