@@ -50,8 +50,6 @@ spec:
             value: exp-shell-app-assets
           - name: AWS_S3_REGION
             value: us-west-1
-          - name: LOGGLY_SUBDOMAIN
-            value: exponent
           - name: TURTLE_TEMPORARY_FILES_DIR
             value: /tmp/turtle
           # vars from k8s secrets
@@ -100,11 +98,6 @@ spec:
               secretKeyRef:
                 name: turtle-js-config
                 key: aws_cloudwatch_region
-          - name: LOGGLY_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: turtle-js-config
-                key: loggly_token
           - name: REDIS_URL
             valueFrom:
               secretKeyRef:

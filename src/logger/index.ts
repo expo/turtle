@@ -6,7 +6,6 @@ import { Client as RavenClient } from 'raven';
 import config from 'turtle/config';
 import * as constants from 'turtle/constants/logger';
 import { IJob } from 'turtle/job';
-import HackyLogglyStream from 'turtle/logger/hackyLogglyStream';
 import S3Stream from 'turtle/logger/s3Stream';
 import { isOffline } from 'turtle/turtleContext';
 
@@ -23,7 +22,6 @@ interface IStream {
 }
 
 export const s3logger = new S3Stream();
-let logglyStream: HackyLogglyStream;
 
 const streams: IStream[] = [];
 
@@ -52,22 +50,6 @@ if (config.sentry.dsn && config.deploymentEnv !== 'development') {
   });
 }
 
-if (config.logger.loggly.token) {
-  const logglyConfig = {
-    token: config.logger.loggly.token,
-    subdomain: config.logger.loggly.subdomain,
-    // prettier-ignore
-    tags: [
-      'app-shell-apps',
-    ],
-  };
-  logglyStream = new HackyLogglyStream(logglyConfig);
-  streams.push({
-    type: 'raw',
-    stream: logglyStream,
-  });
-}
-
 if (config.google.credentials) {
   const resource = {
     type: 'generic_node',
@@ -91,18 +73,12 @@ const logger = bunyan.createLogger({
 logger.withFields = (extraFields: any) => withFields(logger, extraFields);
 
 logger.init = async (job: IJob) => {
-  if (logglyStream) {
-    logglyStream.init(job);
-  }
   return await s3logger.init(job);
 };
 
 logger.cleanup = async () => {
   // a little hacky, but works
   logger.info({ lastBuildLog: true }, 'this is the last log from this build');
-  if (logglyStream) {
-    logglyStream.cleanup();
-  }
   await s3logger.waitForLogger();
 };
 
