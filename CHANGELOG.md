@@ -5,9 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.5.15] - 2019-04-03
 ### Added
 - Turtle smoke tests are now being executed on CircleCI from the context of this repository.
 ### Changed
+- Updated iOS shell app for SDK 32 (fixes [this loading issue for slow connections](https://github.com/expo/expo/issues/3574)).
 - Minor infra changes (doesn't affect users).
 - Error logs format - error objects are now passed in an object being passed as the first argument to logger function.
 ### Removed
