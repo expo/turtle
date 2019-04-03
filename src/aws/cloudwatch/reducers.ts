@@ -7,7 +7,7 @@ export function sum(metrics: IMetric[]) {
   const reduced = metrics.reduce((acc: IMetric | null, i: IMetric) => {
     let result = acc;
     if (!result) {
-      result = {...i};
+      result = { ...i };
     } else {
       result.Value += i.Value;
     }

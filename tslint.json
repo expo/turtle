@@ -5,7 +5,10 @@
   "rules": {
     "quotemark": [true, "single", "jsx-double"],
     "object-literal-sort-keys": false,
+    "object-curly-spacing": true,
     "no-namespace": false
   },
-  "rulesDirectory": []
+  "rulesDirectory": [
+    "node_modules/tslint-eslint-rules/dist/rules"
+  ]
 }
