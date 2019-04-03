@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Turtle smoke tests are now being executed on CircleCI from the context of this repository.
-
 ### Changed
 - Minor infra changes (doesn't affect users).
+- Error logs format - error objects are now passed in an object being passed as the first argument to logger function.
+### Removed
+- Sending logs to loggly.
 
 ## [0.5.14] - 2019-03-22
 ### Added
