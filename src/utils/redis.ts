@@ -52,7 +52,7 @@ export async function getRedisClient(type = RedisClient.Default) {
     try {
       redisClients[type] = await connect(MILLIS_CONNECTION_TIMEOUT, type);
     } catch (err) {
-      logger.error({err});
+      logger.error({ err });
     }
   }
   return redisClients[type];
@@ -66,7 +66,7 @@ export async function checkIfCancelled(jobId: string) {
     if (config.deploymentEnv === 'development') {
       logger.warn('Did you turn on redis server? Run `yarn start-docker` in server/www');
     }
-    logger.error({err});
+    logger.error({ err });
     return false;
   }
 }

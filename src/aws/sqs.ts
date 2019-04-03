@@ -36,7 +36,7 @@ export async function receiveMessage(priority: string) {
         }
       })
       .catch((err) => {
-        logger.error({err}, 'Receive error');
+        logger.error({ err }, 'Receive error');
         throw err;
       });
   });
@@ -68,7 +68,7 @@ export function changeMessageVisibilityRecurring(priority: string, receiptHandle
   return setInterval(() => {
     if (getCurrentJobId() === jobId) {
       changeMessageVisibility(priority, receiptHandle).catch((err) => {
-        logger.warn({err}, 'Error at change msg visibility');
+        logger.warn({ err }, 'Error at change msg visibility');
       });
     }
   }, (VISIBILITY_TIMEOUT_SEC * 1000) / 3);
@@ -86,6 +86,6 @@ export async function sendMessage(jobId: string, status: JOB_UPDATE_TYPE, data =
       return await sqs.sendMessage(params).promise();
     });
   } catch (err) {
-    logger.error({err}, `Error sending SQS message: ${JSON.stringify(params)}}`);
+    logger.error({ err }, `Error sending SQS message: ${JSON.stringify(params)}}`);
   }
 }

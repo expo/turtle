@@ -33,7 +33,7 @@ async function setupAction(program: any, cmd: any, platform: string, os?: string
     await setup(platform, sdkVersion);
     l.info('it\'s all set!');
   } catch (err) {
-    logger.error({err}, `Failed to setup environment for ${platform} builds`);
+    logger.error({ err }, `Failed to setup environment for ${platform} builds`);
     if (err instanceof ErrorWithCommandHelp) {
       cmd.help();
     } else if (err instanceof ErrorWithProgramHelp) {

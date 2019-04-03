@@ -18,7 +18,7 @@ Command.prototype.asyncAction = function asyncAction(asyncFn: (...asyncFnArgs: a
     try {
       await checkForUpdateAsync();
     } catch (err) {
-      logger.warn({err}, 'Failed to check for turtle-cli update.');
+      logger.warn({ err }, 'Failed to check for turtle-cli update.');
     }
     return await asyncFn(...args);
   });
@@ -26,7 +26,7 @@ Command.prototype.asyncAction = function asyncAction(asyncFn: (...asyncFnArgs: a
 
 export function run(programName: string) {
   runAsync(programName).catch((err) => {
-    logger.error({err}, 'Uncaught Error');
+    logger.error({ err }, 'Uncaught Error');
     process.exit(1);
   });
 }

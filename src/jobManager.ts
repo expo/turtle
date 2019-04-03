@@ -47,7 +47,7 @@ export async function getJob() {
         return job;
       }
     } catch (err) {
-      logger.error({err}, 'Error at receiving messages');
+      logger.error({ err }, 'Error at receiving messages');
     }
   }
 }
@@ -160,6 +160,6 @@ async function deleteMessage(priority: string, receiptHandle: string) {
     setCurrentJobId(null);
     await sqs.deleteMessage(priority, receiptHandle);
   } catch (err) {
-    logger.error({err}, 'Error at deleting msg');
+    logger.error({ err }, 'Error at deleting msg');
   }
 }
