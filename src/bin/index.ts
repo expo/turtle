@@ -17,16 +17,16 @@ Command.prototype.asyncAction = function asyncAction(asyncFn: (...asyncFnArgs: a
   return this.action(async (...args) => {
     try {
       await checkForUpdateAsync();
-    } catch (e) {
-      logger.warn('Failed to check for turtle-cli update.');
+    } catch (err) {
+      logger.warn({ err }, 'Failed to check for turtle-cli update.');
     }
     return await asyncFn(...args);
   });
 };
 
 export function run(programName: string) {
-  runAsync(programName).catch((e) => {
-    logger.error('Uncaught Error', e);
+  runAsync(programName).catch((err) => {
+    logger.error({ err }, 'Uncaught Error');
     process.exit(1);
   });
 }

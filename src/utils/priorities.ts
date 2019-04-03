@@ -60,24 +60,23 @@ export async function getPriorities() {
       logger.debug(`Using configuration at index ${configurationsIndex} pulled from redis`);
       const { error, value: configValue } = configSchema.validate(configurations[configurationsIndex]);
       if (error) {
-        logger.warn(error);
+        logger.warn({ err: error });
         throw new Error('Received configuration is not valid');
       }
       return configValue;
     } catch (err) {
-      logger.warn(err);
+      logger.warn({ err });
       const defaultConfig = JSON.parse(await redis.get(createDefaultConfigurationKey()));
       const { error, value: defaultConfigValue } = configSchema.validate(defaultConfig);
       if (error) {
-        logger.warn(error);
+        logger.warn({ err: error });
         throw new Error('Received default configuration is not valid');
       }
       logger.warn('Using default configuration pulled from redis');
       return defaultConfigValue;
     }
   } catch (err) {
-    logger.warn(err);
-    logger.warn('Using configuration chosen locally');
+    logger.warn({ err }, 'Using configuration chosen locally');
     if (Math.random() < 0.7) {
       return HIGH_CONFIGURATION;
     } else {

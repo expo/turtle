@@ -179,7 +179,7 @@ function _pushMetrics(metrics: IMetricsChunk[]) {
   metrics.forEach((metricsChunk) => {
     cloudWatch.putMetricData(metricsChunk, (err) => {
       if (err) {
-        logger.warn('[cloudwatch]', err);
+        logger.warn({ err }, '[cloudwatch]');
       }
     });
   });

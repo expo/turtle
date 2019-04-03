@@ -26,9 +26,9 @@ export async function ensureToolsAreInstalled(tools: IToolDefinition[]) {
     } catch (err) {
       isAnyToolMissing = true;
       if (!testFn) {
-        l.error(`${command} is missing in your $PATH`);
+        l.error({ err }, `${command} is missing in your $PATH`);
       }
-      l.error(missingDescription);
+      l.error({ err }, missingDescription);
     }
   }
   if (isAnyToolMissing) {

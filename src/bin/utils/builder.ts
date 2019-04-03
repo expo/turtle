@@ -72,8 +72,7 @@ export function createBuilderAction({
       const job = await sanitizeJob(rawJob);
       await builder(job);
     } catch (err) {
-      logger.error(`Failed to build standalone app: ${err.message}`);
-      logger.error(err.stack);
+      logger.error({ err }, 'Failed to build standalone app');
       if (err instanceof ErrorWithCommandHelp) {
         command.help();
       } else if (err instanceof ErrorWithProgramHelp) {
