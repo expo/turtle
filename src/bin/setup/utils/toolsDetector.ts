@@ -10,11 +10,12 @@ export interface IToolDefinition {
   command: string;
   missingDescription: string;
   testFn?: () => Promise<boolean>;
+  versionCheckFn?: () => void;
 }
 
 export async function ensureToolsAreInstalled(tools: IToolDefinition[]) {
   let isAnyToolMissing = false;
-  for (const { command, missingDescription, testFn } of tools) {
+  for (const { command, missingDescription, testFn, versionCheckFn } of tools) {
     try {
       if (testFn) {
         if (!await testFn()) {
@@ -29,6 +30,14 @@ export async function ensureToolsAreInstalled(tools: IToolDefinition[]) {
         l.error({ err }, `${command} is missing in your $PATH`);
       }
       l.error({ err }, missingDescription);
+    }
+    if (versionCheckFn) {
+      try {
+        await versionCheckFn();
+      } catch (err) {
+        isAnyToolMissing = true;
+        l.error({ err }, `wrong version of ${command} installed`);
+      }
     }
   }
   if (isAnyToolMissing) {
