@@ -1,12 +1,13 @@
-import { env } from 'turtle/utils/env';
-import { connect, RedisClient } from 'turtle/utils/redis';
+
 import { PLATFORMS } from 'turtle/constants';
+import logger from 'turtle/logger';
 import {
   createConfigurationsKey,
   createDefaultConfigurationKey,
   HIGH_CONFIGURATION,
   NORMAL_CONFIGURATION,
 } from 'turtle/utils/priorities';
+import { connect, RedisClient } from 'turtle/utils/redis';
 
 const TIMEOUT = 3000;
 
@@ -24,7 +25,6 @@ const TIMEOUT = 3000;
 // but after some time, because of TTL for config reservations,
 // they should come back to using configurations no. 1 and 2.
 // If there are no more available configurations from the table, the default configuration is used.
-
 
 const AVAILABLE_CONFIGURATIONS_IOS = [
   HIGH_CONFIGURATION,
@@ -54,7 +54,6 @@ const AVAILABLE_CONFIGURATIONS_ANDROID = [
   NORMAL_CONFIGURATION,
 ];
 
-
 const DEFAULT_CONFIGURATION = HIGH_CONFIGURATION;
 
 async function run() {
@@ -68,6 +67,8 @@ async function run() {
   redis.disconnect();
 }
 
-run()
-  .then(() => console.log('All done'))
-  .catch(err => console.error('Error:', err));
+if (require.main === module) {
+  run()
+    .then(() => logger.info('All done'))
+    .catch((err) => logger.error('Error:', err));
+}

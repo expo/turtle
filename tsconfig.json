@@ -6,17 +6,20 @@
     "sourceMap": true,
     "inlineSources": true,
     "outDir": "./build",
-    "rootDir": "./src",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "turtle/*": ["src/*"],
     },
-    "allowJs": true
+    "allowJs": true,
+    "plugins": [
+      { "transform": "ts-transformer-imports" }
+    ]
   },
+  "include": ["src"],
   "exclude": ["node_modules", "build", "workingdir"]
 }

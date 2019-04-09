@@ -20,7 +20,7 @@ const clientToUrl: IClientConfig = {
   [RedisClient.Configuration]: config.redis.configUrl,
 };
 
-export function connect(timeoutMs: number, type: string) {
+export function connect(timeoutMs: number, type: string): Promise<any> {
   return new Promise((resolve, reject) => {
     const redisClient = new Redis(clientToUrl[type], {
       maxRetriesPerRequest: 2,
