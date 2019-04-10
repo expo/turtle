@@ -115,7 +115,7 @@
   },
   "dependencies": {
     "@expo/spawn-async": "^1.4.0",
-    "@google-cloud/logging-bunyan": "^0.9.5",
+    "@google-cloud/logging-bunyan": "^0.10.1",
     "async-retry": "^1.2.1",
     "aws-sdk": "^2.226.1",
     "bunyan": "^1.8.12",
