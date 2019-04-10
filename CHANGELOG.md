@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2019-04-09
+### Changed
+- Removed Branch module from Android shell apps for all SDK versions
+
 ## [0.5.15] - 2019-04-03
 ### Added
 - Turtle smoke tests are now being executed on CircleCI from the context of this repository.
