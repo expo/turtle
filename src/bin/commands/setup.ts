@@ -6,7 +6,7 @@ import setup from 'turtle/bin/setup/setup';
 import { PLATFORMS } from 'turtle/constants';
 import logger from 'turtle/logger';
 
-const l = logger.withFields({ buildPhase: 'setting up environment' });
+const l = logger.child({ buildPhase: 'setting up environment' });
 
 function createSetupCommand(platform: string, os?: string) {
   return (program: any) => {

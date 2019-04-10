@@ -40,8 +40,6 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
     },
   },
 ];
-const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
-const l = logger.withFields(LOGGER_FIELDS);
 
 export default async function setup(sdkVersion?: string) {
   await checkSystem(REQUIRED_TOOLS);
@@ -82,6 +80,8 @@ async function _shellAppPostDownloadAction(workingdir: string) {
 }
 
 async function _installNodeModules(cwd: string) {
+  const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
+  const l = logger.child(LOGGER_FIELDS);
   l.info(`installing dependencies in ${cwd} directory...`);
   const command = await _shouldUseYarnOrNpm();
   await ExponentTools.spawnAsyncThrowError(command, ['install'], {

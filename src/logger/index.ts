@@ -4,7 +4,6 @@ import { SentryStream } from 'bunyan-sentry-stream';
 import { Client as RavenClient } from 'raven';
 
 import config from 'turtle/config';
-import * as constants from 'turtle/constants/logger';
 import { IJob } from 'turtle/job';
 import S3Stream from 'turtle/logger/s3Stream';
 import { isOffline } from 'turtle/turtleContext';
@@ -70,8 +69,6 @@ const logger = bunyan.createLogger({
   streams,
 });
 
-logger.withFields = (extraFields: any) => withFields(logger, extraFields);
-
 logger.init = async (job: IJob) => {
   return await s3logger.init(job);
 };
@@ -83,10 +80,3 @@ logger.cleanup = async () => {
 };
 
 export default logger;
-
-export function withFields(loggerObj: any, extraFields: any) {
-  return constants.LEVELS.reduce((obj, level) => {
-    obj[level] = (...args: any[]) => loggerObj[level](extraFields, ...args);
-    return obj;
-  }, {} as any);
-}

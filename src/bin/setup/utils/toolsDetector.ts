@@ -4,7 +4,6 @@ import _which from 'which';
 import logger from 'turtle/logger';
 
 const which = util.promisify(_which);
-const l = logger.withFields({ buildPhase: 'setting up environment' });
 
 export interface IToolDefinition {
   command: string;
@@ -24,6 +23,7 @@ export async function ensureToolsAreInstalled(tools: IToolDefinition[]) {
         await which(command);
       }
     } catch (err) {
+      const l = logger.child({ buildPhase: 'setting up environment' });
       isAnyToolMissing = true;
       if (!testFn) {
         l.error({ err }, `${command} is missing in your $PATH`);

@@ -11,10 +11,7 @@ import config from 'turtle/config';
 import logger from 'turtle/logger';
 
 const ANDROID_SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip';
-
 const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
-const l = logger.withFields(LOGGER_FIELDS);
-
 export default async function ensureAndroidSDKIsPresent() {
   const androidSdkDir = path.join(config.directories.androidDependenciesDir, 'sdk');
   if (!(await fs.pathExists(androidSdkDir))) {
@@ -22,6 +19,7 @@ export default async function ensureAndroidSDKIsPresent() {
     const androidSdkDownloadPath = formatArtifactDownloadPath(ANDROID_SDK_URL);
 
     try {
+      const l = logger.child(LOGGER_FIELDS);
       l.info('Downloading Android SDK');
       await fs.ensureDir(config.directories.artifactsDir);
       await download(ANDROID_SDK_URL, androidSdkDownloadPath);

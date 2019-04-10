@@ -12,14 +12,14 @@ interface IUploadCtx {
 
 export async function uploadBuildToS3(ctx: IUploadCtx) {
   if (config.builder.fakeUpload) {
-    const l = logger.withFields({ buildPhase: 'copying build artifact' });
+    const l = logger.child({ buildPhase: 'copying build artifact' });
     const { fakeUploadBuildPath, uploadPath } = ctx;
     l.info('copying build to fake upload directory');
     await fs.copy(uploadPath, fakeUploadBuildPath as string);
     l.info(`copied build to ${fakeUploadBuildPath}`);
     return fakeUploadBuildPath as string;
   } else {
-    const l = logger.withFields({ buildPhase: 'uploading to S3' });
+    const l = logger.child({ buildPhase: 'uploading to S3' });
     l.info('uploading build artifact to S3');
     const { Location: fileLocation } = await uploadFile({
       key: ctx.s3FileKey as string,
