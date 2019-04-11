@@ -2,14 +2,13 @@ import { IosKeychain } from 'xdl';
 
 import { IContext } from 'turtle/builders/ios/context';
 import * as fileUtils from 'turtle/builders/utils/file';
-import logger from 'turtle/logger';
 
 interface IKeychain {
   path: string;
 }
 
 export async function create(ctx: IContext): Promise<IKeychain> {
-  const l = logger.child({ buildPhase: 'creating keychain' });
+  const l = ctx.logger.child({ buildPhase: 'creating keychain' });
   try {
     l.info('creating keychain...');
     const keychainInfo = await IosKeychain.createKeychain(ctx.appUUID, false);
@@ -22,7 +21,7 @@ export async function create(ctx: IContext): Promise<IKeychain> {
 }
 
 export async function remove(ctx: IContext, keychainPath: string) {
-  const l = logger.child({ buildPhase: 'deleting keychain' });
+  const l = ctx.logger.child({ buildPhase: 'deleting keychain' });
   try {
     l.info('delete keychain...');
     const keychainInfo = await IosKeychain.deleteKeychain({
@@ -49,7 +48,7 @@ export async function importCert(
     certPassword,
   }: { keychainPath: string; certP12: string; certPassword: string },
 ) {
-  const l = logger.child({ buildPhase: 'importing certificate into keychain' });
+  const l = ctx.logger.child({ buildPhase: 'importing certificate into keychain' });
   try {
     l.info('importing distribution certificate into keychain...');
     const { tempCertPath: certPath } = ctx;

@@ -15,6 +15,7 @@ export interface IContext {
   baseArchiveDir: string;
   buildDir: string;
   fakeUploadBuildPath?: string;
+  logger: any;
   outputPath: string;
   provisioningProfilePath: string;
   provisioningProfileDir: string;
@@ -29,7 +30,7 @@ export interface IContext {
 const { EXPOKIT_APP, EXPONENT_APP } = IosShellApp;
 const { BUILD_TYPES } = IOS;
 
-export function createBuilderContext(job: IJob): IContext {
+export function createBuilderContext(job: IJob, logger: any): IContext {
   const { join } = path;
   const appUUID = uuidv4();
   const {
@@ -47,6 +48,7 @@ export function createBuilderContext(job: IJob): IContext {
     appDir: join(config.directories.temporaryFilesRoot, appUUID),
     appUUID,
     workingDir,
+    logger,
   };
   context.buildDir = join(context.appDir, 'build');
   context.provisioningProfileDir = join(context.appDir, 'provisioning');

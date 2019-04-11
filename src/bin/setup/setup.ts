@@ -4,15 +4,15 @@ import setupAndroid from 'turtle/bin/setup/android';
 import setupIos from 'turtle/bin/setup/ios';
 import { PLATFORMS } from 'turtle/constants';
 
-export default async function setup(platform: string, sdkVersion?: string) {
+export default async function setup(platform: string, logger: any, sdkVersion?: string) {
   if (sdkVersion && !isSemver(sdkVersion)) {
     throw new Error('SDK version is not valid.');
   }
 
   if (platform === PLATFORMS.IOS) {
-    return await setupIos(sdkVersion);
+    return await setupIos(logger, sdkVersion);
   } else if (platform === PLATFORMS.ANDROID) {
-    return await setupAndroid(sdkVersion);
+    return await setupAndroid(logger, sdkVersion);
   } else {
     throw new Error('This should never happen :(');
   }

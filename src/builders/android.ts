@@ -13,17 +13,17 @@ import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import { ensureCanBuildSdkVersion } from 'turtle/builders/utils/version';
 import config from 'turtle/config';
 import { IAndroidCredentials, IJob, IJobResult } from 'turtle/job';
-import logger from 'turtle/logger';
 
-export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
+export default async function buildAndroid(jobData: IJob, logger: any): Promise<IJobResult> {
   await ensureCanBuildSdkVersion(jobData);
-  const credentials = await getOrCreateCredentials(jobData);
-  const apkFilePath = await runShellAppBuilder(jobData, credentials);
+  const credentials = await getOrCreateCredentials(jobData, logger);
+  const apkFilePath = await runShellAppBuilder(jobData, credentials, logger);
   const randomHex = uuidv4().replace(/-/g, '');
   const s3Filename = `${jobData.experienceName}-${randomHex}-signed.apk`;
   const s3FileKey = `android/${s3Filename}`;
   const fakeUploadFilename = s3Filename.replace('/', '\\');
   const artifactUrl = await uploadBuildToS3({
+    logger,
     uploadPath: apkFilePath,
     s3FileKey,
     ...config.builder.fakeUpload && {
@@ -40,6 +40,7 @@ export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
 async function runShellAppBuilder(
   jobData: IJob,
   credentials: IAndroidCredentials,
+  logger: any,
 ): Promise<string> {
   const { temporaryFilesRoot } = config.directories;
   await fs.ensureDir(temporaryFilesRoot);
@@ -81,7 +82,7 @@ async function runShellAppBuilder(
       outputFile: outputFilePath,
     });
   } catch (err) {
-    commonUtils.logErrorOnce(err);
+    commonUtils.logErrorOnce(err, logger);
     throw err;
   } finally {
     if (!config.builder.skipCleanup) {

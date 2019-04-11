@@ -5,10 +5,10 @@ import { ErrorWithProgramHelp } from 'turtle/bin/commands/ErrorWithProgramHelp';
 import setup from 'turtle/bin/setup/setup';
 import * as ProjectUtils from 'turtle/bin/utils/project';
 import * as UserUtils from 'turtle/bin/utils/user';
-import logger from 'turtle/logger';
 import { sanitizeJob } from 'turtle/validator';
 
 export function createBuilderAction({
+  logger,
   program,
   command,
   prepareCredentials,
@@ -62,7 +62,7 @@ export function createBuilderAction({
 
       const appJSON = await ProjectUtils.loadAppJSON(projectDirArg, cmd.config);
       const sdkVersion = _.get(appJSON, 'expo.sdkVersion');
-      await setup(platform, sdkVersion);
+      await setup(platform, logger, sdkVersion);
       const credentials = await prepareCredentials(cmd);
       const rawJob = {
         ...buildJobObject(appJSON, args, credentials),

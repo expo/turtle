@@ -14,12 +14,12 @@ import { IJob, IJobResult } from 'turtle/job';
 
 const { BUILD_TYPES } = IOS;
 
-export default async function iosBuilder(job: IJob): Promise<IJobResult> {
+export default async function iosBuilder(job: IJob, logger: any): Promise<IJobResult> {
   if (job.config.buildType !== BUILD_TYPES.CLIENT) {
     await ensureCanBuildSdkVersion(job);
   }
 
-  const ctx = createBuilderContext(job);
+  const ctx = createBuilderContext(job, logger);
 
   try {
     await initBuilder(ctx);
@@ -27,7 +27,7 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
     const { buildType } = job.config;
 
     if (buildType === BUILD_TYPES.CLIENT) {
-      await prepareAdHocBuildCredentials(job);
+      await prepareAdHocBuildCredentials(job, ctx.logger);
     }
 
     if ([BUILD_TYPES.ARCHIVE, BUILD_TYPES.CLIENT].includes(buildType!)) {
@@ -41,7 +41,7 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
     const artifactUrl = await uploadBuildToS3(ctx);
     return { artifactUrl };
   } catch (err) {
-    logErrorOnce(err);
+    logErrorOnce(err, ctx.logger);
     throw err;
   } finally {
     await cleanup(ctx);

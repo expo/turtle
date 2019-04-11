@@ -2,7 +2,6 @@ import * as url from 'url';
 
 import config from 'turtle/config';
 import { IJob } from 'turtle/job';
-import logger from 'turtle/logger';
 
 export function getExperienceUrl(job: IJob) {
   const { experienceName, config: jobConfig } = job;
@@ -18,7 +17,7 @@ export function getExperienceUrl(job: IJob) {
 
 const alreadyLoggedError = Symbol('alreadyLoggedError');
 
-export function logErrorOnce(err: any) {
+export function logErrorOnce(err: any, logger: any) {
   if (!err[alreadyLoggedError]) {
     logger.error(err.stack);
     err[alreadyLoggedError] = true;

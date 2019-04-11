@@ -7,10 +7,9 @@ import { Credentials } from 'xdl';
 import * as sqs from 'turtle/aws/sqs';
 import { UPDATE_CREDENTIALS } from 'turtle/constants/build';
 import { IAndroidCredentials, IJob } from 'turtle/job';
-import logger from 'turtle/logger';
 import { isOffline } from 'turtle/turtleContext';
 
-async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredentials> {
+async function getOrCreateCredentials(jobData: IJob, logger: any): Promise<IAndroidCredentials> {
   if (!jobData.credentials) {
     const l = logger.child({ buildPhase: 'generating keystore' });
     const credentials: any = {};
@@ -44,7 +43,7 @@ async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredential
     } else {
       await sqs.sendMessage(jobData.id, UPDATE_CREDENTIALS, {
         ...credentials,
-      });
+      }, l);
       l.info('Keystore sent to storage successfully');
     }
     await fs.unlink(keystoreFilename);

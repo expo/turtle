@@ -12,7 +12,6 @@ import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
 import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
 import config from 'turtle/config';
 import { PLATFORMS } from 'turtle/constants';
-import logger from 'turtle/logger';
 
 const which = util.promisify(_which);
 const REQUIRED_TOOLS: IToolDefinition[] = [
@@ -41,22 +40,23 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
   },
 ];
 
-export default async function setup(sdkVersion?: string) {
-  await checkSystem(REQUIRED_TOOLS);
-  await prepareAndroidEnv();
+export default async function setup(logger: any, sdkVersion?: string) {
+  await checkSystem(REQUIRED_TOOLS, logger);
+  await prepareAndroidEnv(logger);
   if (sdkVersion) {
     await ensureShellAppIsPresent(
       sdkVersion,
       { formatShellAppDirectory, formatShellAppTarballUriPath },
+      logger,
       _shellAppPostDownloadAction,
     );
   }
 }
 
-async function prepareAndroidEnv() {
+async function prepareAndroidEnv(logger: any) {
   await fs.ensureDir(config.directories.androidDependenciesDir);
-  const sdkConfig = await ensureAndroidSDKIsPresent();
-  const ndkConfig = await ensureAndroidNDKIsPresent();
+  const sdkConfig = await ensureAndroidSDKIsPresent(logger);
+  const ndkConfig = await ensureAndroidNDKIsPresent(logger);
   _setEnvVars({ ...sdkConfig.envVars, ...ndkConfig.envVars });
   _alterPath([...sdkConfig.path, ...sdkConfig.path]);
 }
@@ -65,21 +65,21 @@ function formatShellAppTarballUriPath(sdkMajorVersion: string) {
   return path.join(config.directories.shellTarballsDir, PLATFORMS.ANDROID, `sdk${sdkMajorVersion}`);
 }
 
-async function _shellAppPostDownloadAction(workingdir: string) {
+async function _shellAppPostDownloadAction(workingdir: string, logger: any) {
   const inWorkingdir = (filename: string) => path.join(workingdir, filename);
 
   await fs.move(inWorkingdir('package.json'), inWorkingdir('exponent-package.json'));
   await fs.move(inWorkingdir('universe-package.json'), inWorkingdir('package.json'));
-  await _installNodeModules(workingdir);
+  await _installNodeModules(workingdir, logger);
   await fs.move(inWorkingdir('package.json'), inWorkingdir('universe-package.json'));
   await fs.move(inWorkingdir('exponent-package.json'), inWorkingdir('package.json'));
 
   // TODO: remove following lines after upgrading android shell app
   const toolsPublicDir = path.join(workingdir, 'tools-public');
-  await _installNodeModules(toolsPublicDir);
+  await _installNodeModules(toolsPublicDir, logger);
 }
 
-async function _installNodeModules(cwd: string) {
+async function _installNodeModules(cwd: string, logger: any) {
   const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
   const l = logger.child(LOGGER_FIELDS);
   l.info(`installing dependencies in ${cwd} directory...`);

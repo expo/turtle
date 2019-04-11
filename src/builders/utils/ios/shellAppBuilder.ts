@@ -10,7 +10,6 @@ import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/image';
 import { IOS } from 'turtle/constants/index';
 import { IJob } from 'turtle/job';
-import logger from 'turtle/logger/index';
 
 const copyAsync = util.promisify(copy);
 
@@ -21,7 +20,7 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
 
   await copyAsync(ctx.applicationFilesSrc, ctx.baseArchiveDir);
 
-  logger.info(
+  ctx.logger.info(
     { buildPhase: 'icons setup' },
     'ImageUtils: setting image functions to alternative sharp implementations',
   );
@@ -49,6 +48,6 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
     });
   }
 
-  logger.info({ buildPhase: 'configuring NSBundle' }, 'configuring NSBundle...');
+  ctx.logger.info({ buildPhase: 'configuring NSBundle' }, 'configuring NSBundle...');
   return await IosShellApp.configureAndCopyArchiveAsync(shellAppParams);
 }

@@ -31,11 +31,11 @@ async function main() {
   );
   LoggerDetach.configure(logger);
   if (setup[config.platform]) {
-    await setup[config.platform]();
+    await setup[config.platform](logger);
   }
 
   try {
-    const redis = await getRedisClient(RedisClient.Configuration);
+    const redis = await getRedisClient(logger, RedisClient.Configuration);
     await redis.set(REDIS_TURTLE_VERSION_KEY, turtleVersion);
     logger.info(`Register Turtle version ${turtleVersion} in Redis`);
   } catch (err) {
@@ -44,7 +44,7 @@ async function main() {
 
   while (true) {
     try {
-      await doJob();
+      await doJob(logger);
     } catch (err) {
       logger.error({ err }, 'Failed to do a job');
     }

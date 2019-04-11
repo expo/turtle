@@ -1,8 +1,6 @@
 import util from 'util';
 import _which from 'which';
 
-import logger from 'turtle/logger';
-
 const which = util.promisify(_which);
 
 export interface IToolDefinition {
@@ -11,7 +9,7 @@ export interface IToolDefinition {
   testFn?: () => Promise<boolean>;
 }
 
-export async function ensureToolsAreInstalled(tools: IToolDefinition[]) {
+export async function ensureToolsAreInstalled(tools: IToolDefinition[], logger: any) {
   let isAnyToolMissing = false;
   for (const { command, missingDescription, testFn } of tools) {
     try {

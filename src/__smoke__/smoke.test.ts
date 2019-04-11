@@ -34,7 +34,7 @@ async function performSmokeTest(recording: string) {
     });
   }
 
-  await jobManager.doJob();
+  await jobManager.doJob(logger);
   if (!fixtureExists) {
     await fs.writeFile(recording, JSON.stringify(nock.recorder.play()));
   }

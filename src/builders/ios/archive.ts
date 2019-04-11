@@ -7,7 +7,6 @@ import * as fileUtils from 'turtle/builders/utils/file';
 import * as keychain from 'turtle/builders/utils/ios/keychain';
 import runShellAppBuilder from 'turtle/builders/utils/ios/shellAppBuilder';
 import { IJob } from 'turtle/job';
-import logger from 'turtle/logger/index';
 
 export default async function buildArchive(ctx: IContext, job: IJob) {
   let keychainInfo;
@@ -19,7 +18,7 @@ export default async function buildArchive(ctx: IContext, job: IJob) {
     const manifest = await runShellAppBuilder(ctx, job);
     await buildAndSignIPA(ctx, job, keychainInfo.path, manifest);
   } catch (err) {
-    logErrorOnce(err);
+    logErrorOnce(err, ctx.logger);
     throw err;
   } finally {
     if (keychainInfo) {
@@ -29,8 +28,8 @@ export default async function buildArchive(ctx: IContext, job: IJob) {
 }
 
 async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string, manifest: any) {
-  const l = logger.child({ buildPhase: 'building and signing IPA' });
-  l.info('building and signing IPA');
+  ctx.logger = ctx.logger.child({ buildPhase: 'building and signing IPA' });
+  ctx.logger.info('building and signing IPA');
 
   const {
     credentials: { provisioningProfile, certPassword, teamId },
@@ -42,7 +41,7 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string, m
 
   const { provisioningProfilePath } = ctx;
   await fileUtils.writeBase64ToBinaryFile(provisioningProfilePath, provisioningProfile as string);
-  l.info('saved provisioning profile to temporary path');
+  ctx.logger.info('saved provisioning profile to temporary path');
 
   const ipaBuilder = createIPABuilder({
     keychainPath,
@@ -57,5 +56,5 @@ async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string, m
   });
   await ipaBuilder.build();
 
-  l.info(`done building and signing IPA`);
+  ctx.logger.info(`done building and signing IPA`);
 }

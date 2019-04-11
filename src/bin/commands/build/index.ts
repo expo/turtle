@@ -2,8 +2,8 @@ import { default as buildAndroid } from 'turtle/bin/commands/build/android';
 import { default as buildIOS } from 'turtle/bin/commands/build/ios';
 
 function createCommand(builder: any) {
-  return (program: any) => {
-    return builder(program, setCommonCommandOptions);
+  return (logger: any) => (program: any) => {
+    return builder(program, setCommonCommandOptions, logger);
   };
 }
 

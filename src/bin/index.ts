@@ -4,7 +4,7 @@ import program, { Command } from 'commander';
 import fs from 'fs-extra';
 import { LoggerDetach, ModuleVersion } from 'xdl';
 
-import * as commands from 'turtle/bin/commands';
+import commands from 'turtle/bin/commands';
 import logger from 'turtle/logger';
 
 const { name, version } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf-8'));
@@ -33,7 +33,7 @@ export function run(programName: string) {
 
 async function runAsync(programName: string) {
   program.version(version);
-  Object.values(commands).forEach((command) => registerCommand(program, command));
+  Object.values(commands).map((command) => command(logger)).forEach((command) => registerCommand(program, command));
   program.parse(process.argv);
 
   const subCommand = process.argv[2];

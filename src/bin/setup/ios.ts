@@ -34,13 +34,13 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
   },
 ];
 
-export default async function setup(sdkVersion?: string) {
-  await checkSystem(REQUIRED_TOOLS);
+export default async function setup(logger: any, sdkVersion?: string) {
+  await checkSystem(REQUIRED_TOOLS, logger);
   if (sdkVersion) {
     await ensureShellAppIsPresent(sdkVersion, {
       formatShellAppDirectory,
       formatShellAppTarballUriPath,
-    });
+    }, logger);
   }
 }
 

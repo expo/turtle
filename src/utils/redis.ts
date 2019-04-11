@@ -1,7 +1,6 @@
 import Redis from 'ioredis';
 
 import config from 'turtle/config';
-import logger from 'turtle/logger';
 
 const MILLIS_TO_UPLOAD_LOGS = 3000;
 export const MILLIS_CONNECTION_TIMEOUT = 10000;
@@ -47,7 +46,7 @@ const redisClients: IRedisClients = {
   [RedisClient.Configuration]: null,
 };
 
-export async function getRedisClient(type = RedisClient.Default) {
+export async function getRedisClient(logger: any, type = RedisClient.Default) {
   if (!redisClients[type]) {
     try {
       redisClients[type] = await connect(MILLIS_CONNECTION_TIMEOUT, type);
@@ -58,9 +57,9 @@ export async function getRedisClient(type = RedisClient.Default) {
   return redisClients[type];
 }
 
-export async function checkIfCancelled(jobId: string) {
+export async function checkIfCancelled(jobId: string, logger: any) {
   try {
-    const redis = await getRedisClient();
+    const redis = await getRedisClient(logger);
     return await redis.get(`jobs:cancelled:${jobId}`);
   } catch (err) {
     if (config.deploymentEnv === 'development') {
@@ -71,7 +70,7 @@ export async function checkIfCancelled(jobId: string) {
   }
 }
 
-export async function registerListener(jobId: string, deleteMessage: any) {
+export async function registerListener(jobId: string, deleteMessage: any, logger: any) {
   try {
     const redis = await getRedisClient(RedisClient.Subscriber);
     redis.subscribe('jobs:cancelled');
@@ -88,9 +87,9 @@ export async function registerListener(jobId: string, deleteMessage: any) {
   }
 }
 
-export async function unregisterListeners() {
+export async function unregisterListeners(logger: any) {
   try {
-    const redis = await getRedisClient();
+    const redis = await getRedisClient(logger);
     redis.removeAllListeners('message');
   } catch (err) {
     logger.error(err);

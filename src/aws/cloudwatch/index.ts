@@ -11,7 +11,6 @@ import {
   MetricRegistrationObject,
 } from 'turtle/aws/cloudwatch/types';
 import config from 'turtle/config';
-import logger from 'turtle/logger';
 
 interface IState {
   metrics: IMetric[];
@@ -38,12 +37,12 @@ const cloudWatch = new aws.CloudWatch({
   secretAccessKey: config.aws.secretAccessKey,
 });
 
-export function init() {
+export function init(logger: any) {
   if (config.cloudwatch.disabled) {
     return;
   }
 
-  state.intervalId = setInterval(_dumpMetrics, config.cloudwatch.intervalMs);
+  state.intervalId = setInterval(_dumpMetrics(logger), config.cloudwatch.intervalMs);
 }
 
 export function addMetricData({
@@ -111,23 +110,25 @@ function _calculateGroupHash(metricName: string, extraDimensions: any[]) {
   return `${metricName}${dimString}`;
 }
 
-function _dumpMetrics() {
-  if (!state.metrics.length && Object.keys(state.registeredMetrics).length < 0) {
-    // empty metrics list, skipping
-    return;
-  }
+function _dumpMetrics(logger: any) {
+  return () => {
+    if (!state.metrics.length && Object.keys(state.registeredMetrics).length < 0) {
+      // empty metrics list, skipping
+      return;
+    }
 
-  logger.trace(
-    '[cloudwatch] lenghts for state.metrics=%d, state.registeredMetrics=%d',
-    state.metrics.length,
-    Object.keys(state.registeredMetrics).length,
-  );
+    logger.trace(
+      '[cloudwatch] lengths for state.metrics=%d, state.registeredMetrics=%d',
+      state.metrics.length,
+      Object.keys(state.registeredMetrics).length,
+    );
 
-  _addEmptyMetrics(state.metrics);
-  const formattedMetrics = _formatMetrics(state.metrics);
-  _pushMetrics(formattedMetrics);
+    _addEmptyMetrics(state.metrics);
+    const formattedMetrics = _formatMetrics(state.metrics);
+    _pushMetrics(formattedMetrics, logger);
 
-  state.metrics = [];
+    state.metrics = [];
+  };
 }
 
 function _addEmptyMetrics(metrics: IMetric[]) {
@@ -174,7 +175,7 @@ function _reduceMetrics(metrics: IMetric[]) {
   );
 }
 
-function _pushMetrics(metrics: IMetricsChunk[]) {
+function _pushMetrics(metrics: IMetricsChunk[], logger: any) {
   logger.trace('[cloudwatch] pushing metrics', JSON.stringify(metrics, null, '\t'));
   metrics.forEach((metricsChunk) => {
     cloudWatch.putMetricData(metricsChunk, (err) => {

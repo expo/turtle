@@ -8,11 +8,10 @@ import { ExponentTools } from 'xdl';
 import { formatArtifactDownloadPath } from 'turtle/bin/setup/utils/common';
 import download from 'turtle/bin/setup/utils/downloader';
 import config from 'turtle/config';
-import logger from 'turtle/logger';
 
 const ANDROID_SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip';
 const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
-export default async function ensureAndroidSDKIsPresent() {
+export default async function ensureAndroidSDKIsPresent(logger: any) {
   const androidSdkDir = path.join(config.directories.androidDependenciesDir, 'sdk');
   if (!(await fs.pathExists(androidSdkDir))) {
     await fs.ensureDir(androidSdkDir);

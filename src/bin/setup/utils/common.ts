@@ -8,50 +8,54 @@ import download from 'turtle/bin/setup/utils/downloader';
 import { ensureToolsAreInstalled, IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
 import { IShellAppDirectoryConfig } from 'turtle/builders/utils/workingdir';
 import config from 'turtle/config';
-import logger from 'turtle/logger';
-
-const l = logger.child({ buildPhase: 'setting up environment' });
 
 interface IShellAppFormaters {
   formatShellAppDirectory: (config: IShellAppDirectoryConfig) => string;
   formatShellAppTarballUriPath: (sdkMajorVersion: string) => string;
 }
 
-type PostDownloadAction = (workingdir: string) => void;
+type PostDownloadAction = (workingdir: string, logger: any) => void;
 
-export async function checkSystem(requiredTools: IToolDefinition[]) {
-  await ensureToolsAreInstalled(requiredTools);
+export async function checkSystem(requiredTools: IToolDefinition[], logger: any) {
+  await ensureToolsAreInstalled(requiredTools, logger);
 }
 
 export async function ensureShellAppIsPresent(
   sdkVersion: string,
   formatters: IShellAppFormaters,
+  logger: any,
   postDownloadAction?: PostDownloadAction,
 ) {
   const workingdir = formatters.formatShellAppDirectory({ sdkVersion });
+  const l = logger.child({ buildPhase: 'setting up environment' });
   if (await fs.pathExists(workingdir)) {
     return;
   }
   l.info(`shell app for SDK ${sdkVersion} doesn't exist, downloading...`);
-  await _downloadShellApp(sdkVersion, workingdir, formatters);
+  await _downloadShellApp(sdkVersion, workingdir, formatters, l);
   if (postDownloadAction) {
-    await postDownloadAction(workingdir);
+    await postDownloadAction(workingdir, logger);
   }
 }
 
-async function _downloadShellApp(sdkVersion: string, targetDirectory: string, formatters: IShellAppFormaters) {
+async function _downloadShellApp(
+  sdkVersion: string,
+  targetDirectory: string,
+  formatters: IShellAppFormaters,
+  logger: any,
+) {
   const shellAppTarballS3Uri = await _readShellAppTarballS3Uri(sdkVersion, formatters);
   const tarballDownloadTargetPath = formatArtifactDownloadPath(shellAppTarballS3Uri);
   await fs.ensureDir(config.directories.artifactsDir);
   await download(shellAppTarballS3Uri, tarballDownloadTargetPath);
-  l.info('shell app has been downloaded');
+  logger.info('shell app has been downloaded');
   await fs.ensureDir(targetDirectory);
-  l.info('extracting shell app (this may take a while)...');
+  logger.info('extracting shell app (this may take a while)...');
   await tar.x({
     file: tarballDownloadTargetPath,
     C: targetDirectory,
   });
-  l.info('shell app extracted');
+  logger.info('shell app extracted');
 }
 
 export function formatArtifactDownloadPath(uri: string) {

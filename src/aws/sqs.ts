@@ -5,7 +5,6 @@ import _ from 'lodash';
 import { OUTPUT_QUEUE_URL, QUEUE_URL } from 'turtle/aws/utils';
 import config from 'turtle/config';
 import { JOB_UPDATE_TYPE } from 'turtle/constants/build';
-import logger from 'turtle/logger';
 import { getCurrentJobId } from 'turtle/turtleContext';
 
 const sqs = new AWS.SQS({
@@ -16,7 +15,7 @@ const sqs = new AWS.SQS({
 
 const VISIBILITY_TIMEOUT_SEC = 30;
 
-export async function receiveMessage(priority: string) {
+export async function receiveMessage(priority: string, logger: any) {
   const params = {
     MaxNumberOfMessages: 1,
     QueueUrl: QUEUE_URL(priority),
@@ -64,7 +63,7 @@ export async function changeMessageVisibility(priority: string, receiptHandle: s
 // Every VISIBILITY_TIMEOUT_SEC / 3 seconds we are telling AWS SQS
 // that we're still processing the message, so it does not
 // send the build job to another turtle agent
-export function changeMessageVisibilityRecurring(priority: string, receiptHandle: string, jobId: string) {
+export function changeMessageVisibilityRecurring(priority: string, receiptHandle: string, jobId: string, logger: any) {
   return setInterval(() => {
     if (getCurrentJobId() === jobId) {
       changeMessageVisibility(priority, receiptHandle).catch((err) => {
@@ -74,7 +73,7 @@ export function changeMessageVisibilityRecurring(priority: string, receiptHandle
   }, (VISIBILITY_TIMEOUT_SEC * 1000) / 3);
 }
 
-export async function sendMessage(jobId: string, status: JOB_UPDATE_TYPE, data = {}) {
+export async function sendMessage(jobId: string, status: JOB_UPDATE_TYPE, data = {}, logger: any) {
   const params = {
     MessageBody: JSON.stringify({ jobId, status, ...data }),
     QueueUrl: OUTPUT_QUEUE_URL(),

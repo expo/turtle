@@ -7,11 +7,10 @@ import fs from 'fs-extra';
 import { formatArtifactDownloadPath } from 'turtle/bin/setup/utils/common';
 import download from 'turtle/bin/setup/utils/downloader';
 import config from 'turtle/config';
-import logger from 'turtle/logger';
 
 const ANDROID_NDK_URL = `https://dl.google.com/android/repository/android-ndk-r10e-${os.platform()}-x86_64.zip`;
 
-export default async function ensureAndroidNDKIsPresent() {
+export default async function ensureAndroidNDKIsPresent(logger: any) {
   const androidNdkDir = path.join(config.directories.androidDependenciesDir, 'ndk');
   if (!(await fs.pathExists(androidNdkDir))) {
     await fs.ensureDir(androidNdkDir);

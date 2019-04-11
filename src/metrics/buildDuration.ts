@@ -1,11 +1,10 @@
 import * as cloudwatch from 'turtle/aws/cloudwatch';
 import { TYPE_DIMENSIONS } from 'turtle/aws/cloudwatch/dimensions';
-import logger from 'turtle/logger';
 
 const TURTLE_BUILD_DURATION_METRIC_NAME = 'turtleBuildDuration';
 const TOTAL_BUILD_DURATION_METRIC_NAME = 'totalBuildDuration';
 
-export function register() {
+export function register(logger: any) {
   for (const metricName of [TURTLE_BUILD_DURATION_METRIC_NAME, TOTAL_BUILD_DURATION_METRIC_NAME]) {
     logger.info(`Registered AWS Cloudwatch metric: ${metricName}`);
     cloudwatch.registerMetric({

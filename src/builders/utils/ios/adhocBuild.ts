@@ -9,13 +9,12 @@ import * as sqs from 'turtle/aws/sqs';
 import BuildError, { BuildErrorReason } from 'turtle/builders/BuildError';
 import { UPDATE_CREDENTIALS } from 'turtle/constants/build';
 import { IJob } from 'turtle/job';
-import logger from 'turtle/logger';
 import { isOffline } from 'turtle/turtleContext';
 
 // tslint:disable-next-line:no-var-requires
 const travelingFastlane = process.platform === 'darwin' ? require('@expo/traveling-fastlane-darwin')() : null;
 
-async function prepareAdHocBuildCredentials(job: IJob) {
+async function prepareAdHocBuildCredentials(job: IJob, logger: any) {
   if (process.platform !== 'darwin') {
     throw new Error('This function should be called only on macOS!');
   }
@@ -59,7 +58,7 @@ async function prepareAdHocBuildCredentials(job: IJob) {
       await sqs.sendMessage(job.id, UPDATE_CREDENTIALS, {
         provisioningProfileId: credentials.provisioningProfileId,
         provisioningProfile: credentials.provisioningProfile,
-      });
+      }, logger);
       logger.info('Ad Hoc provisioning profile sent to storage successfully');
     }
   } catch (e) {

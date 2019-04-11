@@ -3,7 +3,6 @@ import os from 'os';
 import path from 'path';
 
 import * as keychain from 'turtle/builders/utils/ios/keychain';
-import logger from 'turtle/logger';
 import commonSetup from 'turtle/setup/common';
 
 async function deleteProvisioningProfilesFromHomedir() {
@@ -17,10 +16,10 @@ async function deleteProvisioningProfilesFromHomedir() {
   }
 }
 
-export default async function setup() {
+export default async function setup(logger: any) {
   logger.info('Setting up environment...');
   await deleteProvisioningProfilesFromHomedir();
   await keychain.cleanUp();
-  await commonSetup();
+  await commonSetup(logger);
   logger.info('Finished setting up environment');
 }

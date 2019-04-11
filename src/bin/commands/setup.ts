@@ -4,9 +4,6 @@ import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
 import { ErrorWithProgramHelp } from 'turtle/bin/commands/ErrorWithProgramHelp';
 import setup from 'turtle/bin/setup/setup';
 import { PLATFORMS } from 'turtle/constants';
-import logger from 'turtle/logger';
-
-const l = logger.child({ buildPhase: 'setting up environment' });
 
 function createSetupCommand(platform: string, os?: string) {
   return (program: any) => {
@@ -23,14 +20,16 @@ function createSetupCommand(platform: string, os?: string) {
   };
 }
 
-async function setupAction(program: any, cmd: any, platform: string, os?: string) {
+async function setupAction(program: any, cmd: any, platform: string, logger: any, os?: string) {
   try {
     if (os && process.platform !== os) {
       throw new Error('We don\'t support running standalone app builds for this platform on your operating system');
     }
 
     const { sdkVersion } = cmd;
-    await setup(platform, sdkVersion);
+    const l = logger.child({ buildPhase: 'setting up environment' });
+
+    await setup(platform, l, sdkVersion);
     l.info('it\'s all set!');
   } catch (err) {
     logger.error({ err }, `Failed to setup environment for ${platform} builds`);

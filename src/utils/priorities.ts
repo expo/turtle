@@ -2,7 +2,6 @@ import Joi from 'joi';
 import os from 'os';
 
 import config from 'turtle/config';
-import logger from 'turtle/logger';
 import { getRedisClient, RedisClient } from 'turtle/utils/redis';
 
 export const NORMAL = 'normalPriority';
@@ -40,7 +39,7 @@ export function createDefaultConfigurationKey(platform = config.platform) {
   return `${configPrefix(platform)}:default`;
 }
 
-export async function getPriorities() {
+export async function getPriorities(logger: any) {
   if (config.env === 'test') {
     return NORMAL_CONFIGURATION;
   }
