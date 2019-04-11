@@ -3,7 +3,7 @@ version: 2.1
 executors:
   nix: &nix
     docker:
-      - image: lnl7/nix:2.1.2
+      - image: lnl7/nix:2.2
     # Symlink to the readline-enabled bash which is the default command of the container
     shell: /run/current-system/sw/bin/bash -leo pipefail
     working_directory: ~/turtle
@@ -137,11 +137,12 @@ commands:
 
 jobs:
   build:
-    docker:
-      - image: circleci/node:8.12
+    executor: nix
     steps:
-      - checkout
+      - setup
+      - restore_yarn_cache
       - run: yarn
+      - save_yarn_cache
       - run: yarn lint
       - run: yarn build
 
@@ -153,7 +154,7 @@ jobs:
       - run: yarn
       - save_yarn_cache
       - run:
-          name: Run iOS smoke tests
+          name: Run unit tests
           command: ./scripts/tests/runUnitTestsCI.sh
 
   ios_smoke_tests:
