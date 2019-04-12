@@ -5,12 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Checking fastlane version before running build (turtle-cli).
 ### Changed
-- Updated iOS shell app for SDK 32 to fix AppAuth issue
+- Updated iOS shell app for SDK 32 to fix AppAuth issue.
+- Babel replaced with by ttypescript.
 
 ## [0.6.0] - 2019-04-09
 ### Changed
-- Removed Branch module from Android shell apps for all SDK versions
+- Removed Branch module from Android shell apps for all SDK versions.
 
 ## [0.5.15] - 2019-04-03
 ### Added
