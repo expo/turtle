@@ -99,9 +99,6 @@ RUN rm gradle-4.4-all.zip
 ENV GRADLE_HOME /usr/local/gradle-4.4
 ENV PATH ${GRADLE_HOME}/bin:$PATH
 
-# Install Gulp
-RUN npm install -g gulp-cli
-
 ADD . /app
 
 RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
