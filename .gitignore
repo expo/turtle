@@ -2,6 +2,7 @@
 
 node_modules
 yarn-error.log
+google-cloud-credentials.json
 
 /build/
 /workingdir/*

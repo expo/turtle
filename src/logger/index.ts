@@ -6,13 +6,9 @@ import { Client as RavenClient } from 'raven';
 import config from 'turtle/config';
 import * as constants from 'turtle/constants/logger';
 import { IJob } from 'turtle/job';
+import GCloudStream from 'turtle/logger/gcloudStream';
 import S3Stream from 'turtle/logger/s3Stream';
 import { isOffline } from 'turtle/turtleContext';
-
-// type error when using import
-// https://github.com/googleapis/nodejs-logging-bunyan/issues/241
-// tslint:disable-next-line:no-var-requires
-const { LoggingBunyan } = require('@google-cloud/logging-bunyan');
 
 interface IStream {
   stream: any;
@@ -22,6 +18,7 @@ interface IStream {
 }
 
 export const s3logger = new S3Stream();
+let gcloudStream: GCloudStream;
 
 const streams: IStream[] = [];
 
@@ -51,15 +48,23 @@ if (config.sentry.dsn && config.deploymentEnv !== 'development') {
 }
 
 if (config.google.credentials) {
-  const resource = {
-    type: 'generic_node',
-    labels: {
-      node_id: config.hostname,
-      location: '', // default value
-      namespace: '', // default value
+  const gcloudConfig = {
+    name: 'turtle',
+    resource: {
+      type: 'generic_node',
+      labels: {
+        node_id: config.hostname,
+        location: '', // default value
+        namespace: '', // default value
+      },
     },
   };
-  streams.push(new LoggingBunyan({ name: 'turtle', resource }).stream('info'));
+  gcloudStream = new GCloudStream(gcloudConfig);
+  streams.push({
+    level: 'info',
+    type: 'raw',
+    stream: gcloudStream,
+  });
 }
 
 const logger = bunyan.createLogger({
@@ -73,12 +78,18 @@ const logger = bunyan.createLogger({
 logger.withFields = (extraFields: any) => withFields(logger, extraFields);
 
 logger.init = async (job: IJob) => {
+  if (gcloudStream) {
+    gcloudStream.init(job);
+  }
   return await s3logger.init(job);
 };
 
 logger.cleanup = async () => {
   // a little hacky, but works
   logger.info({ lastBuildLog: true }, 'this is the last log from this build');
+  if (gcloudStream) {
+    gcloudStream.cleanup();
+  }
   await s3logger.waitForLogger();
 };
 
