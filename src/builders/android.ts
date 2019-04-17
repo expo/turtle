@@ -9,6 +9,7 @@ import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
 import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
 import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/image';
+import { resolveNativeModules } from 'turtle/builders/utils/unimodules';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import { ensureCanBuildSdkVersion } from 'turtle/builders/utils/version';
 import config from 'turtle/config';
@@ -66,6 +67,9 @@ async function runShellAppBuilder(
   const sdkVersion = _.get(manifest, 'sdkVersion', sdkVersionFromJob);
   const workingDir = formatShellAppDirectory({ sdkVersion });
 
+  logger.info({ buildPhase: 'resolve native modules' }, 'Start dependency resolution');
+  const enabledModules = await resolveNativeModules(workingDir, manifest.dependencies);
+
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
       url: commonUtils.getExperienceUrl(jobData),
@@ -79,6 +83,7 @@ async function runShellAppBuilder(
       releaseChannel: jobConfig.releaseChannel,
       workingDir,
       outputFile: outputFilePath,
+      modules: enabledModules,
     });
   } catch (err) {
     commonUtils.logErrorOnce(err);
