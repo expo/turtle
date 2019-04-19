@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Checking fastlane version before running build (turtle-cli).
 ### Changed
 - Updated iOS shell app for SDK 32 to fix AppAuth issue.
-- Babel replaced with by ttypescript.
+- Babel replaced by ttypescript.
+- Updated xdl to 53.5.3 and @expo/spawn-async to 1.4.2, so that error stack traces should be more informative now.
+### Fixed
+- Brought back `jobID` and `experienceName` fields to GCloud logs.
 
 ## [0.6.0] - 2019-04-09
 ### Changed
