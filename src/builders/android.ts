@@ -2,6 +2,7 @@ import path from 'path';
 
 import fs from 'fs-extra';
 import _ from 'lodash';
+import semver from 'semver';
 import uuidv4 from 'uuid/v4';
 import { AndroidShellApp, ImageUtils } from 'xdl';
 
@@ -68,7 +69,9 @@ async function runShellAppBuilder(
   const workingDir = formatShellAppDirectory({ sdkVersion });
 
   logger.info({ buildPhase: 'resolve native modules' }, 'Start dependency resolution');
-  const enabledModules = await resolveNativeModules(workingDir, manifest.dependencies);
+  const enabledModules = semver.satisfies(sdkVersion, '>= 33.0.0')
+    ? await resolveNativeModules(workingDir, manifest.dependencies)
+    : null;
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
