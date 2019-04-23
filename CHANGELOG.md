@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated xdl to 53.5.3 and @expo/spawn-async to 1.4.2, so that error stack traces should be more informative now.
 ### Fixed
 - Brought back `jobID` and `experienceName` fields to GCloud logs.
+### Removed
+- `buidAndroidTarballLocally.sh` script (it has been moved to expo repository - [expo/expo#4022](https://github.com/expo/expo/pull/4022)).
 
 ## [0.6.0] - 2019-04-09
 ### Changed
