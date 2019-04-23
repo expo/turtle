@@ -15,7 +15,7 @@ export interface IUnimoduleEntry {
 interface IPackageInfo {
   name: string;
   version: string;
-  dirname: string; // can be difrent than name
+  dirname: string; // could be different than name
   dependencies: string[];
 }
 
@@ -64,7 +64,7 @@ class Resolver {
   }
 
   public async init(): Promise<void> {
-    this.dependencyMap = await generateDependencyMap(this.workingdir);
+    this.dependencyMap = await generateDependenciesInfo(this.workingdir);
   }
 
   public isUnimodule(moduleName: string): boolean {
@@ -106,7 +106,7 @@ class Resolver {
   }
 }
 
-async function generateDependencyMap(workingdir: string): Promise<{[key: string]: IPackageInfo}> {
+async function generateDependenciesInfo(workingdir: string): Promise<{[key: string]: IPackageInfo}> {
   const dir = await fs.readdir(path.join(workingdir, 'packages'));
   const map: {[key: string]: IPackageInfo} = {};
 

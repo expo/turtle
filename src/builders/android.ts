@@ -68,7 +68,7 @@ async function runShellAppBuilder(
   const sdkVersion = _.get(manifest, 'sdkVersion', sdkVersionFromJob);
   const workingDir = formatShellAppDirectory({ sdkVersion });
 
-  logger.info({ buildPhase: 'resolve native modules' }, 'Start dependency resolution');
+  logger.info({ buildPhase: 'resolve native modules' }, 'Resolving universal modules dependencies');
   const enabledModules = semver.satisfies(sdkVersion, '>= 33.0.0')
     ? await resolveNativeModules(workingDir, manifest.dependencies)
     : null;
