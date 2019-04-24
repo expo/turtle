@@ -36,7 +36,7 @@ setup_local() {
   mkdir -p $WORKINGDIR
   echo "$WORKINGDIR directory created"
 
-  LINKS=("template-files" "package.json" "android" "expokit-npm-package" "packages" "client-builds" "cpp" "exponent-view-template" "ios" "shellAppBase-builds" "shellAppWorkspaces")
+  LINKS=("template-files" "package.json" "android" "expokit-npm-package" "packages" "client-builds" "cpp" "exponent-view-template" "ios" "shellAppBase-builds" "shellAppWorkspaces" "node_modules")
 
   for LINKNAME in ${LINKS[@]}; do
     ensure_link_exists "$EXPO_UNIVERSE_DIR/exponent/$LINKNAME" "$WORKINGDIR/$LINKNAME"
@@ -55,6 +55,14 @@ setup_remote() {
       $ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
     fi
   fi
+  
+  for sdk in $ROOT_DIR/workingdir/android/* ; do
+    if [[ -f "$sdk/universe-package.json" ]]; then
+      mv $sdk/package.json $sdk/exponent-package.json
+      mv $sdk/universe-package.json $sdk/package.json
+      cd $sdk && yarn
+    fi
+  done
 }
 
 switch_local() {
