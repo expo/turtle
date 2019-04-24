@@ -47,15 +47,20 @@ async function readCorePackages(workingdir: string) {
   if (await fs.pathExists(pkgJsonPath)) {
     const packageJson = JSON.parse(await fs.readFile(pkgJsonPath, 'utf-8'));
     return keys(packageJson.dependencies);
+  } else {
+    logger.warn('No core packages detected');
+    return [];
   }
-  logger.warn('No core packages detected');
-  return [];
+}
+
+interface IDependencyInfo {
+  [key: string]: IPackageInfo;
 }
 
 class Resolver {
   private workingdir: string;
   private modulesMap: {[key: string]: IUnimoduleEntry};
-  private dependencyMap: {[key: string]: IPackageInfo};
+  private dependencyMap: IDependencyInfo;
 
   constructor(workingdir: string) {
     this.workingdir = workingdir;
@@ -63,7 +68,7 @@ class Resolver {
     this.dependencyMap = {};
   }
 
-  public async init(): Promise<void> {
+  public async init() {
     this.dependencyMap = await generateDependenciesInfo(this.workingdir);
   }
 
@@ -106,9 +111,9 @@ class Resolver {
   }
 }
 
-async function generateDependenciesInfo(workingdir: string): Promise<{[key: string]: IPackageInfo}> {
+async function generateDependenciesInfo(workingdir: string): Promise<IDependencyInfo> {
   const dir = await fs.readdir(path.join(workingdir, 'packages'));
-  const map: {[key: string]: IPackageInfo} = {};
+  const map: IDependencyInfo = {};
 
   // scrap directory for package metadata
   for (const pkgName of dir) {

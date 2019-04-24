@@ -63,15 +63,6 @@ setup_remote() {
       cd $sdk && yarn
     fi
   done
- 
-  for sdk in $ROOT_DIR/workingdir/ios/* ; do
-    if [[ -f "$sdk/universe-package.json" ]]; then
-      mv $sdk/package.json $sdk/exponent-package.json
-      mv $sdk/universe-package.json $sdk/package.json
-      cd $sdk && yarn
-    fi
-  done
-
 }
 
 switch_local() {
