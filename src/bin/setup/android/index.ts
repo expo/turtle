@@ -41,7 +41,7 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
   },
 ];
 const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
-const l = logger.withFields(LOGGER_FIELDS);
+const l = logger.child(LOGGER_FIELDS);
 
 export default async function setup(sdkVersion?: string) {
   await checkSystem(REQUIRED_TOOLS);

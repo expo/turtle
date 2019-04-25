@@ -1,103 +1,75 @@
 import bunyan from 'bunyan';
-import bunyanDebugStream from 'bunyan-debug-stream';
-import { SentryStream } from 'bunyan-sentry-stream';
-import { Client as RavenClient } from 'raven';
 
 import config from 'turtle/config';
-import * as constants from 'turtle/constants/logger';
 import { IJob } from 'turtle/job';
-import GCloudStream from 'turtle/logger/gcloudStream';
-import S3Stream from 'turtle/logger/s3Stream';
-import { isOffline } from 'turtle/turtleContext';
+import streams from 'turtle/logger/streams';
 
-interface IStream {
-  stream: any;
-  type?: string;
-  level?: string;
-  reemitErrorEvents?: boolean;
+interface ILoggerFields {
+  [key: string]: string | number;
 }
 
-export const s3logger = new S3Stream();
-let gcloudStream: GCloudStream;
+class Logger {
+  private parentLogger: any;
+  private currentLogger: any;
 
-const streams: IStream[] = [];
-
-if (isOffline()) {
-  const prettyStdOut = new bunyanDebugStream({ forceColor: true });
-  streams.push({ stream: prettyStdOut, type: 'raw', level: config.logger.client.level });
-} else {
-  streams.push(
-    { stream: process.stdout },
-    {
-      type: 'raw',
-      stream: s3logger,
-      reemitErrorEvents: true,
-      level: config.logger.client.level,
-    },
-  );
-}
-
-if (config.sentry.dsn && config.deploymentEnv !== 'development') {
-  const raven = new RavenClient();
-  raven.config(config.sentry.dsn, { environment: config.deploymentEnv });
-  streams.push({
-    level: 'error',
-    type: 'raw', // Mandatory type for SentryStream
-    stream: new SentryStream(raven),
-  });
-}
-
-if (config.google.credentials) {
-  const gcloudConfig = {
-    name: 'turtle',
-    resource: {
-      type: 'generic_node',
-      labels: {
-        node_id: config.hostname,
-        location: '', // default value
-        namespace: '', // default value
-      },
-    },
-  };
-  gcloudStream = new GCloudStream(gcloudConfig);
-  streams.push({
-    level: 'info',
-    type: 'raw',
-    stream: gcloudStream,
-  });
-}
-
-const logger = bunyan.createLogger({
-  name: 'turtle',
-  level: config.logger.level,
-  platform: config.platform,
-  environment: config.deploymentEnv,
-  streams,
-});
-
-logger.withFields = (extraFields: any) => withFields(logger, extraFields);
-
-logger.init = async (job: IJob) => {
-  if (gcloudStream) {
-    gcloudStream.init(job);
+  constructor(parentLogger?: any) {
+    this.parentLogger = parentLogger || bunyan.createLogger({
+      name: 'turtle',
+      level: config.logger.level,
+      platform: config.platform,
+      ...config.deploymentEnv && { environment: config.deploymentEnv },
+      streams: Object.values(streams),
+    });
+    this.currentLogger = this.parentLogger;
   }
-  return await s3logger.init(job);
-};
 
-logger.cleanup = async () => {
-  // a little hacky, but works
-  logger.info({ lastBuildLog: true }, 'this is the last log from this build');
-  if (gcloudStream) {
-    gcloudStream.cleanup();
+  public async initForJob(job: IJob) {
+    this.currentLogger = this.parentLogger.child({
+      jobID: job.id,
+      experienceName: job.experienceName,
+    });
+    const s3Url = await streams.s3.stream.init(job);
+    return s3Url;
   }
-  await s3logger.waitForLogger();
-};
 
-export default logger;
+  public async cleanup() {
+    this.currentLogger = this.parentLogger;
+    await streams.s3.stream.cleanup();
+  }
 
-export function withFields(loggerObj: any, extraFields: any) {
-  return constants.LEVELS.reduce((obj, level) => {
-    obj[level] = (...args: any[]) => loggerObj[level](extraFields, ...args);
-    return obj;
-  }, {} as any);
+  public trace(...all: any[]) {
+    this.currentLogger.trace(...all);
+  }
+
+  public debug(...all: any[]) {
+    this.currentLogger.debug(...all);
+  }
+
+  public info(...all: any[]) {
+    this.currentLogger.info(...all);
+  }
+
+  public warn(...all: any[]) {
+    this.currentLogger.warn(...all);
+  }
+
+  public error(...all: any[]) {
+    this.currentLogger.error(...all);
+  }
+
+  public fatal(...all: any[]) {
+    this.currentLogger.fatal(...all);
+  }
+
+  public child(fields: ILoggerFields) {
+    const newLogger = this.currentLogger.child(fields);
+    return new Logger(newLogger);
+  }
+
+  // only for backward compatibility
+  public withFields(fields: ILoggerFields) {
+    return this.child(fields);
+  }
 }
+
+export default new Logger();

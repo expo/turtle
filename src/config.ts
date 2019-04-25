@@ -43,7 +43,7 @@ export default {
   },
   logger: {
     level: env('LOGGER_LEVEL', 'info'),
-    interval: envNum('LOGGER_INTERVAL', 5),
+    intervalMs: envNum('LOGGER_INTERVAL_MS', 5000),
     client: {
       level: env('CLIENT_LOGGER_LEVEL', 'info'),
     },

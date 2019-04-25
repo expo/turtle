@@ -121,7 +121,7 @@ function failAfterMaxJobTime(priority: string, receiptHandle: string, job: any) 
 
 async function build(job: any) {
   const startTimestamp = Date.now();
-  const s3Url = await logger.init(job);
+  const s3Url = await logger.initForJob(job);
   const calculateBuildDuration = () => Math.ceil((Date.now() - startTimestamp) / 1000);
 
   try {
@@ -151,7 +151,7 @@ async function build(job: any) {
     });
     return false;
   } finally {
-    await logger.cleanup(job);
+    await logger.cleanup();
   }
 }
 

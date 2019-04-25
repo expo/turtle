@@ -13,7 +13,7 @@ import logger from 'turtle/logger';
 const ANDROID_SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip';
 
 const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
-const l = logger.withFields(LOGGER_FIELDS);
+const l = logger.child(LOGGER_FIELDS);
 
 export default async function ensureAndroidSDKIsPresent() {
   const androidSdkDir = path.join(config.directories.androidDependenciesDir, 'sdk');
