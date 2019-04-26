@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Support for custom builds on android
+- Support for Android tarballs without `universe-package.json`
 
 ## [0.6.1] - 2019-04-23
 ### Added

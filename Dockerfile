@@ -103,11 +103,15 @@ ADD . /app
 
 RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
       cd /app/workingdir/android/$SDK_VERSION && \
+      if [ -f universe-package.json ]; then \
       mv package.json exponent-package.json && \
       mv universe-package.json package.json && \
       yarn install && \
       mv package.json universe-package.json && \
-      mv exponent-package.json package.json \
+      mv exponent-package.json package.json; \
+      else \
+      yarn install; \
+      fi \
     ; done
 
 WORKDIR /app
