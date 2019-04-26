@@ -4,7 +4,7 @@ import _which from 'which';
 import logger from 'turtle/logger';
 
 const which = util.promisify(_which);
-const l = logger.withFields({ buildPhase: 'setting up environment' });
+const l = logger.child({ buildPhase: 'setting up environment' });
 
 export interface IToolDefinition {
   command: string;

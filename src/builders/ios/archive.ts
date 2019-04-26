@@ -29,7 +29,7 @@ export default async function buildArchive(ctx: IContext, job: IJob) {
 }
 
 async function buildAndSignIPA(ctx: IContext, job: IJob, keychainPath: string, manifest: any) {
-  const l = logger.withFields({ buildPhase: 'building and signing IPA' });
+  const l = logger.child({ buildPhase: 'building and signing IPA' });
   l.info('building and signing IPA');
 
   const {

@@ -10,7 +10,7 @@ import { IShellAppDirectoryConfig } from 'turtle/builders/utils/workingdir';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
 
-const l = logger.withFields({ buildPhase: 'setting up environment' });
+const l = logger.child({ buildPhase: 'setting up environment' });
 
 interface IShellAppFormaters {
   formatShellAppDirectory: (config: IShellAppDirectoryConfig) => string;
