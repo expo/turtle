@@ -25,11 +25,13 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
       const { stdout } = await ExponentTools.spawnAsyncThrowError(
         'fastlane',
         ['--version'],
-        { stdio: 'pipe', env: { ...process.env, FASTLANE_SKIP_UPDATE_CHECK: '1' } },
+        { stdio: 'pipe', env: { ...process.env, FASTLANE_SKIP_UPDATE_CHECK: '1', LC_ALL: 'en_US.UTF-8' } },
       );
       const fastlaneVersion = parseFastlaneVersion(stdout);
       if (fastlaneVersion && !semver.satisfies(fastlaneVersion, `>= ${MINIMAL_VERSION}`)) {
-        throw new Error(`Please install newer version of fastlane (>= ${MINIMAL_VERSION})`);
+        throw new Error(
+          `Your fastlane on version ${fastlaneVersion}. Please upgrade it to at least ${MINIMAL_VERSION}.`,
+        );
       }
     },
   },
