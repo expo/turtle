@@ -33,10 +33,12 @@ commands:
           command: |
             nix-env -iA \
               nixpkgs.binutils \
+              nixpkgs.curl \
               nixpkgs.direnv \
               nixpkgs.findutils \
               nixpkgs.gawk \
               nixpkgs.git \
+              nixpkgs.gnused \
               nixpkgs.gnutar \
               nixpkgs.gzip \
               nixpkgs.openssh \
