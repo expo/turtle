@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2019-05-06
+### Fixed
+- Resolving `fastlane` version when `LC_ALL` is not set.
+
 ## [0.7.0] - 2019-05-06
 ### Added
 - Support for custom Android builds.
