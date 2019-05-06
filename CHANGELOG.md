@@ -5,8 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.7.0] - 2019-05-06
 ### Added
-- Support for custom builds on android
+- Support for custom Android builds.
+### Changed
+- Refactored logger.
+### Fixed
+- `platform` log field wrongly set to `ios` for Android builds (when using `turtle-cli`).
+- Brought back `jobID` and `experienceName` fields to Android logs.
 
 ## [0.6.1] - 2019-04-23
 ### Added
