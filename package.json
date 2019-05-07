@@ -133,6 +133,6 @@
     "xdl": "53.5.4"
   },
   "optionalDependencies": {
-    "@expo/traveling-fastlane-darwin": "^1.8.1"
+    "@expo/traveling-fastlane-darwin": "1.9.4"
   }
 }
