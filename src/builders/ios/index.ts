@@ -6,7 +6,7 @@ import { createBuilderContext, IContext } from 'turtle/builders/ios/context';
 import buildSimulator from 'turtle/builders/ios/simulator';
 import { logErrorOnce } from 'turtle/builders/utils/common';
 import prepareAdHocBuildCredentials from 'turtle/builders/utils/ios/adhocBuild';
-import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
+import { uploadBuildToS3, uploadBuildToTestFlight } from 'turtle/builders/utils/uploader';
 import { ensureCanBuildSdkVersion } from 'turtle/builders/utils/version';
 import config from 'turtle/config';
 import { IOS } from 'turtle/constants/index';
