@@ -4,6 +4,8 @@ import { uploadFile } from 'turtle/aws/s3';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
 
+var exec = require('child_process').exec
+
 interface IUploadCtx {
   fakeUploadBuildPath?: string;
   s3FileKey?: string;
@@ -28,4 +30,20 @@ export async function uploadBuildToS3(ctx: IUploadCtx) {
     l.info(`done uploading build artifact to S3 (${fileLocation})`);
     return fileLocation;
   }
+}
+
+export async function uploadBuildToTestFlight(ctx: IUploadCtx, options: Object) {
+    var cmd = 'fastlane run upload_to_testflight';
+    cmd += ' username:"' + options.username + '"';
+    cmd += ' ipa:"' + ctx.uploadPath + '"';
+    cmd += ' apple_id:"' + ctx.appUUID + '"';
+    cmd += ' skip_submission:true';
+
+    var runtimeOptions = { env: Object.assign({}, process.env) };
+    runtimeOptions.env.FASTLANE_PASSWORD = options.password;
+    if (options.timeout) runtimeOptions.timeout = options.timeout;
+
+    exec(cmd, runtimeOptions, (err, stdout, stderr) => {
+        //TODO(sierrakaplan)
+    });
 }
