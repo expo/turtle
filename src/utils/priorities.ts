@@ -10,6 +10,7 @@ export const HIGH = 'highPriority';
 
 export const NORMAL_CONFIGURATION = [NORMAL, HIGH];
 export const HIGH_CONFIGURATION = [HIGH, NORMAL];
+export const HIGH_ONLY_CONFIGURATION = [HIGH];
 
 const REDIS_GET_CONFIG = `
   local i = 0
