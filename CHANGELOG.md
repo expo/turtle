@@ -6,8 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Support for custom builds on android
 - Support for Android tarballs without `universe-package.json`
+### Changed
+- Upgraded `@expo/traveling-fastlane-darwin` to 1.9.4 (fixes issues with generating provisioning profiles for ad-hoc builds).
+
+## [0.7.1] - 2019-05-06
+### Fixed
+- Resolving `fastlane` version when `LC_ALL` is not set.
+
+## [0.7.0] - 2019-05-06
+### Added
+- Support for custom Android builds.
+### Changed
+- Refactored logger.
+### Fixed
+- `platform` log field wrongly set to `ios` for Android builds (when using `turtle-cli`).
+- Brought back `jobID` and `experienceName` fields to Android logs.
 
 ## [0.6.1] - 2019-04-23
 ### Added

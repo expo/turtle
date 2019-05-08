@@ -304,10 +304,10 @@
     "@types/cross-spawn" "^6.0.0"
     cross-spawn "^6.0.5"
 
-"@expo/traveling-fastlane-darwin@^1.8.1":
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-darwin/-/traveling-fastlane-darwin-1.8.1.tgz#37c16a253e92d3ef6f543e7271b7239e6edbbb5f"
-  integrity sha512-Nt+579oBMrMEzVn0Esv7c8nIOwoDX/xS6CThoWPRFMVIeQ52aK1mf7wu91/+FCU/fvfUFZ/evERIDWS1lObRxA==
+"@expo/traveling-fastlane-darwin@1.9.4":
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-darwin/-/traveling-fastlane-darwin-1.9.4.tgz#29b370a6d6e115e69c4c4ea53003d679779b4592"
+  integrity sha512-bKw/sRPd0gXyzXhrvU9ewhav6FXstQC/g9P9ulf3x0Y2bxNYu7g1zv3hrNJxVbKx0DsFMzXqesV8HD8mU6jwrw==
 
 "@expo/webpack-config@^0.5.3":
   version "0.5.3"

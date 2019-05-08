@@ -1,6 +1,6 @@
 {
   "name": "turtle-cli",
-  "version": "0.6.1",
+  "version": "0.7.1",
   "description": "The command-line tool for building standalone Expo apps",
   "preferGlobal": true,
   "scripts": {
@@ -133,6 +133,6 @@
     "xdl": "53.5.4"
   },
   "optionalDependencies": {
-    "@expo/traveling-fastlane-darwin": "^1.8.1"
+    "@expo/traveling-fastlane-darwin": "1.9.4"
   }
 }
