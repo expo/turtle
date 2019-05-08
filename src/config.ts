@@ -44,9 +44,6 @@ export default {
   logger: {
     level: env('LOGGER_LEVEL', 'info'),
     intervalMs: envNum('LOGGER_INTERVAL_MS', 5000),
-    client: {
-      level: env('CLIENT_LOGGER_LEVEL', 'info'),
-    },
   },
   google: {
     credentials: env('GOOGLE_APPLICATION_CREDENTIALS', ''),
