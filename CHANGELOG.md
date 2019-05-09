@@ -5,10 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.7.2] - 2019-05-09
 ### Removed
-- Support for env variable CLIENT_LOGGER_LEVEL
+- Support for `CLIENT_LOGGER_LEVEL` env variable.
 ### Added
-- Support for Android tarballs without `universe-package.json`
+- Support for Android tarballs without `universe-package.json`.
 ### Changed
 - Upgraded `@expo/traveling-fastlane-darwin` to 1.9.4 (fixes issues with generating provisioning profiles for ad-hoc builds).
 
