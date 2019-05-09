@@ -7,6 +7,10 @@
 [![Expo Developers Slack](https://img.shields.io/badge/Expo%20Developers-e01563.svg?logo=slack)](http://slack.expo.io)
 [![Expo Forums](https://img.shields.io/badge/Expo%20Forums-blue.svg)](https://forums.expo.io/)
 
+<h1 align=center>
+<img src="logo/horizontal.png" width=50%>
+</h1>
+
 Turtle CLI is a command line interface for building Expo standalone apps.
 You can use it both on your CI and your private computer.
 
