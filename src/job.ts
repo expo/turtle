@@ -12,6 +12,8 @@ export interface IJob {
     // ios
     buildType?: IOS.BUILD_TYPES;
     bundleIdentifier?: string;
+    // android
+    androidPackage?: string;
   };
   credentials: {
     // android
