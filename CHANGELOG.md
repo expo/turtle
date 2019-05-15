@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Turtle CLI logo to the project (created by [@zularizal](https://github.com/zularizal))!
 ### Changed
 - Updated Android shell app for SDK 32 to fix AppAuth issue (https://github.com/expo/expo/pull/4115).
+### Fixed
+- Generating Android keystore in turtle when one is not passed to turtle-cli (https://github.com/expo/turtle/pull/65).
 
 ## [0.7.2] - 2019-05-09
 ### Added
