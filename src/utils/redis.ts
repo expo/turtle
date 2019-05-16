@@ -79,6 +79,7 @@ export async function registerListener(jobId: string, deleteMessage: any) {
       if (message === jobId) {
         logger.info({ lastBuildLog: true }, 'Job cancelled - killing process');
         await deleteMessage();
+        await logger.cleanup();
         setTimeout(() => process.exit(1), MILLIS_TO_UPLOAD_LOGS);
       }
     });
