@@ -64,7 +64,7 @@ export default {
       (val: string) => env('NODE_ENV') === 'development' && val === '1',
     ),
     fakeUpload: envTransform('TURTLE_FAKE_UPLOAD', '0', (val: string) => val === '1'),
-    maxJobTimeMs: envNum('TURTLE_MAX_JOB_TIME_MS', 60 * 60 * 1000),
+    maxJobTimeMs: envNum('TURTLE_MAX_JOB_TIME_MS', 15 * 60 * 1000),
     useLocalWorkingDir: envTransform('TURTLE_USE_LOCAL_WORKING_DIR', '0', (val: string) => val === '1'),
   },
   directories: {
