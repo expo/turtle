@@ -37,6 +37,11 @@ export default {
     intervalMs: envNum('AWS_CLOUDWATCH_INTERVAL_MS', 30000),
     namespace: env('AWS_CLOUDWATCH_NAMESPACE', 'Turtle'),
   },
+  datadog: {
+    apiKey: env('DATADOG_API_KEY'),
+    appKey: env('DATADOG_APP_KEY'),
+    intervalMs: env('DATADOG_INTERVAL_MS', 5 * 60 * 1000),
+  },
   redis: {
     url: env('REDIS_URL'),
     configUrl: env('REDIS_CONFIG_URL'),

@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import isEqual from 'lodash/isEqual';
 import os from 'os';
 
 import config from 'turtle/config';
@@ -7,6 +8,12 @@ import { getRedisClient, RedisClient } from 'turtle/utils/redis';
 
 export const NORMAL = 'normalPriority';
 export const HIGH = 'highPriority';
+
+export enum TurtleModeLabels {
+  Normal = 'normal',
+  High = 'high',
+  HighOnly = 'highOnly',
+}
 
 export const NORMAL_CONFIGURATION = [NORMAL, HIGH];
 export const HIGH_CONFIGURATION = [HIGH, NORMAL];
@@ -56,7 +63,7 @@ export async function getPriorities() {
     }
 
     try {
-      const configurations = JSON.parse(await redis.get(createConfigurationsKey()));
+      const configurations = await getConfiguration(redis);
       const configurationsIndex = await redis.getConfig(createConfigurationsKey(), os.hostname());
       logger.debug(`Using configuration at index ${configurationsIndex} pulled from redis`);
       const { error, value: configValue } = configSchema.validate(configurations[configurationsIndex]);
@@ -84,4 +91,22 @@ export async function getPriorities() {
       return NORMAL_CONFIGURATION;
     }
   }
+}
+
+export async function getConfiguration(currentRedisClient: any) {
+  const redis = currentRedisClient || await getRedisClient(RedisClient.Configuration);
+  return JSON.parse(await redis.get(createConfigurationsKey()));
+}
+
+export async function getLabeledConfiguration(currentRedisClient?: any) {
+  const configuration = await getConfiguration(currentRedisClient);
+  return configuration.map((i: string[]) => {
+    if (isEqual(i, NORMAL_CONFIGURATION)) {
+      return TurtleModeLabels.Normal;
+    } else if (isEqual(i, HIGH_CONFIGURATION)) {
+      return TurtleModeLabels.High;
+    } else {
+      return TurtleModeLabels.HighOnly;
+    }
+  });
 }
