@@ -36,7 +36,11 @@
     "set-priorities:default": "expenv ts-node -r tsconfig-paths/register --files src/scripts/setConfigurations.ts",
     "set-priorities:local": "EXPENV_OVERRIDES=local-common,local,local-queue yarn set-priorities:default",
     "set-priorities:staging": "yarn set-priorities:default",
-    "set-priorities:production": "EXPENV_OVERRIDES=prod yarn set-priorities:default"
+    "set-priorities:production": "EXPENV_OVERRIDES=prod yarn set-priorities:default",
+    "set-replica-count:default": "expenv ts-node -r tsconfig-paths/register --files src/scripts/setReplicaCount.ts | bunyan -o short -l debug",
+    "set-replica-count:local": "EXPENV_OVERRIDES=local-common,local,local-queue yarn set-replica-count:default",
+    "set-replica-count:staging": "yarn set-replica-count:default",
+    "set-replica-count:production": "EXPENV_OVERRIDES=prod yarn set-replica-count:default"
   },
   "husky": {
     "hooks": {
