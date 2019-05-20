@@ -17,5 +17,5 @@ export async function getReplicaCount(maybePlatform?: PLATFORMS) {
   const platform = maybePlatform || config.platform;
   const redis = await getRedisClient(RedisClient.Configuration);
   const result = await redis.get(createReplicaCountKey(platform));
-  return Number(result);
+  return result === null ? null : Number(result);
 }

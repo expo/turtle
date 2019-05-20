@@ -14,9 +14,10 @@ const createModeTag = (mode: TurtleModeLabels) => `mode:${mode}`;
 export default async function sendConfigToDatadog() {
   const configuration = await getLabeledConfiguration();
   const replicaCount = await getReplicaCount();
+  const currentReplicaCount = replicaCount === null ? configuration.length : replicaCount;
 
   const replicaCounts = mapValues(
-    groupBy<string>(take(configuration, replicaCount)),
+    groupBy<string>(take(configuration, currentReplicaCount)),
     (i) => i.length,
   );
 
