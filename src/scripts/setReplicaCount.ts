@@ -1,10 +1,9 @@
 import isNaN from 'lodash/isNaN';
+
 import { PLATFORMS } from 'turtle/constants';
 import logger from 'turtle/logger';
 import { setReplicaCount } from 'turtle/utils/metadata';
-import { connect, RedisClient } from 'turtle/utils/redis';
-
-const REDIS_CONNECTION_TIMEOUT = 10000;
+import { getRedisClient, RedisClient } from 'turtle/utils/redis';
 
 async function run() {
   const platform = process.env.SCRIPT_PLATFORM;
@@ -23,11 +22,9 @@ async function run() {
     throw new Error(`Wrong value for replica count: ${replicaCountRaw}`);
   }
 
-  const redis = await connect(REDIS_CONNECTION_TIMEOUT, RedisClient.Configuration);
+  const redis = await getRedisClient(RedisClient.Configuration);
   logger.info(`[${platform}] Setting replica count in redis to ${replicaCount}`);
-
-  await setReplicaCount(redis, platform as PLATFORMS, replicaCount);
-
+  await setReplicaCount(platform as PLATFORMS, replicaCount);
   redis.disconnect();
 }
 
