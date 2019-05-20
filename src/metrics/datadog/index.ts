@@ -5,7 +5,7 @@ import config from 'turtle/config';
 
 const datadogSendMetric = util.promisify(dogapi.metric.send);
 
-if (config.datadog.disabled) {
+if (!config.datadog.disabled) {
   dogapi.initialize({
     api_key: config.datadog.apiKey,
     app_key: config.datadog.appKey,
