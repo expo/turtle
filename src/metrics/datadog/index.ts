@@ -5,10 +5,12 @@ import config from 'turtle/config';
 
 const datadogSendMetric = util.promisify(dogapi.metric.send);
 
-dogapi.initialize({
-  api_key: config.datadog.apiKey,
-  app_key: config.datadog.appKey,
- });
+if (config.datadog.disabled) {
+  dogapi.initialize({
+    api_key: config.datadog.apiKey,
+    app_key: config.datadog.appKey,
+   });
+}
 
 const tags = [
   `env:${config.deploymentEnv}`,
@@ -16,5 +18,7 @@ const tags = [
 ];
 
 export function sendMetric(name: string, value: number, additionalTags?: string[]) {
-  return datadogSendMetric(name, value, { tags: [...tags, ...(additionalTags || [])] });
+  if (!config.datadog.disabled) {
+    return datadogSendMetric(name, value, { tags: [...tags, ...(additionalTags || [])] });
+  }
 }

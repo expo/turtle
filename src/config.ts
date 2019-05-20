@@ -2,7 +2,7 @@ import os from 'os';
 import path from 'path';
 
 import { PLATFORMS } from 'turtle/constants';
-import { env, envNum, envOptional, envTransform } from 'turtle/utils/env';
+import { env, envBoolean, envNum, envOptional, envTransform } from 'turtle/utils/env';
 
 export default {
   env: env('NODE_ENV'),
@@ -38,8 +38,9 @@ export default {
     namespace: env('AWS_CLOUDWATCH_NAMESPACE', 'Turtle'),
   },
   datadog: {
-    apiKey: env('DATADOG_API_KEY'),
-    appKey: env('DATADOG_APP_KEY'),
+    disabled: envBoolean('DATADOG_DISABLED', false),
+    apiKey: envOptional('DATADOG_API_KEY'),
+    appKey: envOptional('DATADOG_APP_KEY'),
     intervalMs: env('DATADOG_INTERVAL_MS', 5 * 60 * 1000),
   },
   redis: {
