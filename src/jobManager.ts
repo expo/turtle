@@ -76,10 +76,10 @@ async function processJob(jobData: any) {
       const buildType = _.get(job, 'config.buildType', 'default');
       try {
         const status = await build(job);
-        buildStatusMetric.add(buildType, status);
+        buildStatusMetric.add(buildType, priority, status);
         buildFailed = !status;
       } catch (err) {
-        buildStatusMetric.add(buildType, false);
+        buildStatusMetric.add(buildType, priority, false);
         buildFailed = true;
         throw err;
       } finally {
