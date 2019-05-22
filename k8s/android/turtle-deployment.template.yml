@@ -22,7 +22,7 @@ spec:
         environment: ${NAMESPACE}
     spec:
       restartPolicy: Always
-      terminationGracePeriodSeconds: 1800 ## wait 30 minutes for any builds to complete
+      terminationGracePeriodSeconds: 1200 ## wait 20 minutes for any builds to complete
       tolerations:
       - key: dedicated
         operator: Equal
