@@ -13,7 +13,7 @@ interface IUploadCtx {
   uploadPath: string;
 }
 
-interface JobOptions {
+interface IJobOptions {
   username: string;
   password: string;
 }
@@ -38,7 +38,7 @@ export async function uploadBuildToS3(ctx: IUploadCtx) {
   }
 }
 
-export async function uploadBuildToTestFlight(ctx: IContext, options: JobOptions) {
+export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOptions) {
   const fastlaneEnvVars = {
     FASTLANE_SKIP_UPDATE_CHECK: 1,
     FASTLANE_DISABLE_COLORS: 1,
