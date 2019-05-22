@@ -41,7 +41,9 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
     // Upload to app store
     if (job.config.upload) {
       const { options } = job.config;
-      await uploadBuildToTestFlight(ctx, options);
+      if (options) {
+        await uploadBuildToTestFlight(ctx, options);
+      }
     }
 
     const artifactUrl = await uploadBuildToS3(ctx);
