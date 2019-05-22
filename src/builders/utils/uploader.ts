@@ -3,14 +3,19 @@ import * as fs from 'fs-extra';
 import { uploadFile } from 'turtle/aws/s3';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
+import { IContext } from 'turtle/builders/ios/context';
 
 import { ExponentTools } from 'xdl';
 
 interface IUploadCtx {
-  appUUID: string;
   fakeUploadBuildPath?: string;
   s3FileKey?: string;
   uploadPath: string;
+}
+
+interface JobOptions {
+  username: string;
+  password: string;
 }
 
 export async function uploadBuildToS3(ctx: IUploadCtx) {
@@ -33,7 +38,7 @@ export async function uploadBuildToS3(ctx: IUploadCtx) {
   }
 }
 
-export async function uploadBuildToTestFlight(ctx: IUploadCtx, options: Object) {
+export async function uploadBuildToTestFlight(ctx: IContext, options: JobOptions) {
   const fastlaneEnvVars = {
     FASTLANE_SKIP_UPDATE_CHECK: 1,
     FASTLANE_DISABLE_COLORS: 1,
