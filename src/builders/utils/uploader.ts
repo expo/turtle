@@ -1,13 +1,21 @@
 import * as fs from 'fs-extra';
 
 import { uploadFile } from 'turtle/aws/s3';
+import { IContext } from 'turtle/builders/ios/context';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
+
+import { ExponentTools } from 'xdl';
 
 interface IUploadCtx {
   fakeUploadBuildPath?: string;
   s3FileKey?: string;
   uploadPath: string;
+}
+
+interface IJobOptions {
+  username: string;
+  password: string;
 }
 
 export async function uploadBuildToS3(ctx: IUploadCtx) {
@@ -28,4 +36,38 @@ export async function uploadBuildToS3(ctx: IUploadCtx) {
     l.info(`done uploading build artifact to S3 (${fileLocation})`);
     return fileLocation;
   }
+}
+
+export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOptions) {
+  const fastlaneEnvVars = {
+    FASTLANE_SKIP_UPDATE_CHECK: 1,
+    FASTLANE_DISABLE_COLORS: 1,
+    CI: 1,
+    LC_ALL: 'en_US.UTF-8',
+    FASTLANE_PASSWORD: options.password,
+  };
+
+  const fastlaneArgs = [
+    'run upload_to_testflight',
+    'username:',
+    '"' + options.username + '"',
+    'ipa:',
+    ctx.uploadPath,
+    'apple_id:',
+    ctx.appUUID,
+    'skip_submission:',
+    'true',
+  ];
+
+  const loggerFields = { buildPhase: 'uploading IPA' };
+
+  await ExponentTools.spawnAsyncThrowError('fastlane', fastlaneArgs, {
+    env: {
+      ...process.env,
+      ...fastlaneEnvVars,
+    },
+    pipeToLogger: true,
+    dontShowStdout: false,
+    loggerFields,
+  });
 }

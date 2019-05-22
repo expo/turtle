@@ -12,6 +12,12 @@ export interface IJob {
     // ios
     buildType?: IOS.BUILD_TYPES;
     bundleIdentifier?: string;
+    upload?: boolean;
+    options?: {
+      // apple credentials
+      username: string;
+      password: string;
+    };
     // android
     androidPackage?: string;
   };
