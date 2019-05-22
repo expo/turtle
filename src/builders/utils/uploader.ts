@@ -1,9 +1,9 @@
 import * as fs from 'fs-extra';
 
 import { uploadFile } from 'turtle/aws/s3';
+import { IContext } from 'turtle/builders/ios/context';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
-import { IContext } from 'turtle/builders/ios/context';
 
 import { ExponentTools } from 'xdl';
 
