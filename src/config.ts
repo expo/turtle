@@ -2,7 +2,7 @@ import os from 'os';
 import path from 'path';
 
 import { PLATFORMS } from 'turtle/constants';
-import { env, envNum, envOptional, envTransform } from 'turtle/utils/env';
+import { env, envBoolean, envNum, envOptional, envTransform } from 'turtle/utils/env';
 
 export default {
   env: env('NODE_ENV'),
@@ -37,6 +37,12 @@ export default {
     intervalMs: envNum('AWS_CLOUDWATCH_INTERVAL_MS', 30000),
     namespace: env('AWS_CLOUDWATCH_NAMESPACE', 'Turtle'),
   },
+  datadog: {
+    disabled: envBoolean('DATADOG_DISABLED', false),
+    apiKey: envOptional('DATADOG_API_KEY'),
+    appKey: envOptional('DATADOG_APP_KEY'),
+    intervalMs: env('DATADOG_INTERVAL_MS', 5 * 60 * 1000),
+  },
   redis: {
     url: env('REDIS_URL'),
     configUrl: env('REDIS_CONFIG_URL'),
@@ -44,9 +50,6 @@ export default {
   logger: {
     level: env('LOGGER_LEVEL', 'info'),
     intervalMs: envNum('LOGGER_INTERVAL_MS', 5000),
-    client: {
-      level: env('CLIENT_LOGGER_LEVEL', 'info'),
-    },
   },
   google: {
     credentials: env('GOOGLE_APPLICATION_CREDENTIALS', ''),
@@ -67,7 +70,7 @@ export default {
       (val: string) => env('NODE_ENV') === 'development' && val === '1',
     ),
     fakeUpload: envTransform('TURTLE_FAKE_UPLOAD', '0', (val: string) => val === '1'),
-    maxJobTimeMs: envNum('TURTLE_MAX_JOB_TIME_MS', 60 * 60 * 1000),
+    maxJobTimeMs: envNum('TURTLE_MAX_JOB_TIME_MS', 15 * 60 * 1000),
     useLocalWorkingDir: envTransform('TURTLE_USE_LOCAL_WORKING_DIR', '0', (val: string) => val === '1'),
   },
   directories: {

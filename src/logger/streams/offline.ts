@@ -6,6 +6,6 @@ export default function create() {
   return {
     stream: prettyStdOut,
     type: 'raw',
-    level: config.logger.client.level,
+    level: config.logger.level,
   };
 }

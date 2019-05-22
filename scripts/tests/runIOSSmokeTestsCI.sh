@@ -19,6 +19,7 @@ export API_HOSTNAME="staging.expo.io"
 export API_PORT="443"
 export REDIS_URL="noop"
 export REDIS_CONFIG_URL="noop"
+export DATADOG_DISABLED="true"
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/../.. && pwd )"
 SDK_VERSION=sdk32 $ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh

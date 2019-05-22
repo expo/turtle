@@ -1,4 +1,6 @@
-# Turtle CLI
+<h3 align=center>
+ <img src="logo/horizontal.png" width=50%>
+</h3>
 
 [![CircleCI](https://img.shields.io/circleci/project/github/expo/turtle/master.svg)](https://circleci.com/gh/expo/turtle)
 [![NPM](https://img.shields.io/npm/v/turtle-cli/latest.svg)](https://npmjs.com/package/turtle-cli)
@@ -6,6 +8,8 @@
 
 [![Expo Developers Slack](https://img.shields.io/badge/Expo%20Developers-e01563.svg?logo=slack)](http://slack.expo.io)
 [![Expo Forums](https://img.shields.io/badge/Expo%20Forums-blue.svg)](https://forums.expo.io/)
+
+<hr />
 
 Turtle CLI is a command line interface for building Expo standalone apps.
 You can use it both on your CI and your private computer.

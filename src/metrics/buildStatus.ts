@@ -1,5 +1,5 @@
 import * as cloudwatch from 'turtle/aws/cloudwatch';
-import { TYPE_DIMENSIONS } from 'turtle/aws/cloudwatch/dimensions';
+import { PRIORITY_DIMENSIONS } from 'turtle/aws/cloudwatch/dimensions';
 import * as reducers from 'turtle/aws/cloudwatch/reducers';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
@@ -24,11 +24,11 @@ export function register() {
   });
 }
 
-export function add(type: string, success = true) {
+export function add(type: string, priority: string, success = true) {
   cloudwatch.addMetricData({
     name: BUILD_METRIC_NAME,
     value: 1,
     success,
-    extraDimensions: TYPE_DIMENSIONS(type),
+    extraDimensions: PRIORITY_DIMENSIONS(type, priority),
   });
 }

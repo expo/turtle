@@ -22,7 +22,7 @@ spec:
         environment: ${NAMESPACE}
     spec:
       restartPolicy: Always
-      terminationGracePeriodSeconds: 1800 ## wait 30 minutes for any builds to complete
+      terminationGracePeriodSeconds: 1200 ## wait 20 minutes for any builds to complete
       tolerations:
       - key: dedicated
         operator: Equal
@@ -128,6 +128,16 @@ spec:
               secretKeyRef:
                 name: turtle-js-config
                 key: api_port
+          - name: DATADOG_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: datadog_api_key
+          - name: DATADOG_APP_KEY
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: datadog_app_key
           # other vars
           - name: GRADLE_DAEMON_DISABLED
             value: "1"

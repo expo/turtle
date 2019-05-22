@@ -1,6 +1,7 @@
 import path from 'path';
 
 import fs from 'fs-extra';
+import get from 'lodash/get';
 import uuidv4 from 'uuid/v4';
 import { Credentials } from 'xdl';
 
@@ -19,7 +20,14 @@ async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredential
     credentials.keystorePassword = uuidv4().replace(/-/g, '');
     credentials.keyPassword = uuidv4().replace(/-/g, '');
     credentials.keystoreAlias = Buffer.from(jobData.experienceName).toString('base64');
-    const androidPackage = jobData.manifest.android.package;
+    const androidPackage =
+      get(jobData, 'manifest.android.package')
+      || get(jobData, 'config.androidPackage');
+    if (!androidPackage) {
+      throw new Error(
+        'Android package name is not set in the app manifest (please update app.json if you\'re using turtle-cli).',
+      );
+    }
 
     await Credentials.Android.createKeystore(
       {

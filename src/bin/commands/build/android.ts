@@ -38,6 +38,7 @@ const buildJobObject = (appJSON: any, { releaseChannel, username, projectDir, pu
   config: {
     ..._.get(appJSON, 'expo.android.config', {}),
     releaseChannel,
+    androidPackage: _.get(appJSON, 'expo.android.package'),
     publicUrl,
   },
   id: uuid.v4(),

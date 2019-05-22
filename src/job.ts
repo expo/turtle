@@ -18,6 +18,8 @@ export interface IJob {
       username: string;
       password: string;
     };
+    // android
+    androidPackage?: string;
   };
   credentials: {
     // android

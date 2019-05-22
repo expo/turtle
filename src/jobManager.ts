@@ -76,10 +76,10 @@ async function processJob(jobData: any) {
       const buildType = _.get(job, 'config.buildType', 'default');
       try {
         const status = await build(job);
-        buildStatusMetric.add(buildType, status);
+        buildStatusMetric.add(buildType, priority, status);
         buildFailed = !status;
       } catch (err) {
-        buildStatusMetric.add(buildType, false);
+        buildStatusMetric.add(buildType, priority, false);
         buildFailed = true;
         throw err;
       } finally {
@@ -113,7 +113,8 @@ function failAfterMaxJobTime(priority: string, receiptHandle: string, job: any) 
       sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, { turtleVersion });
       await deleteMessage(priority, receiptHandle);
     } finally {
-      logger.error('Going to terminate turtle agent, just in case...');
+      logger.error('Build timed out. Going to terminate turtle agent.');
+      await logger.cleanup();
       process.exit(1);
     }
   }, config.builder.maxJobTimeMs);

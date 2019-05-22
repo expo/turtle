@@ -1,6 +1,6 @@
 {
   "name": "turtle-cli",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "The command-line tool for building standalone Expo apps",
   "preferGlobal": true,
   "scripts": {
@@ -36,7 +36,11 @@
     "set-priorities:default": "expenv ts-node -r tsconfig-paths/register --files src/scripts/setConfigurations.ts",
     "set-priorities:local": "EXPENV_OVERRIDES=local-common,local,local-queue yarn set-priorities:default",
     "set-priorities:staging": "yarn set-priorities:default",
-    "set-priorities:production": "EXPENV_OVERRIDES=prod yarn set-priorities:default"
+    "set-priorities:production": "EXPENV_OVERRIDES=prod yarn set-priorities:default",
+    "set-replica-count:default": "expenv ts-node -r tsconfig-paths/register --files src/scripts/setReplicaCount.ts | bunyan -o short -l debug",
+    "set-replica-count:local": "EXPENV_OVERRIDES=local-common,local,local-queue yarn set-replica-count:default",
+    "set-replica-count:staging": "yarn set-replica-count:default",
+    "set-replica-count:production": "EXPENV_OVERRIDES=prod yarn set-replica-count:default"
   },
   "husky": {
     "hooks": {
@@ -79,7 +83,7 @@
     "@types/fs-extra": "^5.0.4",
     "@types/jest": "^23.3.9",
     "@types/joi": "^13.4.3",
-    "@types/lodash": "^4.14.109",
+    "@types/lodash": "^4.14.129",
     "@types/progress": "^2.0.1",
     "@types/raven": "^2.5.1",
     "@types/request": "^2.47.1",
@@ -115,11 +119,12 @@
     "commander": "^2.15.1",
     "copy": "^0.3.1",
     "decompress": "^4.2.0",
+    "dogapi": "^2.8.3",
     "fs-extra": "^6.0.0",
     "ioredis": "^3.2.2",
     "is-semver": "^1.0.8",
     "joi": "^13.2.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.11",
     "progress": "^2.0.0",
     "raven": "^2.6.2",
     "request": "^2.88.0",
@@ -130,7 +135,7 @@
     "tar": "^4.4.6",
     "uuid": "^3.2.1",
     "which": "^1.3.1",
-    "xdl": "53.5.4"
+    "xdl": "53.7.3"
   },
   "optionalDependencies": {
     "@expo/traveling-fastlane-darwin": "1.9.4"

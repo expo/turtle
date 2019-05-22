@@ -1,9 +1,10 @@
-declare module 'copy';
-declare module 'xdl';
+declare module 'async-retry';
 declare module 'bunyan';
 declare module 'bunyan-sentry-stream';
 declare module 'bunyan-debug-stream';
-declare module 'async-retry';
+declare module 'copy';
+declare module 'dogapi';
 declare module 'ioredis';
-declare module 'request-progress';
 declare module 'is-semver';
+declare module 'request-progress';
+declare module 'xdl';

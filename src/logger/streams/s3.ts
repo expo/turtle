@@ -15,7 +15,7 @@ export default function create() {
     type: 'raw',
     stream: s3,
     reemitErrorEvents: true,
-    level: config.logger.client.level,
+    level: config.logger.level,
   };
 }
 

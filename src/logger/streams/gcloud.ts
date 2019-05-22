@@ -22,7 +22,7 @@ export default function create() {
     },
   });
   return {
-    level: 'info',
+    level: config.logger.level,
     type: 'raw',
     stream: gcloudStream,
   };

@@ -21,5 +21,6 @@ export API_HOSTNAME="staging.expo.io"
 export API_PORT="443"
 export REDIS_URL="noop"
 export REDIS_CONFIG_URL="noop"
+export DATADOG_DISABLED="true"
 
 yarn test:smoke:android
