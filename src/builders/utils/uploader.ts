@@ -7,6 +7,7 @@ import logger from 'turtle/logger';
 import { ExponentTools } from 'xdl';
 
 interface IUploadCtx {
+  appUUID: string;
   fakeUploadBuildPath?: string;
   s3FileKey?: string;
   uploadPath: string;
@@ -55,7 +56,7 @@ export async function uploadBuildToTestFlight(ctx: IUploadCtx, options: Object) 
 
   const loggerFields = { buildPhase: 'uploading IPA' };
 
-  const { status, stdout } = await ExponentTools.spawnAsyncThrowError('fastlane', fastlaneArgs, {
+  await ExponentTools.spawnAsyncThrowError('fastlane', fastlaneArgs, {
     env: {
       ...process.env,
       ...fastlaneEnvVars,
