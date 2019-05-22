@@ -4,7 +4,7 @@ import { uploadFile } from 'turtle/aws/s3';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
 
-var exec = require('child_process').exec
+import { ExponentTools } from 'xdl';
 
 interface IUploadCtx {
   fakeUploadBuildPath?: string;
@@ -33,17 +33,35 @@ export async function uploadBuildToS3(ctx: IUploadCtx) {
 }
 
 export async function uploadBuildToTestFlight(ctx: IUploadCtx, options: Object) {
-    var cmd = 'fastlane run upload_to_testflight';
-    cmd += ' username:"' + options.username + '"';
-    cmd += ' ipa:"' + ctx.uploadPath + '"';
-    cmd += ' apple_id:"' + ctx.appUUID + '"';
-    cmd += ' skip_submission:true';
+  const fastlaneEnvVars = {
+    FASTLANE_SKIP_UPDATE_CHECK: 1,
+    FASTLANE_DISABLE_COLORS: 1,
+    CI: 1,
+    LC_ALL: 'en_US.UTF-8',
+    FASTLANE_PASSWORD: options.password,
+  };
 
-    var runtimeOptions = { env: Object.assign({}, process.env) };
-    runtimeOptions.env.FASTLANE_PASSWORD = options.password;
-    if (options.timeout) runtimeOptions.timeout = options.timeout;
+  const fastlaneArgs = [
+    'run upload_to_testflight',
+    'username:',
+    '"' + options.username + '"',
+    'ipa:',
+    ctx.uploadPath,
+    'apple_id:',
+    ctx.appUUID,
+    'skip_submission:',
+    'true',
+  ];
 
-    exec(cmd, runtimeOptions, (err, stdout, stderr) => {
-        //TODO(sierrakaplan)
-    });
+  const loggerFields = { buildPhase: 'uploading IPA' };
+
+  const { status, stdout } = await ExponentTools.spawnAsyncThrowError('fastlane', fastlaneArgs, {
+    env: {
+      ...process.env,
+      ...fastlaneEnvVars,
+    },
+    pipeToLogger: true,
+    dontShowStdout: false,
+    loggerFields,
+  });
 }
