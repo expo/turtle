@@ -20,6 +20,7 @@ RUN dpkg --add-architecture i386 && \
   libc6:i386\
   libncurses5:i386\
   libstdc++6:i386\
+  rsync\
   unzip\
   yarn\
   zlib1g:i386\
