@@ -103,6 +103,7 @@ ENV PATH ${GRADLE_HOME}/bin:$PATH
 ADD . /app
 
 RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
+      echo "preparing $SDK_VERSION shell app" && \
       cd /app/workingdir/android/$SDK_VERSION && \
       if [ -f universe-package.json ]; then \
       mv package.json exponent-package.json && \
@@ -110,8 +111,6 @@ RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
       yarn install && \
       mv package.json universe-package.json && \
       mv exponent-package.json package.json; \
-      else \
-      yarn install; \
       fi \
     ; done
 
