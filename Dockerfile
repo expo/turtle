@@ -58,13 +58,13 @@ RUN yes | sdkmanager \
   "platforms;android-25" \
   "platforms;android-26" \
   "platforms;android-27" \
-  "platforms;android-28" | grep -v '='
-RUN yes | sdkmanager "platform-tools" | grep -v '='
-RUN yes | sdkmanager "build-tools;28.0.3" | grep -v '='
+  "platforms;android-28" | grep -v '=' || echo 'no output'
+RUN yes | sdkmanager "platform-tools" | grep -v '=' || echo 'no output'
+RUN yes | sdkmanager "build-tools;28.0.3" | grep -v '=' || echo 'no output'
 RUN yes | sdkmanager \
   "extras;android;m2repository" \
   "extras;google;m2repository" \
-  "extras;google;google_play_services" | grep -v '='
+  "extras;google;google_play_services" | grep -v '=' || echo 'no output'
 
 # Install Android NDK
 ENV ANDROID_NDK_VERSION android-ndk-r10e
