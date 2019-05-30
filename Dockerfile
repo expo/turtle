@@ -111,6 +111,8 @@ RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
       yarn install && \
       mv package.json universe-package.json && \
       mv exponent-package.json package.json; \
+      else \
+      yarn install; \
       fi \
     ; done
 
