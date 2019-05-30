@@ -1,9 +1,9 @@
 import path from 'path';
 import util from 'util';
 
+import { ExponentTools } from '@expo/xdl';
 import fs from 'fs-extra';
 import _which from 'which';
-import { ExponentTools } from 'xdl';
 
 import ensureAndroidNDKIsPresent from 'turtle/bin/setup/android/ndk';
 import ensureAndroidSDKIsPresent from 'turtle/bin/setup/android/sdk';

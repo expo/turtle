@@ -1,10 +1,10 @@
 import path from 'path';
 
+import { AndroidShellApp, ImageUtils } from '@expo/xdl';
 import fs from 'fs-extra';
 import _ from 'lodash';
 import semver from 'semver';
 import uuidv4 from 'uuid/v4';
-import { AndroidShellApp, ImageUtils } from 'xdl';
 
 import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
 import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';

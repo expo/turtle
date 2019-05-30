@@ -1,9 +1,9 @@
 import path from 'path';
 import util from 'util';
 
+import { ImageUtils, IosShellApp } from '@expo/xdl';
 import copy from 'copy';
 import _ from 'lodash';
-import { ImageUtils, IosShellApp } from 'xdl';
 
 import { IContext } from 'turtle/builders/ios/context';
 import * as commonUtils from 'turtle/builders/utils/common';

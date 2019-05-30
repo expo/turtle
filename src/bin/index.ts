@@ -1,8 +1,8 @@
 import path from 'path';
 
+import { LoggerDetach, ModuleVersion } from '@expo/xdl';
 import program, { Command } from 'commander';
 import fs from 'fs-extra';
-import { LoggerDetach, ModuleVersion } from 'xdl';
 
 import * as commands from 'turtle/bin/commands';
 import logger from 'turtle/logger';

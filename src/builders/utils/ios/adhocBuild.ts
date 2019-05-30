@@ -1,9 +1,9 @@
 import path from 'path';
 
 import spawnAsync from '@expo/spawn-async';
+import { IosCodeSigning } from '@expo/xdl';
 import fs from 'fs-extra';
 import isEmpty from 'lodash/isEmpty';
-import { IosCodeSigning } from 'xdl';
 
 import * as sqs from 'turtle/aws/sqs';
 import BuildError, { BuildErrorReason } from 'turtle/builders/BuildError';

@@ -3,7 +3,7 @@ import trim from 'lodash/trim';
 import path from 'path';
 import semver from 'semver';
 
-import { ExponentTools } from 'xdl';
+import { ExponentTools } from '@expo/xdl';
 
 import { checkSystem, ensureShellAppIsPresent } from 'turtle/bin/setup/utils/common';
 import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
