@@ -1,4 +1,4 @@
-import { LoggerDetach } from 'xdl';
+import { LoggerDetach } from '@expo/xdl';
 
 import config from 'turtle/config';
 import { doJob } from 'turtle/jobManager';

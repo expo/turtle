@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { ExponentTools } from 'xdl';
+import { ExponentTools } from '@expo/xdl';
 
 import { IShellAppDirectoryConfig } from 'turtle/builders/utils/workingdir';
 import config from 'turtle/config';

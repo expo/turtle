@@ -1,7 +1,7 @@
 import * as path from 'path';
 
+import { IosShellApp } from '@expo/xdl';
 import { v4 as uuidv4 } from 'uuid';
-import { IosShellApp } from 'xdl';
 
 import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
 import config from 'turtle/config';

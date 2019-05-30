@@ -1,9 +1,9 @@
 import path from 'path';
 
+import { Credentials } from '@expo/xdl';
 import fs from 'fs-extra';
 import get from 'lodash/get';
 import uuidv4 from 'uuid/v4';
-import { Credentials } from 'xdl';
 
 import * as sqs from 'turtle/aws/sqs';
 import { UPDATE_CREDENTIALS } from 'turtle/constants/build';

@@ -7,4 +7,4 @@ declare module 'dogapi';
 declare module 'ioredis';
 declare module 'is-semver';
 declare module 'request-progress';
-declare module 'xdl';
+declare module '@expo/xdl';

@@ -10,9 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated Android shell app for SDK 32 to fix AppAuth issue (https://github.com/expo/expo/pull/4115).
 - Default value for build timeout to 15 minutes.
+- `xdl` -> `@expo/xdl`
 ### Fixed
 - Generating Android keystore in turtle when one is not passed to turtle-cli (https://github.com/expo/turtle/pull/65).
 - Upload logs to s3 if build has been canceled or timed out.
+- Unhandled exception on asset download (xdl)
 
 ## [0.7.2] - 2019-05-09
 ### Added
