@@ -102,6 +102,9 @@ ENV PATH ${GRADLE_HOME}/bin:$PATH
 
 ADD . /app
 
+ENV NODE_ENV "production"
+ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
+
 RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
       echo "preparing $SDK_VERSION shell app" && \
       cd /app/workingdir/android/$SDK_VERSION && \
@@ -117,8 +120,5 @@ RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
     ; done
 
 WORKDIR /app
-
-ENV NODE_ENV "production"
-ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
 
 CMD ["node", "./build/server.js"]
