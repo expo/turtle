@@ -102,12 +102,10 @@ ENV PATH ${GRADLE_HOME}/bin:$PATH
 
 ADD . /app
 
-ENV NODE_ENV "production"
-ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
-
-RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
+RUN mv /app/workingdir /tmp && \
+    for SDK_VERSION in `ls /tmp/workingdir/android/`; do \
       echo "preparing $SDK_VERSION shell app" && \
-      cd /app/workingdir/android/$SDK_VERSION && \
+      cd /tmp/workingdir/android/$SDK_VERSION && \
       if [ -f universe-package.json ]; then \
       mv package.json exponent-package.json && \
       mv universe-package.json package.json && \
@@ -117,7 +115,11 @@ RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
       else \
       yarn install; \
       fi \
-    ; done
+    ; done && \
+    mv /tmp/workingdir /app
+
+ENV NODE_ENV "production"
+ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
 
 WORKDIR /app
 
