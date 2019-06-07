@@ -5,7 +5,7 @@ import uuid from 'uuid';
 import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
 import { createBuilderAction } from 'turtle/bin/utils/builder';
 import builder from 'turtle/builders/ios';
-import { IOS, PLATFORMS } from 'turtle/constants';
+import { IOS_BUILD_TYPES, PLATFORMS } from 'turtle/constants';
 
 export default (program: any, setCommonCommandOptions: any) => {
   const command = program.command('build:ios [project-dir]');
@@ -56,7 +56,7 @@ const buildJobObject = (appJSON: any, { releaseChannel, buildType, username, pub
 });
 
 const prepareCredentials = async (cmd: any) => {
-  if (cmd.type !== IOS.BUILD_TYPES.ARCHIVE) {
+  if (cmd.type !== IOS_BUILD_TYPES.ARCHIVE) {
     return null;
   }
 

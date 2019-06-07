@@ -15,11 +15,18 @@ export default (program: any, setCommonCommandOptions: any) => {
     .option(
       '--keystore-path <app.jks>',
       'path to your Keystore (please provide Keystore password and Key password as EXPO_ANDROID_KEYSTORE_PASSWORD'
-      + 'and EXPO_ANDROID_KEY_PASSWORD env variables)',
+      + ' and EXPO_ANDROID_KEY_PASSWORD env variables)',
     )
     .option('--keystore-alias <alias>', 'keystore Alias')
+    .option(
+      '-t --type <build>',
+      'type of build: app-bundle|apk',
+      /^(app-bundle|apk)$/i,
+      'app-bundle',
+    )
     .description(
-      'Build a standalone APK for your project, signed and ready for submission to the Google Play Store.',
+      'Build a standalone APK or App Bundle for your project, signed and ready for submission to the Google Play'
+      + ' Store.',
     )
     .asyncAction(
       createBuilderAction({
@@ -34,12 +41,17 @@ export default (program: any, setCommonCommandOptions: any) => {
     );
 };
 
-const buildJobObject = (appJSON: any, { releaseChannel, username, projectDir, publicUrl }: any, credentials: any) => ({
+const buildJobObject = (
+  appJSON: any,
+  { releaseChannel, username, projectDir, publicUrl, buildType }: any,
+  credentials: any,
+) => ({
   config: {
     ..._.get(appJSON, 'expo.android.config', {}),
     releaseChannel,
     androidPackage: _.get(appJSON, 'expo.android.package'),
     publicUrl,
+    buildType,
   },
   id: uuid.v4(),
   platform: PLATFORMS.ANDROID,

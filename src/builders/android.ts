@@ -4,6 +4,7 @@ import { AndroidShellApp, ImageUtils } from '@expo/xdl';
 import fs from 'fs-extra';
 import _ from 'lodash';
 import semver from 'semver';
+import { ANDROID_BUILD_TYPES } from 'turtle/constants';
 import uuidv4 from 'uuid/v4';
 
 import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
@@ -20,13 +21,16 @@ import logger from 'turtle/logger';
 export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
   await ensureCanBuildSdkVersion(jobData);
   const credentials = await getOrCreateCredentials(jobData);
-  const apkFilePath = await runShellAppBuilder(jobData, credentials);
+  const outputFilePath = await runShellAppBuilder(jobData, credentials);
+
   const randomHex = uuidv4().replace(/-/g, '');
-  const s3Filename = `${jobData.experienceName}-${randomHex}-signed.apk`;
+  const s3FileExtension = jobData.config.buildType === ANDROID_BUILD_TYPES.APP_BUNDLE ? 'aab' : 'apk';
+  const s3Filename = `${jobData.experienceName}-${randomHex}-signed.${s3FileExtension}`;
   const s3FileKey = `android/${s3Filename}`;
   const fakeUploadFilename = s3Filename.replace('/', '\\');
+
   const artifactUrl = await uploadBuildToS3({
-    uploadPath: apkFilePath,
+    uploadPath: outputFilePath,
     s3FileKey,
     ...config.builder.fakeUpload && {
       fakeUploadBuildPath:
@@ -62,7 +66,8 @@ async function runShellAppBuilder(
   ImageUtils.setResizeImageFunction(imageHelpers.resizeIconWithSharpAsync);
   ImageUtils.setGetImageDimensionsFunction(imageHelpers.getImageDimensionsWithSharpAsync);
 
-  const outputFilePath = path.join(temporaryFilesRoot, `shell-signed-${jobData.id}.apk`);
+  const fileExtension = jobData.config.buildType === ANDROID_BUILD_TYPES.APP_BUNDLE ? 'aab' : 'apk';
+  const outputFilePath = path.join(temporaryFilesRoot, `shell-signed-${jobData.id}.${fileExtension}`);
 
   const { config: jobConfig, manifest, sdkVersion: sdkVersionFromJob } = jobData;
   const sdkVersion = _.get(manifest, 'sdkVersion', sdkVersionFromJob);
@@ -87,6 +92,7 @@ async function runShellAppBuilder(
       workingDir,
       outputFile: outputFilePath,
       modules: enabledModules,
+      buildType: jobData.config.buildType,
     });
   } catch (err) {
     commonUtils.logErrorOnce(err);

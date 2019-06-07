@@ -9,13 +9,11 @@ import prepareAdHocBuildCredentials from 'turtle/builders/utils/ios/adhocBuild';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import { ensureCanBuildSdkVersion } from 'turtle/builders/utils/version';
 import config from 'turtle/config';
-import { IOS } from 'turtle/constants/index';
+import { IOS_BUILD_TYPES } from 'turtle/constants';
 import { IJob, IJobResult } from 'turtle/job';
 
-const { BUILD_TYPES } = IOS;
-
 export default async function iosBuilder(job: IJob): Promise<IJobResult> {
-  if (job.config.buildType !== BUILD_TYPES.CLIENT) {
+  if (job.config.buildType !== IOS_BUILD_TYPES.CLIENT) {
     await ensureCanBuildSdkVersion(job);
   }
 
@@ -26,13 +24,13 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
 
     const { buildType } = job.config;
 
-    if (buildType === BUILD_TYPES.CLIENT) {
+    if (buildType === IOS_BUILD_TYPES.CLIENT) {
       await prepareAdHocBuildCredentials(job);
     }
 
-    if ([BUILD_TYPES.ARCHIVE, BUILD_TYPES.CLIENT].includes(buildType!)) {
+    if ([IOS_BUILD_TYPES.ARCHIVE, IOS_BUILD_TYPES.CLIENT].includes(buildType!)) {
       await buildArchive(ctx, job);
-    } else if (buildType === BUILD_TYPES.SIMULATOR) {
+    } else if (buildType === IOS_BUILD_TYPES.SIMULATOR) {
       await buildSimulator(ctx, job);
     } else {
       throw new Error(`Unsupported iOS build type: ${buildType}`);
