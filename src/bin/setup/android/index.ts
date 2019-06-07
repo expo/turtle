@@ -70,11 +70,17 @@ function formatShellAppTarballUriPath(sdkMajorVersion: string) {
 async function _shellAppPostDownloadAction(workingdir: string) {
   const inWorkingdir = (filename: string) => path.join(workingdir, filename);
 
-  await fs.move(inWorkingdir('package.json'), inWorkingdir('exponent-package.json'));
-  await fs.move(inWorkingdir('universe-package.json'), inWorkingdir('package.json'));
-  await _installNodeModules(workingdir);
-  await fs.move(inWorkingdir('package.json'), inWorkingdir('universe-package.json'));
-  await fs.move(inWorkingdir('exponent-package.json'), inWorkingdir('package.json'));
+  if (await fs.pathExists(inWorkingdir('universe-package.json'))) {
+    // legacy shell app built from universe
+    await fs.move(inWorkingdir('package.json'), inWorkingdir('exponent-package.json'));
+    await fs.move(inWorkingdir('universe-package.json'), inWorkingdir('package.json'));
+    await _installNodeModules(workingdir);
+    await fs.move(inWorkingdir('package.json'), inWorkingdir('universe-package.json'));
+    await fs.move(inWorkingdir('exponent-package.json'), inWorkingdir('package.json'));
+  } else {
+    // new shell app built from expo or not
+    await _installNodeModules(workingdir);
+  }
 
   // TODO: remove following lines after upgrading android shell app
   const toolsPublicDir = path.join(workingdir, 'tools-public');
