@@ -20,6 +20,7 @@ RUN dpkg --add-architecture i386 && \
   libc6:i386\
   libncurses5:i386\
   libstdc++6:i386\
+  rsync\
   unzip\
   yarn\
   zlib1g:i386\
@@ -57,13 +58,13 @@ RUN yes | sdkmanager \
   "platforms;android-25" \
   "platforms;android-26" \
   "platforms;android-27" \
-  "platforms;android-28"
-RUN yes | sdkmanager "platform-tools"
-RUN yes | sdkmanager "build-tools;28.0.3"
+  "platforms;android-28" | grep -v '=' || echo 'no output'
+RUN yes | sdkmanager "platform-tools" | grep -v '=' || echo 'no output'
+RUN yes | sdkmanager "build-tools;28.0.3" | grep -v '=' || echo 'no output'
 RUN yes | sdkmanager \
   "extras;android;m2repository" \
   "extras;google;m2repository" \
-  "extras;google;google_play_services"
+  "extras;google;google_play_services" | grep -v '=' || echo 'no output'
 
 # Install Android NDK
 ENV ANDROID_NDK_VERSION android-ndk-r10e
@@ -101,8 +102,10 @@ ENV PATH ${GRADLE_HOME}/bin:$PATH
 
 ADD . /app
 
-RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
-      cd /app/workingdir/android/$SDK_VERSION && \
+RUN mv /app/workingdir /tmp && \
+    for SDK_VERSION in `ls /tmp/workingdir/android/`; do \
+      echo "preparing $SDK_VERSION shell app" && \
+      cd /tmp/workingdir/android/$SDK_VERSION && \
       if [ -f universe-package.json ]; then \
       mv package.json exponent-package.json && \
       mv universe-package.json package.json && \
@@ -112,11 +115,12 @@ RUN for SDK_VERSION in `ls /app/workingdir/android/`; do \
       else \
       yarn install; \
       fi \
-    ; done
-
-WORKDIR /app
+    ; done && \
+    mv /tmp/workingdir /app
 
 ENV NODE_ENV "production"
 ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
+
+WORKDIR /app
 
 CMD ["node", "./build/server.js"]
