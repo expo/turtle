@@ -1,13 +1,13 @@
 import Joi from 'joi';
 
-import { IOS, PLATFORMS } from 'turtle/constants/index';
+import { IOS_BUILD_TYPES, PLATFORMS } from 'turtle/constants/index';
 import baseJobSchema from 'turtle/jobsSchemas/base';
 
 export default baseJobSchema.concat(
   Joi.object().keys({
     platform: Joi.string().valid(PLATFORMS.IOS),
     config: Joi.object().keys({
-      buildType: Joi.string().default(IOS.BUILD_TYPES.ARCHIVE),
+      buildType: Joi.string().default(IOS_BUILD_TYPES.ARCHIVE),
       bundleIdentifier: Joi.string().regex(/^[a-zA-Z][a-zA-Z0-9\-.]+$/),
     }),
     credentials: Joi.object()
@@ -21,7 +21,7 @@ export default baseJobSchema.concat(
         udids: Joi.array().items(Joi.string()),
       })
       .when('config.buildType', {
-        is: IOS.BUILD_TYPES.SIMULATOR,
+        is: IOS_BUILD_TYPES.SIMULATOR,
         then: Joi.optional(),
         otherwise: Joi.required(),
       }),

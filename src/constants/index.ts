@@ -1,9 +1,19 @@
 import * as BUILD from './build';
-import * as IOS from './ios';
 
 export enum PLATFORMS {
   IOS = 'ios',
   ANDROID = 'android',
 }
 
-export { IOS, BUILD };
+export enum IOS_BUILD_TYPES {
+  ARCHIVE = 'archive',
+  CLIENT = 'client',
+  SIMULATOR = 'simulator',
+}
+
+export enum ANDROID_BUILD_TYPES {
+  APK = 'apk',
+  APP_BUNDLE = 'app-bundle',
+}
+
+export { BUILD };

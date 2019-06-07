@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { IContext } from 'turtle/builders/ios/context';
 import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/image';
-import { IOS } from 'turtle/constants/index';
+import { IOS_BUILD_TYPES } from 'turtle/constants/index';
 import { IJob } from 'turtle/job';
 import logger from 'turtle/logger/index';
 
@@ -37,7 +37,7 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
     output: ctx.outputPath,
     verbose: true,
   };
-  if (buildType === IOS.BUILD_TYPES.CLIENT) {
+  if (buildType === IOS_BUILD_TYPES.CLIENT) {
     Object.assign(shellAppParams, {
       workspacePath: path.join(ctx.workingDir, 'ios'),
     });

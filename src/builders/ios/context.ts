@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
 import config from 'turtle/config';
-import { IOS, PLATFORMS } from 'turtle/constants/index';
+import { IOS_BUILD_TYPES, PLATFORMS } from 'turtle/constants/index';
 import { IJob } from 'turtle/job';
 
 export interface IContext {
@@ -27,7 +27,6 @@ export interface IContext {
 }
 
 const { EXPOKIT_APP, EXPONENT_APP } = IosShellApp;
-const { BUILD_TYPES } = IOS;
 
 export function createBuilderContext(job: IJob): IContext {
   const { join } = path;
@@ -57,7 +56,7 @@ export function createBuilderContext(job: IJob): IContext {
   context.tempCertPath = join(context.appDir, 'cert.p12');
   context.baseArchiveDir = join(context.appDir, 'archive');
 
-  if (buildType === BUILD_TYPES.CLIENT) {
+  if (buildType === IOS_BUILD_TYPES.CLIENT) {
     context.applicationFilesSrc = join(
       workingDir,
       'expo-client-build',
@@ -74,7 +73,7 @@ export function createBuilderContext(job: IJob): IContext {
     );
   }
 
-  if (buildType === BUILD_TYPES.ARCHIVE) {
+  if (buildType === IOS_BUILD_TYPES.ARCHIVE) {
     context.outputPath = join(context.appDir, 'archive.xcarchive');
     context.uploadPath = join(context.buildDir, 'archive.ipa');
     context.archiveDir = join(
@@ -92,7 +91,7 @@ export function createBuilderContext(job: IJob): IContext {
       'default',
       `${EXPOKIT_APP}.xcworkspace`,
     );
-  } else if (buildType === BUILD_TYPES.CLIENT) {
+  } else if (buildType === IOS_BUILD_TYPES.CLIENT) {
     context.outputPath = join(context.appDir, 'archive.xcarchive');
     context.uploadPath = join(context.buildDir, 'archive.ipa');
     context.archiveDir = join(
@@ -107,7 +106,7 @@ export function createBuilderContext(job: IJob): IContext {
       'ios',
       `${EXPONENT_APP}.xcworkspace`,
     );
-  } else if (buildType === BUILD_TYPES.SIMULATOR) {
+  } else if (buildType === IOS_BUILD_TYPES.SIMULATOR) {
     context.outputPath = join(context.appDir, 'archive.tar.gz');
     context.uploadPath = join(context.appDir, 'archive.tar.gz');
     context.archiveDir = join(
@@ -117,7 +116,7 @@ export function createBuilderContext(job: IJob): IContext {
     );
   }
 
-  const s3FileExtension = buildType === BUILD_TYPES.SIMULATOR ? 'tar.gz' : 'ipa';
+  const s3FileExtension = buildType === IOS_BUILD_TYPES.SIMULATOR ? 'tar.gz' : 'ipa';
   const s3Filename = `${job.experienceName}-${appUUID}-${buildType}.${s3FileExtension}`;
   if (config.builder.fakeUpload) {
     const fakeUploadFilename = s3Filename.replace('/', '\\');

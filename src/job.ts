@@ -1,4 +1,4 @@
-import { IOS } from 'turtle/constants';
+import { ANDROID_BUILD_TYPES, IOS_BUILD_TYPES } from 'turtle/constants';
 
 export interface IJob {
   platform: 'android' | 'ios';
@@ -9,8 +9,8 @@ export interface IJob {
   config: {
     releaseChannel: string;
     publicUrl?: string;
+    buildType: IOS_BUILD_TYPES & ANDROID_BUILD_TYPES;
     // ios
-    buildType?: IOS.BUILD_TYPES;
     bundleIdentifier?: string;
     // android
     androidPackage?: string;
