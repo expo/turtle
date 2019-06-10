@@ -100,12 +100,12 @@ RUN rm gradle-4.4-all.zip
 ENV GRADLE_HOME /usr/local/gradle-4.4
 ENV PATH ${GRADLE_HOME}/bin:$PATH
 
-ADD . /app
+ADD . /app/turtle
 
-RUN mv /app/workingdir /tmp && \
-    for SDK_VERSION in `ls /tmp/workingdir/android/`; do \
+RUN mv /app/turtle/workingdir /app && \
+    for SDK_VERSION in `ls /app/workingdir/android/`; do \
       echo "preparing $SDK_VERSION shell app" && \
-      cd /tmp/workingdir/android/$SDK_VERSION && \
+      cd /app/workingdir/android/$SDK_VERSION && \
       if [ -f universe-package.json ]; then \
       mv package.json exponent-package.json && \
       mv universe-package.json package.json && \
@@ -116,11 +116,11 @@ RUN mv /app/workingdir /tmp && \
       yarn install; \
       fi \
     ; done && \
-    mv /tmp/workingdir /app
+    mv /app/workingdir /app/turtle
 
 ENV NODE_ENV "production"
-ENV TURTLE_WORKING_DIR_PATH /app/workingdir/
+ENV TURTLE_WORKING_DIR_PATH /app/turtle/workingdir/
 
-WORKDIR /app
+WORKDIR /app/turtle
 
 CMD ["node", "./build/server.js"]
