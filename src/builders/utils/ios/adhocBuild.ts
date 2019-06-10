@@ -3,7 +3,6 @@ import path from 'path';
 import spawnAsync from '@expo/spawn-async';
 import { IosCodeSigning } from '@expo/xdl';
 import fs from 'fs-extra';
-import isEmpty from 'lodash/isEmpty';
 
 import * as sqs from 'turtle/aws/sqs';
 import BuildError, { BuildErrorReason } from 'turtle/builders/BuildError';
@@ -27,12 +26,12 @@ async function prepareAdHocBuildCredentials(job: IJob) {
     teamId,
     appleSession,
     udids,
-    provisioningProfileId
+    provisioningProfileId,
   } = job.credentials;
 
   const certSerialNumber = IosCodeSigning.findP12CertSerialNumber(certP12, certPassword);
   const args = [
-    ...(provisioningProfileId ? ["--profile-id", provisioningProfileId] : []),
+    ...(provisioningProfileId ? ['--profile-id', provisioningProfileId] : []),
     teamId,
     udids!.join(','),
     bundleIdentifier,
