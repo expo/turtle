@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.8.0] - 2019-06-07
 ### Added
 - Turtle CLI logo to the project (created by [@zularizal](https://github.com/zularizal))!
 - Added shell apps for SDK 33.
