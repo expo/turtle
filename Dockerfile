@@ -21,6 +21,7 @@ RUN dpkg --add-architecture i386 && \
   libncurses5:i386\
   libstdc++6:i386\
   rsync\
+  time\
   unzip\
   yarn\
   zlib1g:i386\
@@ -116,7 +117,7 @@ RUN mv /app/turtle/workingdir /app && \
       yarn install; \
       fi \
     ; done && \
-    mv /app/workingdir /app/turtle
+    time mv /app/workingdir /app/turtle
 
 ENV NODE_ENV "production"
 ENV TURTLE_WORKING_DIR_PATH /app/turtle/workingdir/
