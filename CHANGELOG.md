@@ -5,12 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Add expo dependencies when resolving unimodules.
 
 ## [0.8.0] - 2019-06-07
 ### Added
 - Turtle CLI logo to the project (created by [@zularizal](https://github.com/zularizal))!
 - Added shell apps for SDK 33.
-- Support for Android App Bundles
+- Support for Android App Bundles.
 ### Changed
 - Updated Android shell app for SDK 32 to fix AppAuth issue (https://github.com/expo/expo/pull/4115) and to fix a newer than expected JSC version.
 - Default value for build timeout to 15 minutes.
