@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Generating Android keystore in turtle when one is not passed to turtle-cli (https://github.com/expo/turtle/pull/65).
 - Upload logs to s3 if build has been canceled or timed out.
 - Unhandled exception on asset download (xdl).
+- Fixed support for Android tarballs without `universe-package.json`.
 
 ## [0.7.2] - 2019-05-09
 ### Added

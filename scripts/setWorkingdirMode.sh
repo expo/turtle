@@ -61,6 +61,10 @@ setup_remote() {
       mv $sdk/package.json $sdk/exponent-package.json
       mv $sdk/universe-package.json $sdk/package.json
       cd $sdk && yarn
+    else
+      if [[ -f "$sdk/package.json" ]]; then
+        cd $sdk && yarn
+      fi
     fi
   done
 }
