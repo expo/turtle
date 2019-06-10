@@ -44,9 +44,11 @@ export async function resolveNativeModules(workingdir: string, packages?: string
 
 async function readCorePackages(workingdir: string) {
   const pkgJsonPath = path.join(workingdir, 'node_modules', 'react-native-unimodules', 'package.json');
-  if (await fs.pathExists(pkgJsonPath)) {
+  const expoPkgJsonPath = path.join(workingdir, 'packages', 'expo', 'package.json');
+  if (await fs.pathExists(pkgJsonPath) && await fs.pathExists(expoPkgJsonPath)) {
     const packageJson = JSON.parse(await fs.readFile(pkgJsonPath, 'utf-8'));
-    return keys(packageJson.dependencies);
+    const expoPackageJson = JSON.parse(await fs.readFile(expoPkgJsonPath, 'utf-8'));
+    return keys(packageJson.dependencies).concat(keys(expoPackageJson.dependencies));
   } else {
     logger.warn('No core packages detected');
     return [];
