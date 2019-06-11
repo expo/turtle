@@ -40,7 +40,7 @@ export async function uploadBuildToS3(ctx: IUploadCtx) {
   }
 }
 
-export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOptions, bundleIdentifier: ?string) {
+export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOptions, bundleIdentifier?: string) {
   const fastlaneEnvVars = {
     FASTLANE_USER: options.appleId,
     FASTLANE_SKIP_UPDATE_CHECK: 1,
