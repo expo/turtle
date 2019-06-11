@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Updated Android shell app for SDK33 to remove `expo-face-detector` and `expo-payments-stripe` from standalone builds.
+- Updated Android shell app for SDK33 to get rid of `node_modules` for `tools-public`.
+- From now on, `turtle-cli` installs dependencies for `tools-public` in shell apps for SDK versions < 33.
+### Fixed
+- Android builds with turtle-cli by installing all unmodules if `dependencies` is empty.
 
 ## [0.8.1] - 2019-06-10
 ### Changed
