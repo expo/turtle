@@ -59,7 +59,7 @@ export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOption
     bundleIdentifier,
     '--app_name',
     options.appName,
-    '--app_version'
+    '--app_version',
     '1.0',
     '--company_name',
     options.companyName,
