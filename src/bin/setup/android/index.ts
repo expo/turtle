@@ -67,7 +67,7 @@ function formatShellAppTarballUriPath(sdkMajorVersion: string) {
   return path.join(config.directories.shellTarballsDir, PLATFORMS.ANDROID, `sdk${sdkMajorVersion}`);
 }
 
-async function _shellAppPostDownloadAction(workingdir: string) {
+async function _shellAppPostDownloadAction(sdkVersion: string, workingdir: string) {
   const inWorkingdir = (filename: string) => path.join(workingdir, filename);
 
   if (await fs.pathExists(inWorkingdir('universe-package.json'))) {
@@ -82,9 +82,11 @@ async function _shellAppPostDownloadAction(workingdir: string) {
     await _installNodeModules(workingdir);
   }
 
-  // TODO: remove following lines after upgrading android shell app
-  const toolsPublicDir = path.join(workingdir, 'tools-public');
-  await _installNodeModules(toolsPublicDir);
+  // TODO: remove this after making sure that we don't need node_modules in tools-public for older sdks
+  if (ExponentTools.parseSdkMajorVersion(sdkVersion) < 33) {
+    const toolsPublicDir = path.join(workingdir, 'tools-public');
+    await _installNodeModules(toolsPublicDir);
+  }
 }
 
 async function _installNodeModules(cwd: string) {

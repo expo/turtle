@@ -17,7 +17,7 @@ interface IShellAppFormaters {
   formatShellAppTarballUriPath: (sdkMajorVersion: string) => string;
 }
 
-type PostDownloadAction = (workingdir: string) => void;
+type PostDownloadAction = (sdkVersion: string, workingdir: string) => void;
 
 export async function checkSystem(requiredTools: IToolDefinition[]) {
   await ensureToolsAreInstalled(requiredTools);
@@ -35,7 +35,7 @@ export async function ensureShellAppIsPresent(
   l.info(`shell app for SDK ${sdkVersion} doesn't exist, downloading...`);
   await _downloadShellApp(sdkVersion, workingdir, formatters);
   if (postDownloadAction) {
-    await postDownloadAction(workingdir);
+    await postDownloadAction(sdkVersion, workingdir);
   }
 }
 
