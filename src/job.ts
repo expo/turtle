@@ -14,9 +14,11 @@ export interface IJob {
     bundleIdentifier?: string;
     upload?: boolean;
     options?: {
-      // apple credentials
-      username: string;
-      password: string;
+      appleId: string;
+      applePassword: string;
+      appSpecificPassword: string;
+      appName: string;
+      companyName: string;
     };
     // android
     androidPackage?: string;

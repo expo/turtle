@@ -40,19 +40,19 @@ export async function uploadBuildToS3(ctx: IUploadCtx) {
 
 export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOptions, bundleIdentifier: string) {
   const fastlaneEnvVars = {
-    FASTLANE_USER: options.username,
+    FASTLANE_USER: options.appleId,
     FASTLANE_SKIP_UPDATE_CHECK: 1,
     FASTLANE_DISABLE_COLORS: 1,
     CI: 1,
     LC_ALL: 'en_US.UTF-8',
-    FASTLANE_PASSWORD: options.password,
-    FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: options.appPassword,
+    FASTLANE_PASSWORD: options.applePassword,
+    FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: options.appSpecificPassword,
   };
 
   await runFastlane([
     'produce',
     '--username',
-    options.username,
+    options.appleId,
     '--app_identifier', // bundle id
     bundleIdentifier,
     '--app_name',
@@ -67,7 +67,7 @@ export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOption
     'pilot',
     'upload',
     '--username',
-    options.username,
+    options.appleId,
     '--ipa',
     ctx.uploadPath,
     '--apple_id', // The unique App ID provided by App Store Connect
