@@ -40,9 +40,9 @@ export default async function iosBuilder(job: IJob): Promise<IJobResult> {
 
     // Upload to app store
     if (job.config.upload) {
-      const { options } = job.config;
+      const { options, bundleIdentifier } = job.config;
       if (options) {
-        await uploadBuildToTestFlight(ctx, options);
+        await uploadBuildToTestFlight(ctx, options, bundleIdentifier);
       }
     }
 

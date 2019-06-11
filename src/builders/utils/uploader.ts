@@ -38,29 +38,47 @@ export async function uploadBuildToS3(ctx: IUploadCtx) {
   }
 }
 
-export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOptions) {
+export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOptions, bundleIdentifier: string) {
   const fastlaneEnvVars = {
+    FASTLANE_USER: options.username,
     FASTLANE_SKIP_UPDATE_CHECK: 1,
     FASTLANE_DISABLE_COLORS: 1,
     CI: 1,
     LC_ALL: 'en_US.UTF-8',
     FASTLANE_PASSWORD: options.password,
+    FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: options.appPassword,
   };
 
-  const fastlaneArgs = [
-    'run upload_to_testflight',
-    'username:',
-    '"' + options.username + '"',
-    'ipa:',
+  await runFastlane([
+    'produce',
+    '--username',
+    options.username,
+    '--app_identifier', // bundle id
+    bundleIdentifier,
+    '--app_name',
+    options.appName,
+    '--app_version'
+    '1.0',
+    '--company_name',
+    options.companyName,
+  ], fastlaneEnvVars, { buildPhase: 'Creating App on AppStoreConnect' });
+
+  await runFastlane([
+    'pilot',
+    'upload',
+    '--username',
+    options.username,
+    '--ipa',
     ctx.uploadPath,
-    'apple_id:',
-    ctx.appUUID,
-    'skip_submission:',
-    'true',
-  ];
+    '--apple_id', // The unique App ID provided by App Store Connect
+    process.env.PRODUCE_APPLE_ID,
+    '--skip_submission',
+    '--skip_waiting_for_build_processing',
+  ], fastlaneEnvVars, { buildPhase: 'Uploading IPA to Testflight' });
 
-  const loggerFields = { buildPhase: 'uploading IPA' };
+}
 
+async function runFastlane(fastlaneArgs, fastlaneEnvVars, loggerFields) {
   await ExponentTools.spawnAsyncThrowError('fastlane', fastlaneArgs, {
     env: {
       ...process.env,
