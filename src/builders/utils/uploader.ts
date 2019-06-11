@@ -71,11 +71,11 @@ export async function uploadBuildToTestFlight(ctx: IContext, options: IJobOption
       ...fastlaneEnvVars,
     },
     pipeToLogger: true,
-    dontShowStdout: false
-    { buildPhase: 'Creating App on AppStoreConnect' };
-  })
+    dontShowStdout: false,
+    loggerFields: { buildPhase: 'Creating App on AppStoreConnect' },
+  });
 
-const uploadArgs = [
+  const uploadArgs = [
     'pilot',
     'upload',
     '--username',
@@ -88,13 +88,13 @@ const uploadArgs = [
     '--skip_waiting_for_build_processing',
   ];
 
-await ExponentTools.spawnAsyncThrowError('fastlane', uploadArgs, {
+  await ExponentTools.spawnAsyncThrowError('fastlane', uploadArgs, {
     env: {
       ...process.env,
       ...fastlaneEnvVars,
     },
     pipeToLogger: true,
-    dontShowStdout: false
-    { buildPhase: 'Uploading IPA to Testflight' },
+    dontShowStdout: false,
+    loggerFields: { buildPhase: 'Uploading IPA to Testflight' },
   });
 }
