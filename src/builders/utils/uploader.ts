@@ -13,8 +13,11 @@ interface IUploadCtx {
 }
 
 interface IJobOptions {
-  username: string;
-  password: string;
+  appleId: string;
+  applePassword: string;
+  appSpecificPassword: string;
+  appName: string;
+  companyName: string;
 }
 
 export async function uploadBuildToS3(ctx: IUploadCtx) {
