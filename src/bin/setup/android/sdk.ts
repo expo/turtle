@@ -52,7 +52,7 @@ async function _configureSdk(androidSdkDir: string) {
   await ExponentTools.spawnAsyncThrowError('./configureAndroidSdk.sh', [], {
     pipeToLogger: true,
     loggerFields: LOGGER_FIELDS,
-    cwd: path.join(config.directories.rootDir, 'scripts/cli'),
+    cwd: path.join(config.directories.rootDir, 'scripts/android'),
     env: {
       ...process.env,
       ANDROID_HOME: androidSdkDir,

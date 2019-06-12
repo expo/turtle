@@ -59,7 +59,7 @@
   "files": [
     "bin",
     "build",
-    "scripts/cli",
+    "scripts/android/configureAndroidSdk.sh",
     "shellTarballs"
   ],
   "keywords": [
