@@ -1,10 +1,13 @@
+import { ExponentTools } from '@expo/xdl';
 import _ from 'lodash';
+import uuid from 'uuid';
 
 import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
 import { ErrorWithProgramHelp } from 'turtle/bin/commands/ErrorWithProgramHelp';
 import setup from 'turtle/bin/setup/setup';
 import * as ProjectUtils from 'turtle/bin/utils/project';
 import * as UserUtils from 'turtle/bin/utils/user';
+import { getExperienceUrl } from 'turtle/builders/utils/common';
 import logger from 'turtle/logger';
 import { sanitizeJob } from 'turtle/validator';
 
@@ -12,7 +15,6 @@ export function createBuilderAction({
   program,
   command,
   prepareCredentials,
-  buildJobObject,
   builder,
   platform,
   os,
@@ -65,7 +67,7 @@ export function createBuilderAction({
       await setup(platform, sdkVersion);
       const credentials = await prepareCredentials(cmd);
       const rawJob = {
-        ...buildJobObject(appJSON, args, credentials),
+        ...await buildJobObject(platform, appJSON, args, credentials),
         ...cmd.buildDir && { fakeUploadDir: ProjectUtils.resolveAbsoluteDir(cmd.buildDir) },
         ...cmd.output && { fakeUploadBuildPath: ProjectUtils.resolveAbsoluteDir(cmd.output) },
       };
@@ -82,3 +84,37 @@ export function createBuilderAction({
     }
   };
 }
+
+const buildJobObject = async (
+  platform: 'android' | 'ios',
+  appJSON: any,
+  { releaseChannel, buildType, username, publicUrl, projectDir }: any,
+  credentials: any,
+) => {
+  const job = {
+    config: {
+      ..._.get(appJSON, 'expo.ios.config', {}),
+      buildType,
+      releaseChannel,
+      ...(platform === 'ios' ? { bundleIdentifier: _.get(appJSON, 'expo.ios.bundleIdentifier') } : {}),
+      ...(platform === 'android' ? { androidPackage: _.get(appJSON, 'expo.android.package') } : {}),
+      publicUrl,
+    },
+    id: uuid.v4(),
+    platform,
+    projectDir,
+    sdkVersion: _.get(appJSON, 'expo.sdkVersion'),
+    experienceName: `@${username}/${_.get(appJSON, 'expo.slug')}`,
+    ...(credentials && { credentials }),
+  };
+  const url = getExperienceUrl(job.experienceName, job.config.publicUrl);
+
+  const manifest = await ExponentTools.getManifestAsync(url, {
+    'Exponent-SDK-Version': _.get(appJSON, 'expo.sdkVersion'),
+    'Exponent-Platform': platform,
+    'Expo-Release-Channel': releaseChannel,
+    'Accept': 'application/expo+json,application/json',
+  });
+
+  return { ...job, manifest };
+};
