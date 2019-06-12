@@ -43,7 +43,7 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
     });
   } else {
     Object.assign(shellAppParams, {
-      url: commonUtils.getExperienceUrl(job),
+      url: commonUtils.getExperienceUrl(job.experienceName, job.config.publicUrl),
       releaseChannel,
       sdkVersion,
     });

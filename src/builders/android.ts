@@ -75,12 +75,12 @@ async function runShellAppBuilder(
 
   logger.info({ buildPhase: 'resolve native modules' }, 'Resolving universal modules dependencies');
   const enabledModules = semver.satisfies(sdkVersion, '>= 33.0.0')
-    ? await resolveNativeModules(workingDir, manifest && manifest.dependencies)
+    ? await resolveNativeModules(workingDir, _.get(manifest, 'dependencies'))
     : null;
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
-      url: commonUtils.getExperienceUrl(jobData),
+      url: commonUtils.getExperienceUrl(jobData.experienceName, jobData.config.publicUrl),
       sdkVersion,
       keystore: tempKeystorePath,
       manifest,

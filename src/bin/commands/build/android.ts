@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import _ from 'lodash';
-import uuid from 'uuid';
 
 import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
 import { createBuilderAction } from 'turtle/bin/utils/builder';
@@ -33,33 +32,12 @@ export default (program: any, setCommonCommandOptions: any) => {
         program,
         command,
         prepareCredentials,
-        buildJobObject,
         builder,
         platform: PLATFORMS.ANDROID,
         os: ['darwin', 'linux'],
       }),
     );
 };
-
-const buildJobObject = (
-  appJSON: any,
-  { releaseChannel, username, projectDir, publicUrl, buildType }: any,
-  credentials: any,
-) => ({
-  config: {
-    ..._.get(appJSON, 'expo.android.config', {}),
-    releaseChannel,
-    androidPackage: _.get(appJSON, 'expo.android.package'),
-    publicUrl,
-    buildType,
-  },
-  id: uuid.v4(),
-  platform: PLATFORMS.ANDROID,
-  sdkVersion: _.get(appJSON, 'expo.sdkVersion'),
-  projectDir,
-  experienceName: `@${username}/${_.get(appJSON, 'expo.slug')}`,
-  ...(credentials && { credentials }),
-});
 
 const prepareCredentials = async (cmd: any) => {
   const { keystorePath, keystoreAlias } = cmd;

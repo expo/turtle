@@ -1,13 +1,9 @@
 import * as url from 'url';
 
 import config from 'turtle/config';
-import { IJob } from 'turtle/job';
 import logger from 'turtle/logger';
 
-export function getExperienceUrl(job: IJob) {
-  const { experienceName, config: jobConfig } = job;
-  const { publicUrl } = jobConfig;
-
+export function getExperienceUrl(experienceName: string, publicUrl?: string) {
   // publicUrl is passed in if user wants to build an externally hosted app
   if (publicUrl) {
     return publicUrl;

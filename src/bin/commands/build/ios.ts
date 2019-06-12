@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import _ from 'lodash';
-import uuid from 'uuid';
 
 import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
 import { createBuilderAction } from 'turtle/bin/utils/builder';
@@ -32,28 +31,12 @@ export default (program: any, setCommonCommandOptions: any) => {
         program,
         command,
         prepareCredentials,
-        buildJobObject,
         builder,
         platform: PLATFORMS.IOS,
         os: 'darwin',
       }),
     );
 };
-
-const buildJobObject = (appJSON: any, { releaseChannel, buildType, username, publicUrl }: any, credentials: any) => ({
-  config: {
-    ..._.get(appJSON, 'expo.ios.config', {}),
-    buildType,
-    releaseChannel,
-    bundleIdentifier: _.get(appJSON, 'expo.ios.bundleIdentifier'),
-    publicUrl,
-  },
-  id: uuid.v4(),
-  platform: PLATFORMS.IOS,
-  sdkVersion: _.get(appJSON, 'expo.sdkVersion'),
-  experienceName: `@${username}/${_.get(appJSON, 'expo.slug')}`,
-  ...(credentials && { credentials }),
-});
 
 const prepareCredentials = async (cmd: any) => {
   if (cmd.type !== IOS_BUILD_TYPES.ARCHIVE) {
