@@ -24,6 +24,7 @@ RUN dpkg --add-architecture i386 && \
   unzip\
   yarn\
   zlib1g:i386\
+  supervisor\
   --no-install-recommends && \
   apt-get clean
 
@@ -123,4 +124,6 @@ ENV TURTLE_WORKING_DIR_PATH /app/turtle/workingdir/
 
 WORKDIR /app/turtle
 
-CMD ["node", "./build/server.js"]
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+CMD ["/usr/bin/supervisord"]
