@@ -6,11 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.8.3] - 2019-06-13
+## [0.8.4] - 2019-06-13
 ### Changed
-- `turtle-cli` is now fetching the app manifest before running the build.
+- Upgraded `sharp` from `0.21.3` to `0.22.1`.
+
+## [0.8.3] - 2019-06-13
 ### Added
 - Running Android Turtle process with `supervisor` (pod is restarted if there were 5 failures in the last 10 minutes).
+### Changed
+- `turtle-cli` is now fetching the app manifest before running the build.
 
 ## [0.8.2] - 2019-06-11
 ### Changed
