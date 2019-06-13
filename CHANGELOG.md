@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Turtle CLI logo to the project (created by [@zularizal](https://github.com/zularizal))!
 - Shell apps for SDK 33.
-- Support for Android App Bundles.
+- Support for Android App Bundles (App bundles are built by default, use `-t apk` to build apk).
 ### Changed
 - Updated Android shell app for SDK 32 to fix AppAuth issue (https://github.com/expo/expo/pull/4115) and to fix a newer than expected JSC version.
 - Default value for build timeout to 15 minutes.
