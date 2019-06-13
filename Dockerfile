@@ -52,20 +52,8 @@ ENV PATH ${ANDROID_HOME}/tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools/bin:${PATH}
 ENV PATH ${ANDROID_HOME}/build-tools/28.0.3/:${PATH}
 
-RUN yes | sdkmanager --licenses > /dev/null
-RUN yes | sdkmanager \
-  "platforms;android-23" \
-  "platforms;android-24" \
-  "platforms;android-25" \
-  "platforms;android-26" \
-  "platforms;android-27" \
-  "platforms;android-28" | grep -v '=' || echo 'no output'
-RUN yes | sdkmanager "platform-tools" | grep -v '=' || echo 'no output'
-RUN yes | sdkmanager "build-tools;28.0.3" | grep -v '=' || echo 'no output'
-RUN yes | sdkmanager \
-  "extras;android;m2repository" \
-  "extras;google;m2repository" \
-  "extras;google;google_play_services" | grep -v '=' || echo 'no output'
+ADD scripts/android/configureAndroidSdk.sh /tmp/configureAndroidSdk.sh
+RUN /tmp/configureAndroidSdk.sh --install-all-platforms
 
 # Install Android NDK
 ENV ANDROID_NDK_VERSION android-ndk-r10e
