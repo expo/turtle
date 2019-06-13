@@ -64,7 +64,10 @@ async function processJob(jobData: any) {
     setCurrentJobId(job.id);
     const pingerHandle = sqs.changeMessageVisibilityRecurring(priority, jobData.ReceiptHandle, job.id);
 
-    logger.info(`Doing job MessageId=${jobData.MessageId} BuildId=${job.id} ${Date.now()}`);
+    logger.info(
+      `Doing job MessageId=${jobData.MessageId} BuildId=${job.id} `
+      + `Priority=${priority.slice(0, priority.length - 8)} ${Date.now()}`,
+    );
 
     const cancelled = await redis.checkIfCancelled(job.id);
     if (cancelled) {
