@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.4] - 2019-06-13
 ### Changed
 - Upgraded `sharp` from `0.21.3` to `0.22.1`.
+- `gulp-cli` is no longer required to build an app with `turtle-cli`.
 
 ## [0.8.3] - 2019-06-13
 ### Added
