@@ -21,10 +21,6 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
     missingDescription: 'Please install bash',
   },
   {
-    command: 'gulp',
-    missingDescription: 'Run `npm install -g gulp-cli` (or `yarn global add gulp-cli`) to install gulp',
-  },
-  {
     command: 'javac',
     missingDescription: 'Please install JDK (version 8 or newer) - check https://jdk.java.net/',
     testFn: async () => {
