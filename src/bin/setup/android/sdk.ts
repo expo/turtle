@@ -5,7 +5,7 @@ import { ExponentTools } from '@expo/xdl';
 import decompress from 'decompress';
 import fs from 'fs-extra';
 
-import { formatArtifactDownloadPath } from 'turtle/bin/setup/utils/common';
+import * as utils from 'turtle/bin/setup/utils/common';
 import download from 'turtle/bin/setup/utils/downloader';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
@@ -17,9 +17,10 @@ const l = logger.child(LOGGER_FIELDS);
 
 export default async function ensureAndroidSDKIsPresent() {
   const androidSdkDir = path.join(config.directories.androidDependenciesDir, 'sdk');
+  await utils.removeDirectoryUnlessReady(androidSdkDir);
   if (!(await fs.pathExists(androidSdkDir))) {
     await fs.ensureDir(androidSdkDir);
-    const androidSdkDownloadPath = formatArtifactDownloadPath(ANDROID_SDK_URL);
+    const androidSdkDownloadPath = utils.formatArtifactDownloadPath(ANDROID_SDK_URL);
 
     try {
       l.info('Downloading Android SDK');
@@ -31,6 +32,7 @@ export default async function ensureAndroidSDKIsPresent() {
       await fs.remove(androidSdkDownloadPath);
       l.info('Configuring Android SDK, this may take a while');
       await _configureSdk(androidSdkDir);
+      await utils.markDirectoryAsReady(androidSdkDir);
       l.info('Android SDK installed and configured successfully');
     } catch (err) {
       await fs.remove(androidSdkDir);

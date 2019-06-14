@@ -13,6 +13,7 @@
     "prepare": "rimraf ./build && yarn build",
     "build": "ttsc",
     "build:production": "./scripts/build.sh",
+    "watch": "ttsc --watch",
     "secrets:init-private": "./scripts/initPrivateSecrets.sh",
     "set-workingdir:remote": "./scripts/setWorkingdirMode.sh remote",
     "set-workingdir:local": "./scripts/setWorkingdirMode.sh local",

@@ -29,6 +29,8 @@ export async function ensureShellAppIsPresent(
   postDownloadAction?: PostDownloadAction,
 ) {
   const workingdir = formatters.formatShellAppDirectory({ sdkVersion });
+  const shellAppMetadata = await _readShellAppTarballS3Uri(sdkVersion, formatters);
+  await removeDirectoryUnlessReady(workingdir, shellAppMetadata);
   if (await fs.pathExists(workingdir)) {
     return;
   }
@@ -37,6 +39,7 @@ export async function ensureShellAppIsPresent(
   if (postDownloadAction) {
     await postDownloadAction(sdkVersion, workingdir);
   }
+  await markDirectoryAsReady(workingdir, shellAppMetadata);
 }
 
 async function _downloadShellApp(sdkVersion: string, targetDirectory: string, formatters: IShellAppFormaters) {
@@ -64,4 +67,32 @@ async function _readShellAppTarballS3Uri(sdkVersion: string, formatters: IShellA
   const filePath = formatters.formatShellAppTarballUriPath(sdkMajorVersion);
   const data = await fs.readFile(filePath, 'utf8');
   return data.trim();
+}
+
+export async function removeDirectoryUnlessReady(dir: string, metadata?: string) {
+  const readyFilePath = path.join(dir, '.ready');
+  const readyFileExists = await fs.pathExists(readyFilePath);
+  let shouldRemove = false;
+  if (readyFileExists) {
+    if (metadata !== undefined) {
+      const readyFileContents = (await fs.readFile(readyFilePath, 'utf-8')).trim();
+      if (readyFileContents !== metadata) {
+        shouldRemove = true;
+       }
+    }
+  } else {
+    shouldRemove = true;
+  }
+  if (shouldRemove) {
+    await fs.remove(dir);
+  }
+}
+
+export async function markDirectoryAsReady(dir: string, metadata?: string) {
+  const readyFilePath = path.join(dir, '.ready');
+  if (metadata === undefined) {
+    await fs.open(readyFilePath, 'w');
+  } else {
+    await fs.writeFile(readyFilePath, metadata);
+  }
 }
