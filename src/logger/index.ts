@@ -17,6 +17,7 @@ class Logger {
       name: 'turtle',
       level: config.logger.level,
       platform: config.platform,
+      serializers: bunyan.stdSerializers,
       ...config.deploymentEnv && { environment: config.deploymentEnv },
       streams: Object.values(streams),
     });
