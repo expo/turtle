@@ -1,4 +1,4 @@
-import { ANDROID_BUILD_MODES, ANDROID_BUILD_TYPES, IOS_BUILD_TYPES } from 'turtle/constants';
+import { ANDROID_BUILD_TYPES, IOS_BUILD_TYPES } from 'turtle/constants';
 
 export interface IShellAppDirectoryConfig {
   sdkVersion: string;
