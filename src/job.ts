@@ -1,4 +1,4 @@
-import { ANDROID_BUILD_TYPES, IOS_BUILD_TYPES } from 'turtle/constants';
+import { ANDROID_BUILD_MODES, ANDROID_BUILD_TYPES, IOS_BUILD_TYPES } from 'turtle/constants';
 
 export interface IJob {
   platform: 'android' | 'ios';
@@ -14,6 +14,7 @@ export interface IJob {
     bundleIdentifier?: string;
     // android
     androidPackage?: string;
+    buildMode?: ANDROID_BUILD_MODES;
   };
   credentials: {
     // android
