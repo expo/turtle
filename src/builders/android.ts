@@ -93,6 +93,7 @@ async function runShellAppBuilder(
       outputFile: outputFilePath,
       modules: enabledModules,
       buildType: jobData.config.buildType,
+      buildMode: jobData.config.buildMode,
     });
   } catch (err) {
     commonUtils.logErrorOnce(err);

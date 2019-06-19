@@ -57,6 +57,7 @@ export function createBuilderAction({
       const args = {
         releaseChannel: cmd.releaseChannel || 'default',
         buildType: cmd.type,
+        buildMode: cmd.mode,
         username: userData.username || 'anonymous',
         projectDir: ProjectUtils.resolveAbsoluteDir(projectDirArg),
         publicUrl: cmd.publicUrl,
@@ -88,13 +89,14 @@ export function createBuilderAction({
 const buildJobObject = async (
   platform: 'android' | 'ios',
   appJSON: any,
-  { releaseChannel, buildType, username, publicUrl, projectDir }: any,
+  { releaseChannel, buildType, buildMode, username, publicUrl, projectDir }: any,
   credentials: any,
 ) => {
   const job = {
     config: {
       ..._.get(appJSON, 'expo.ios.config', {}),
       buildType,
+      ...(platform === 'android' ? { buildMode } : {}),
       releaseChannel,
       ...(platform === 'ios' ? { bundleIdentifier: _.get(appJSON, 'expo.ios.bundleIdentifier') } : {}),
       ...(platform === 'android' ? { androidPackage: _.get(appJSON, 'expo.android.package') } : {}),

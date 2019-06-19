@@ -16,4 +16,9 @@ export enum ANDROID_BUILD_TYPES {
   APP_BUNDLE = 'app-bundle',
 }
 
+export enum ANDROID_BUILD_MODES {
+  DEBUG = 'debug',
+  RELEASE = 'release',
+}
+
 export { BUILD };

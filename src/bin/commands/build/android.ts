@@ -23,9 +23,15 @@ export default (program: any, setCommonCommandOptions: any) => {
       /^(app-bundle|apk)$/i,
       'app-bundle',
     )
+    .option(
+      '-m --mode <build>',
+      'type of build: debug|release',
+      /^(debug|release)$/i,
+      'release',
+    )
     .description(
-      'Build a standalone APK or App Bundle for your project, signed and ready for submission to the Google Play'
-      + ' Store.',
+      'Build a standalone APK or App Bundle for your project, either signed and ready for submission to'
+      + ' the Google Play Store or in debug mode.',
     )
     .asyncAction(
       createBuilderAction({
