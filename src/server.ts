@@ -1,5 +1,6 @@
 import { LoggerDetach } from '@expo/xdl';
 
+import { findSupportedSdkVersions } from 'turtle/builders/utils/version';
 import config from 'turtle/config';
 import { doJob } from 'turtle/jobManager';
 import logger from 'turtle/logger';
@@ -8,6 +9,7 @@ import { checkShouldExit, setShouldExit, turtleVersion } from 'turtle/turtleCont
 import { getRedisClient, RedisClient } from 'turtle/utils/redis';
 
 const REDIS_TURTLE_VERSION_KEY = 'turtle:version';
+const REDIS_TURTLE_SUPPORTED_SDK_VERSIONS_KEY = `turtle:${config.platform}:sdkVersions`;
 
 process.on('unhandledRejection', (err) => logger.error({ err }, 'Unhandled promise rejection'));
 
@@ -37,9 +39,12 @@ async function main() {
   try {
     const redis = await getRedisClient(RedisClient.Configuration);
     await redis.set(REDIS_TURTLE_VERSION_KEY, turtleVersion);
-    logger.info(`Register Turtle version ${turtleVersion} in Redis`);
+    logger.info(`Registered Turtle version (${turtleVersion}) in Redis`);
+    const sdkVersions = (await findSupportedSdkVersions(config.platform)).join(',');
+    await redis.set(REDIS_TURTLE_SUPPORTED_SDK_VERSIONS_KEY, sdkVersions);
+    logger.info(`Registered supported SDK versions (${sdkVersions}) in Redis`);
   } catch (err) {
-    logger.error({ err }, 'Failed to register Turtle version in Redis');
+    logger.error({ err }, 'Failed to set versions in Redis');
   }
 
   while (true) {

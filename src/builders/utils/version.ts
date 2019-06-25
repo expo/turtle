@@ -5,26 +5,32 @@ import path from 'path';
 import config from 'turtle/config';
 import { IJob } from 'turtle/job';
 
-let SUPPORTED_SDK_VERSIONS: number[];
+interface IVersionsMap {
+  [platform: string]: number[];
+}
+
+const versions: IVersionsMap = {};
 
 export async function ensureCanBuildSdkVersion(job: IJob) {
   if (config.builder.useLocalWorkingDir) {
     return;
   }
 
-  if (!SUPPORTED_SDK_VERSIONS) {
-    SUPPORTED_SDK_VERSIONS = await findSupportedSdkVersions(job.platform);
-  }
-
+  const platformVersions = await findSupportedSdkVersions(job.platform);
   const targetMajorSdkVersion = ExponentTools.parseSdkMajorVersion(job.sdkVersion || job.manifest.sdkVersion);
-  if (!SUPPORTED_SDK_VERSIONS.includes(targetMajorSdkVersion)) {
+  if (!platformVersions.includes(targetMajorSdkVersion)) {
     throw new Error(`Unsupported SDK Version!`);
   }
 }
 
-async function findSupportedSdkVersions(platform: 'android' | 'ios'): Promise<number[]> {
-  const SDK_DIR_PREFIX = 'sdk';
-  const files = await fs.readdir(path.join(config.directories.workingDir, platform));
-  const sdks = files.filter((file) => file.startsWith(SDK_DIR_PREFIX));
-  return sdks.map((sdk) => parseInt(sdk.substr(SDK_DIR_PREFIX.length), 10));
+export async function findSupportedSdkVersions(platform: 'android' | 'ios'): Promise<number[]> {
+  if (versions[platform]) {
+    return versions[platform];
+  } else {
+    const SDK_DIR_PREFIX = 'sdk';
+    const files = await fs.readdir(path.join(config.directories.workingDir, platform));
+    const sdks = files.filter((file) => file.startsWith(SDK_DIR_PREFIX));
+    versions[platform] = sdks.map((sdk) => parseInt(sdk.substr(SDK_DIR_PREFIX.length), 10));
+    return versions[platform];
+  }
 }
