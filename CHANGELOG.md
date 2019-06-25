@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Registering supported SDK versions in Redis.
 
 ## [0.8.6] - 2019-06-25
 ### Added
@@ -126,7 +128,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.5.10] - 2019-02-19
 ### Added
-- Register Turtle version in Redis.
+- Registering Turtle version in Redis.
 ### Changed
 - Update Android shell app for SDK 32 to fix [update](https://github.com/expo/expo/issues/3504) and [back button](https://github.com/expo/expo/issues/1786) issues.
 
