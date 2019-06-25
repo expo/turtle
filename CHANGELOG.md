@@ -12,8 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Upgrading the shell app for a given SDK version when the previous version is already downloaded (bug in `turtle-cli`).
 - Updated Android shell app for SDK33 to include `lottie-android@2.5.6` which fixes crashes on Android 9.0 when showing some Lottie animations.
-- Fixed schema for buildModes
-- Updated xdl (fixed reading from binary plist)
+- Schema for `buildModes`.
+- Updated @expo/xdl to 55.0.7 (fixed reading from binary plist).
 
 ## [0.8.4] - 2019-06-13
 ### Changed
