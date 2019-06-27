@@ -37,7 +37,7 @@ async function main() {
   }
 
   try {
-    const redis = await getRedisClient(RedisClient.Configuration);
+    const redis = await getRedisClient();
     await redis.set(REDIS_TURTLE_VERSION_KEY, turtleVersion);
     logger.info(`Registered Turtle version (${turtleVersion}) in Redis`);
     const sdkVersions = (await findSupportedSdkVersions(config.platform)).join(',');
