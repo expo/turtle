@@ -6,7 +6,7 @@ import { doJob } from 'turtle/jobManager';
 import logger from 'turtle/logger';
 import setup from 'turtle/setup';
 import { checkShouldExit, setShouldExit, turtleVersion } from 'turtle/turtleContext';
-import { getRedisClient, RedisClient } from 'turtle/utils/redis';
+import { getRedisClient } from 'turtle/utils/redis';
 
 const REDIS_TURTLE_VERSION_KEY = 'turtle:version';
 const REDIS_TURTLE_SUPPORTED_SDK_VERSIONS_KEY = `turtle:${config.platform}:sdkVersions`;
