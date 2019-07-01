@@ -137,6 +137,22 @@ commands:
           paths:
             - "<< parameters.workingdir >>/<< parameters.platform >>/<< parameters.sdk_version >>"
 
+  deploy_turtle:
+    parameters:
+      platform:
+        type: string
+      env:
+        type: string
+    steps:
+      - run:
+          name: Install curl & jq
+          command: nix-env -iA nixpkgs.curl nixpkgs.jq
+      - run:
+          name: Schedule a Turtle deploy
+          command: |
+            echo "We're going to deploy << parameters.platform >> Turtles to << parameters.env >>"
+            ./scripts/deploy.sh "<< parameters.platform >>" "<< parameters.env >>"
+
 jobs:
   build:
     executor: nix
@@ -203,6 +219,34 @@ jobs:
           sdk_version: sdk32
           platform: android
 
+  android_staging_deploy:
+    executor: nix
+    steps:
+      - deploy_turtle:
+          platform: android
+          env: staging
+
+  android_production_deploy:
+    executor: nix
+    steps:
+      - deploy_turtle:
+          platform: android
+          env: production
+
+  ios_staging_deploy:
+    executor: nix
+    steps:
+      - deploy_turtle:
+          platform: ios
+          env: staging
+
+  ios_production_deploy:
+    executor: nix
+    steps:
+      - deploy_turtle:
+          platform: ios
+          env: production
+
 workflows:
   checks:
     jobs:
@@ -212,3 +256,25 @@ workflows:
       - unit_tests
       - ios_smoke_tests
       - android_smoke_tests
+  deploy:
+    jobs:
+      - android_staging_approve_deploy:
+          type: approval
+      - android_staging_deploy:
+          requires:
+            - android_staging_approve_deploy
+      - android_production_approve_deploy:
+          type: approval
+      - android_production_deploy:
+          requires:
+            - android_production_approve_deploy
+      - ios_staging_approve_deploy:
+          type: approval
+      - ios_staging_deploy:
+          requires:
+            - ios_staging_approve_deploy
+      - ios_production_approve_deploy:
+          type: approval
+      - ios_production_deploy:
+          requires:
+            - ios_production_approve_deploy
