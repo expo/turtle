@@ -3,7 +3,6 @@ import path from 'path';
 import spawnAsync from '@expo/spawn-async';
 import { IosCodeSigning } from '@expo/xdl';
 import fs from 'fs-extra';
-import isEmpty from 'lodash/isEmpty';
 
 import * as sqs from 'turtle/aws/sqs';
 import BuildError, { BuildErrorReason } from 'turtle/builders/BuildError';
@@ -21,10 +20,18 @@ async function prepareAdHocBuildCredentials(job: IJob) {
   }
 
   const { bundleIdentifier } = job.config;
-  const { certP12, certPassword, teamId, appleSession, udids } = job.credentials;
+  const {
+    certP12,
+    certPassword,
+    teamId,
+    appleSession,
+    udids,
+    provisioningProfileId,
+  } = job.credentials;
 
   const certSerialNumber = IosCodeSigning.findP12CertSerialNumber(certP12, certPassword);
   const args = [
+    ...(provisioningProfileId ? ['--profile-id', provisioningProfileId] : []),
     teamId,
     udids!.join(','),
     bundleIdentifier,
@@ -37,19 +44,14 @@ async function prepareAdHocBuildCredentials(job: IJob) {
       args,
       { env: { FASTLANE_SESSION: appleSession } },
     );
-    if (isEmpty(credentials)) {
-      if (!job.credentials.provisioningProfile) {
-        // a user has generated the provisioning profile for his app, but he probably deleted it from Expo servers, ...
-        throw new BuildError(
-          BuildErrorReason.PROVISIONING_PROFILE_MISSING,
-          `Provisioning profile is missing on Expo servers.`,
-        );
-      }
-      return;
-    }
 
     logger.info('New ad hoc provisioning profile successfully created');
     job.credentials.provisioningProfile = credentials.provisioningProfile;
+
+    if (!credentials.provisioningProfileUpdateTimestamp) {
+      //  dont need to persist profile because nothing changed
+      return;
+    }
 
     if (isOffline()) {
       const provisioningProfilePath = path.join(job.projectDir, `adhoc.mobileprovision`);

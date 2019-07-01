@@ -26,6 +26,7 @@ export interface IJob {
     certP12?: string;
     certPassword?: string;
     provisioningProfile?: string;
+    provisioningProfileId?: string;
     teamId?: string;
     appleSession?: string;
     udids?: string[];
