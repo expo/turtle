@@ -144,6 +144,7 @@ commands:
       env:
         type: string
     steps:
+      - checkout
       - run:
           name: Install curl & jq
           command: nix-env -iA nixpkgs.curl nixpkgs.jq
