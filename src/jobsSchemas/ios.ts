@@ -17,6 +17,7 @@ export default baseJobSchema.concat(
         teamId: Joi.string().required(),
         // it's not required for adhoc Expo Client builds
         provisioningProfile: Joi.string(),
+        provisioningProfileId: Joi.string(),
         appleSession: Joi.string(),
         udids: Joi.array().items(Joi.string()),
       })

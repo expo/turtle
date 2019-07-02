@@ -39,6 +39,12 @@ async function prepareAdHocBuildCredentials(job: IJob) {
   ];
 
   try {
+    if (provisioningProfileId) {
+      logger.info(
+        `Using ad hoc provisioning profile id: ${provisioningProfileId}`,
+      );
+    }
+
     const credentials = await runFastlaneAction(
       travelingFastlane.manageAdHocProvisioningProfile,
       args,
