@@ -16,9 +16,6 @@ This repository contains the codebase for the `turtle-cli` NPM package. The same
 ### Branches
 The `master` branch of the repository should be kept releasable at any time. This way we can continuously release fixes and improvements without costly managing of different branches and issues will be noticed and fixed quickly. This also ensures other contributors can check out the latest version from GitHub and work on it with minimal disruption from other features in progress.
 
-## Setting up the repository for development
-*TODO*
-
 ## Submitting a pull request
 To submit a pull request:
 1. Fork the [repository](https://github.com/expo/turtle) and create a feature branch. (Existing contributors can create feature branches without forking. Prefix the branch name with `@your-github-username/`.)

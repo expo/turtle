@@ -64,7 +64,7 @@ export async function checkIfCancelled(jobId: string) {
     return await redis.get(`jobs:cancelled:${jobId}`);
   } catch (err) {
     if (config.deploymentEnv === 'development') {
-      logger.warn('Did you turn on redis server? Run `yarn start-docker` in server/www');
+      logger.warn('Did you turn on redis server? Run `yarn start-docker` in $EXPO_UNIVERSE_DIR/server/www');
     }
     logger.error({ err });
     return false;
