@@ -12,7 +12,14 @@ const createModeMetricName = (mode: TurtleModeLabels) => `${createMetricName()}.
 const createModeTag = (mode: TurtleModeLabels) => `mode:${mode}`;
 
 export default async function sendConfigToDatadog() {
-  const configuration = await getLabeledConfiguration();
+  let configuration;
+  try {
+    configuration = await getLabeledConfiguration();
+  } catch (err) {
+    logger.warn('Failed to send the builders configuration to Datadog because it couldn\'t be fetched from Redis');
+    return;
+  }
+
   const replicaCount = await getReplicaCount();
   const currentReplicaCount = replicaCount === null ? configuration.length : replicaCount;
 

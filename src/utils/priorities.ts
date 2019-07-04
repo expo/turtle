@@ -49,7 +49,7 @@ export function createDefaultConfigurationKey(platform = config.platform) {
 }
 
 export async function getPriorities() {
-  if (config.env === 'test') {
+  if (config.env === 'test' || config.deploymentEnv === 'development') {
     return NORMAL_CONFIGURATION;
   }
 
@@ -93,7 +93,7 @@ export async function getPriorities() {
   }
 }
 
-export async function getConfiguration(currentRedisClient: any) {
+async function getConfiguration(currentRedisClient: any) {
   const redis = currentRedisClient || await getRedisClient(RedisClient.Configuration);
   return JSON.parse(await redis.get(createConfigurationsKey()));
 }
