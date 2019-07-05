@@ -5,9 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.8.7] - 2019-07-05
 ### Added
 - Adhoc Builds: use provisioningProfileId if specified.
 - Registering supported SDK versions in Redis.
+- Support for 64 bit builds in SDK33.
 
 ## [0.8.6] - 2019-06-25
 ### Added
