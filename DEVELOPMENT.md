@@ -13,7 +13,6 @@
   - `:local` creates symlinks to the shell apps in `expo` repository (_unfortunately this is currently broken_)
   - `:remote` downloads precompiled shell apps
 - Run `yarn` to install node modules.
-- Run `yarn set-priorities:local` to set priorities configuration. This is not mandatory, but you'll get a lot of annoying messages without this.
 - Run `yarn start:ios` or `yarn start:android` to run Turtle.
 
 ## Updating shell apps

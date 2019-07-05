@@ -38,11 +38,15 @@ async function main() {
 
   try {
     const redis = await getRedisClient();
-    await redis.set(REDIS_TURTLE_VERSION_KEY, turtleVersion);
-    logger.info(`Registered Turtle version (${turtleVersion}) in Redis`);
-    const sdkVersions = (await findSupportedSdkVersions(config.platform)).join(',');
-    await redis.set(REDIS_TURTLE_SUPPORTED_SDK_VERSIONS_KEY, sdkVersions);
-    logger.info(`Registered supported SDK versions (${sdkVersions}) in Redis`);
+    if (redis) {
+      await redis.set(REDIS_TURTLE_VERSION_KEY, turtleVersion);
+      logger.info(`Registered Turtle version (${turtleVersion}) in Redis`);
+      const sdkVersions = (await findSupportedSdkVersions(config.platform)).join(',');
+      await redis.set(REDIS_TURTLE_SUPPORTED_SDK_VERSIONS_KEY, sdkVersions);
+      logger.info(`Registered supported SDK versions (${sdkVersions}) in Redis`);
+    } else {
+      logger.warn('Couldn\'t set supported SDK versions in Redis (failed to connect to Redis)');
+    }
   } catch (err) {
     logger.error({ err }, 'Failed to set versions in Redis');
   }
