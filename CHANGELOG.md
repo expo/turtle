@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.8] - 2019-07-11
+### Fixed
+- LocalAuthentication module on iOS (fixes [expo/expo#663](https://github.com/expo/expo/issues/663)).
+
 ## [0.8.7] - 2019-07-05
 ### Added
 - Adhoc Builds: use provisioningProfileId if specified.
