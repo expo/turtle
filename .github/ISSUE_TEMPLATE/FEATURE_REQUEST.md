@@ -2,7 +2,7 @@
 name: "\U0001F64B Feature Request"
 about: Want us to add something to turtle-cli?
 title: ''
-labels: 'feature-request'
+labels: 'enhancement'
 assignees: ''
 
 ---
