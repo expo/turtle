@@ -1,4 +1,4 @@
-import { User as UserManager } from '@expo/xdl';
+import { UserManager } from '@expo/xdl';
 
 import { ErrorWithProgramHelp } from 'turtle/bin/commands/ErrorWithProgramHelp';
 
