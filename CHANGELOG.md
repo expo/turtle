@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.11] - 2019-07-16
+### Fixed
+- Android debug builds.
+
 ## [0.8.10] - 2019-07-16
 ### Fixed
 - iOS simulator builds.

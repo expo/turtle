@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { Credentials } from '@expo/xdl';
+import { AndroidCredentials } from '@expo/xdl';
 import fs from 'fs-extra';
 import get from 'lodash/get';
 import uuidv4 from 'uuid/v4';
@@ -29,7 +29,7 @@ async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredential
       );
     }
 
-    await Credentials.Android.createKeystore(
+    await AndroidCredentials.createKeystore(
       {
         keystorePath: keystoreFilename,
         keystorePassword: credentials.keystorePassword,
