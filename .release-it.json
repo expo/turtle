@@ -8,5 +8,8 @@
   },
   "github": {
     "release": true
+  },
+  "hooks": {
+    "after:release": "yarn release:update:turtle-cli-example"
   }
 }

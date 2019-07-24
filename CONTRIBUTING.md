@@ -24,6 +24,7 @@ To submit a pull request:
 4. Wait for a review and adjust the code if necessary.
 
 ## Publishing a release
+- Make sure you have set `GITHUB_TOKEN` and `CIRCLE_API_USER_TOKEN` environment variables in `.envrc.local` file. If you don't have the file, run `cp .envrc.local.example .envrc.local` and edit the file.
 - To release a new version of `turtle-cli`, run `yarn release` command.
 - If you wish to release a new *beta* version of `turtle-cli`, run `yarn release:beta` instead.
 - Update [Changelog](CHANGELOG.md).
