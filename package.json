@@ -24,7 +24,8 @@
     "test:smoke:android": "PLATFORM=android yarn test:smoke --testNamePattern=android",
     "test:smoke:ios": "PLATFORM=ios yarn test:smoke --testNamePattern=iOS",
     "release": "./scripts/release.sh",
-    "release:beta": "./scripts/releaseBeta.sh"
+    "release:beta": "./scripts/releaseBeta.sh",
+    "release:update:turtle-cli-example": "./scripts/updateTurtleCliExampleRepo.sh"
   },
   "husky": {
     "hooks": {
