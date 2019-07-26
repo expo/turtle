@@ -12,3 +12,5 @@ shell.apk
 
 *.swp
 *.swo
+
+.envrc.local

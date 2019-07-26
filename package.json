@@ -1,6 +1,6 @@
 {
   "name": "turtle-cli",
-  "version": "0.8.10",
+  "version": "0.8.11",
   "description": "The command-line tool for building standalone Expo apps",
   "preferGlobal": true,
   "scripts": {
@@ -24,7 +24,8 @@
     "test:smoke:android": "PLATFORM=android yarn test:smoke --testNamePattern=android",
     "test:smoke:ios": "PLATFORM=ios yarn test:smoke --testNamePattern=iOS",
     "release": "./scripts/release.sh",
-    "release:beta": "./scripts/releaseBeta.sh"
+    "release:beta": "./scripts/releaseBeta.sh",
+    "release:update:turtle-cli-example": "./scripts/updateTurtleCliExampleRepo.sh"
   },
   "husky": {
     "hooks": {
@@ -96,7 +97,7 @@
   },
   "dependencies": {
     "@expo/spawn-async": "^1.4.2",
-    "@expo/xdl": "56.0.1-rc.1",
+    "@expo/xdl": "56.1.4-rc.0",
     "@google-cloud/logging-bunyan": "^0.9.5",
     "async-retry": "^1.2.1",
     "aws-sdk": "^2.226.1",
