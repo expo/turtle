@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Android shell app for SDK34.
+- Xcode license check for iOS builds.
 ### Fixed
 - Setting `Constants.nativeAppVersion` for Android standalone builds (actually fixed in [expo/expo-cli#878](https://github.com/expo/expo-cli/pull/878)).
 

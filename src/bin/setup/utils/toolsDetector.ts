@@ -19,7 +19,7 @@ export async function ensureToolsAreInstalled(tools: IToolDefinition[]) {
     try {
       if (testFn) {
         if (!await testFn()) {
-          throw new Error('Required tool doesn\'t exist');
+          throw new Error('Required tool is not properly installed');
         }
       } else {
         await which(command);
