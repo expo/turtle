@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-import { IosShellApp } from '@expo/xdl';
+import { ExponentTools, IosShellApp } from '@expo/xdl';
 import { v4 as uuidv4 } from 'uuid';
 
 import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
@@ -41,6 +41,7 @@ export function createBuilderContext(job: IJob): IContext {
 
   const sdkVersion = sdkVersionFromJob || sdkVersionFromManifest;
   const workingDir = formatShellAppDirectory({ sdkVersion, buildType: buildType! });
+  const majorSdkVersion = ExponentTools.parseSdkMajorVersion(sdkVersion);
 
   const context: any = {
     appDir: join(config.directories.temporaryFilesRoot, appUUID),
@@ -84,13 +85,24 @@ export function createBuilderContext(job: IJob): IContext {
       'Applications',
       `${EXPOKIT_APP}.app`,
     );
-    context.workspacePath = path.join(
-      workingDir,
-      'shellAppWorkspaces',
-      'ios',
-      'default',
-      `${EXPOKIT_APP}.xcworkspace`,
-    );
+    if (majorSdkVersion >= 33) {
+      context.workspacePath = path.join(
+        workingDir,
+        'shellAppWorkspaces',
+        'default',
+        'ios',
+        `${EXPOKIT_APP}.xcworkspace`,
+      );
+    } else {
+      context.workspacePath = path.join(
+        workingDir,
+        'shellAppWorkspaces',
+        'ios',
+        'default',
+        `${EXPOKIT_APP}.xcworkspace`,
+      );
+    }
+
   } else if (buildType === IOS_BUILD_TYPES.CLIENT) {
     context.outputPath = join(context.appDir, 'archive.xcarchive');
     context.uploadPath = join(context.buildDir, 'archive.ipa');
