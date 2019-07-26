@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Xcode license check for iOS builds.
 ### Fixed
 - Setting `Constants.nativeAppVersion` for Android standalone builds (actually fixed in [expo/expo-cli#878](https://github.com/expo/expo-cli/pull/878)).
+- Passing `expo.android.config` object from `app.json` to the Android builder.
 
 ## [0.8.11] - 2019-07-16
 ### Fixed
