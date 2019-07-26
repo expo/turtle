@@ -27,5 +27,4 @@ To submit a pull request:
 - Make sure you have set `GITHUB_TOKEN` and `CIRCLE_API_USER_TOKEN` environment variables in `.envrc.local` file. If you don't have the file, run `cp .envrc.local.example .envrc.local` and edit the file.
 - To release a new version of `turtle-cli`, run `yarn release` command.
 - If you wish to release a new *beta* version of `turtle-cli`, run `yarn release:beta` instead.
-- Update [Changelog](CHANGELOG.md).
-- In a terminal, `cd` into [expo/turtle-cli-example](https://github.com/expo/turtle-cli-example) repository, run `yarn update-turtle-cli-version` (this script updates `turtle-cli` version number in CI configuration files and commits the changes) and then run `git push`. Thanks!
+- Update the [changelog](CHANGELOG.md).
