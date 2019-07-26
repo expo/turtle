@@ -94,7 +94,7 @@ const buildJobObject = async (
 ) => {
   const job = {
     config: {
-      ..._.get(appJSON, 'expo.ios.config', {}),
+      ..._.get(appJSON, `expo.${platform}.config`, {}),
       buildType,
       ...(platform === 'android' ? { buildMode } : {}),
       releaseChannel,
