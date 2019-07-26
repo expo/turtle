@@ -10,6 +10,7 @@ import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
 import { formatShellAppDirectory } from 'turtle/builders/utils/ios/workingdir';
 import config from 'turtle/config';
 import { PLATFORMS } from 'turtle/constants';
+import logger from 'turtle/logger';
 
 const REQUIRED_TOOLS: IToolDefinition[] = [
   {
@@ -30,7 +31,7 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
       const fastlaneVersion = parseFastlaneVersion(stdout);
       if (fastlaneVersion && !semver.satisfies(fastlaneVersion, `>= ${MINIMAL_VERSION}`)) {
         throw new Error(
-          `Your fastlane on version ${fastlaneVersion}. Please upgrade it to at least ${MINIMAL_VERSION}.`,
+          `Your fastlane is on version ${fastlaneVersion}. Please upgrade it to at least ${MINIMAL_VERSION}.`,
         );
       }
     },
@@ -47,7 +48,30 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
       if (stdout.match(/requires xcode/i)) {
         return false;
       }
-      return status === 0;
+
+      if (status !== 0) {
+        return false;
+      }
+
+      try {
+        await ExponentTools.spawnAsyncThrowError('ibtool', ['--version'], { stdio: 'pipe' });
+      } catch (err) {
+        if (err.stderr) {
+          const stderr = err.stderr.trim();
+          if (stderr.match(/Agreeing to the Xcode\/iOS license/)) {
+            logger.error('You have not accepted the Xcode license. Run \'sudo xcodebuild -runFirstLaunch\' to do so.');
+            return false;
+          }
+          if (stderr.match(/The bundle is damaged or missing necessary resources/)) {
+            logger.error(
+              'Make sure to install additional required components. Run \'sudo xcodebuild -runFirstLaunch\' to do so.',
+            );
+            return false;
+          }
+        }
+      }
+
+      return true;
     },
   },
 ];
