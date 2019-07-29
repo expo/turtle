@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.1]- 2019-07-29
+### Changed
+- `release-it` version to `12.3.4`.
+
 ## [0.9.0] - 2019-07-29
 ### Added
 - Android, iOS standalone shell apps and iOS Expo client shell app for SDK34.
