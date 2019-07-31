@@ -3,7 +3,6 @@ import path from 'path';
 import { AndroidShellApp, ImageUtils } from '@expo/xdl';
 import fs from 'fs-extra';
 import _ from 'lodash';
-import semver from 'semver';
 import { ANDROID_BUILD_TYPES } from 'turtle/constants';
 import uuidv4 from 'uuid/v4';
 
@@ -11,7 +10,6 @@ import getOrCreateCredentials from 'turtle/builders/utils/android/credentials';
 import { formatShellAppDirectory } from 'turtle/builders/utils/android/workingdir';
 import * as commonUtils from 'turtle/builders/utils/common';
 import * as imageHelpers from 'turtle/builders/utils/image';
-import { resolveNativeModules } from 'turtle/builders/utils/unimodules';
 import { uploadBuildToS3 } from 'turtle/builders/utils/uploader';
 import { ensureCanBuildSdkVersion } from 'turtle/builders/utils/version';
 import config from 'turtle/config';
@@ -73,10 +71,14 @@ async function runShellAppBuilder(
   const sdkVersion = _.get(manifest, 'sdkVersion', sdkVersionFromJob);
   const workingDir = formatShellAppDirectory({ sdkVersion });
 
-  logger.info({ buildPhase: 'resolve native modules' }, 'Resolving universal modules dependencies');
-  const enabledModules = semver.satisfies(sdkVersion, '>= 33.0.0')
-    ? await resolveNativeModules(workingDir, _.get(manifest, 'dependencies'))
-    : null;
+  // logger.info({ buildPhase: 'resolve native modules' }, 'Resolving universal modules dependencies');
+
+  // This can be set to `await resolveNativeModules(workingDir, _.get(manifest, 'dependencies'))`
+  // (depending on project SDK version) in order to enable optional modules.
+  // (2019-07-31) We are explicitly choosing to disable this option until we have more
+  // infrastructure/tooling built around optional modules and OTA updates, as right now it's
+  // very easy for developers to break apps in production with optional modules.
+  const enabledModules = null;
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
