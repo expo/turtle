@@ -25,7 +25,8 @@
     "test:smoke:ios": "PLATFORM=ios yarn test:smoke --testNamePattern=iOS",
     "release": "./scripts/release.sh",
     "release:beta": "./scripts/releaseBeta.sh",
-    "release:update:turtle-cli-example": "./scripts/updateTurtleCliExampleRepo.sh"
+    "release:update:turtle-cli-example": "./scripts/updateTurtleCliExampleRepo.sh",
+    "docker:build-and-push:android-base-image": "./scripts/android/buildAndPushAndroidBaseImage.sh"
   },
   "husky": {
     "hooks": {
