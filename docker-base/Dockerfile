@@ -1,4 +1,4 @@
-# If you ever need to rebuild this run:
+# If you ever need to rebuild this, run:
 # yarn docker:build-and-push:android-base-image NEW_IMAGE_SEMVER
 FROM openjdk:8u141
 
