@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] - 2019-08-01
+### Changed
+- Fully disabled optional modules on Android for now.
+- Updated iOS shell apps for SDK 33 and 34 to fix scoped permissions issue.
+- Updated Android shell app for SDK 34 to work after disabling optional modules.
+
 ## [0.9.1] - 2019-07-29
 ### Changed
 - `release-it` version to `12.3.4`.
