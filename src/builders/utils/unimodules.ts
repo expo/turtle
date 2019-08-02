@@ -19,6 +19,20 @@ interface IPackageInfo {
   dependencies: string[];
 }
 
+export async function resolveExplicitOptIn(workingdir: string, packages?: string[]): Promise<IUnimoduleEntry[]> {
+  const resolver = new Resolver(workingdir);
+  await resolver.init();
+
+  const optionalModules = ['expo-branch', 'expo-face-detector'];
+  resolver.addAll();
+  const modules = packages
+    ? resolver.getModules().filter((mod) => !optionalModules.includes(mod.name) || packages.includes(mod.name))
+    : resolver.getModules().filter((mod) => !optionalModules.includes(mod.name));
+
+  modules.forEach(({ name, version }) => { logger.info(`Adding ${name}:${version}`); });
+  return modules;
+}
+
 export async function resolveNativeModules(workingdir: string, packages?: string[]): Promise<IUnimoduleEntry[]> {
   const resolver = new Resolver(workingdir);
   await resolver.init();
@@ -38,8 +52,9 @@ export async function resolveNativeModules(workingdir: string, packages?: string
       }
     }
   }
-
-  return resolver.getModules();
+  const modules = resolver.getModules();
+  modules.forEach(({ name, version }) => { logger.info(`Adding ${name}:${version}`); });
+  return modules;
 }
 
 async function readCorePackages(workingdir: string) {
@@ -101,7 +116,6 @@ class Resolver {
       return;
     }
     const pkg = this.dependencyMap[moduleName];
-    logger.info(`Adding ${moduleName}:${pkg.version}`);
     this.modulesMap[moduleName] = {
       name: pkg.name,
       dirname: pkg.dirname,
