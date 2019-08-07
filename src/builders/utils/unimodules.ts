@@ -23,7 +23,7 @@ export async function resolveExplicitOptIn(workingdir: string, packages?: string
   const resolver = new Resolver(workingdir);
   await resolver.init();
 
-  const optionalModules = ['expo-branch', 'expo-face-detector'];
+  const optionalModules = ['expo-branch'];
   resolver.addAll();
   const modules = packages
     ? resolver.getModules().filter((mod) => !optionalModules.includes(mod.name) || packages.includes(mod.name))
