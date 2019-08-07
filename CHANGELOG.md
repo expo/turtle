@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Enabled back optional modules support, but only for specific unimodules.
-- Updated SDK34 Android shell app with latest fixes (up to 2.12.2)
-- Updated SDK34 iOS shell app with latest fixes (up to 2.12.3)
+- Updated SDK34 Android shell app with the latest fixes (up to 2.12.2).
+- Updated SDK34 iOS shell app with the latest fixes (up to 2.12.3)
 
 ## [0.10.0] - 2019-08-01
 ### Changed
