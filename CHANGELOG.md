@@ -33,6 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Setting `Constants.nativeAppVersion` for Android standalone builds (actually fixed in [expo/expo-cli#878](https://github.com/expo/expo-cli/pull/878)).
 - Passing `expo.android.config` object from `app.json` to the Android builder.
+- Fixed crash on launch for iOS standalone apps on iOS 13 (all SDK versions).
+- Fixed occasional issue on iOS (SDK 33) where the JS bundle cannot be found ("No cache exists for this resource: shell-app.bundle") and a reload would be required.
 
 ## [0.8.11] - 2019-07-16
 ### Fixed
