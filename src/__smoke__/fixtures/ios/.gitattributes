@@ -1,2 +1,0 @@
-recording.json filter=git-crypt diff=git-crypt
-.gitatrributes !filter !diff

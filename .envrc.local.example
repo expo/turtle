@@ -1,2 +1,0 @@
-export GITHUB_TOKEN=__PUT_YOUR_GITHUB_TOKEN_HERE__ # follow the guide to create one: https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line
-export CIRCLE_API_USER_TOKEN=__PUT_YOUR_CIRCLECI_API_TOKEN_HERE__ # create one here: https://circleci.com/account/api
