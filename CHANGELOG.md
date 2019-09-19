@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.0] - 2019-09-19
+### Added
+- Support for SDK 35 iOS and Android builds.
+### Removed
+- Support for SDK 27-30 iOS and Android builds.
+
 ## [0.11.3] - 2019-09-19
 ### Changed
 - Updated SDK34 Android shell app with `expo-branch` fixes.
