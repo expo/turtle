@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.1] - 2019-09-20
+### Changed
+- Updated iOS shell apps for SDK 33 and 34 to fix iOS 13 issues with fishhook, notification tokens, and ShareSheet
+- Updated iOS shell app for SDK 35 with a minor fix
+
 ## [0.12.0] - 2019-09-19
 ### Added
 - Support for SDK 35 iOS and Android builds.
