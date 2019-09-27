@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.2] - 2019-09-27
+### Changed
+- Updated Android shell app for SDK 35 to fix crash on Android <=7 due to battery module
+
 ## [0.12.1] - 2019-09-20
 ### Changed
 - Updated iOS shell apps for SDK 33 and 34 to fix iOS 13 issues with fishhook, notification tokens, and ShareSheet
