@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.3] - 2019-10-09
+### Changed
+- Updated iOS client shell app for SDK 35 to fix it from crashing on startup due to having an incomplete GoogleService-Info.plist file.
+
 ## [0.12.2] - 2019-09-27
 ### Changed
 - Updated Android shell app for SDK 35 to fix crash on Android <=7 due to battery module
