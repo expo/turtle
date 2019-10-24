@@ -61,4 +61,4 @@ async function cleanup(ctx: IContext) {
 }
 
 const getTemporaryDirs = (ctx: IContext) =>
-  Object.values(pick(ctx, ['appDir', 'provisioningProfileDir']));
+  Object.values(pick(ctx, ['appDir', 'provisioningProfileDir'])) as string[];
