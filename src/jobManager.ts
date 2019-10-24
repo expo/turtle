@@ -55,19 +55,33 @@ export async function getJob() {
 async function processJob(jobData: any) {
   const receiptHandle = jobData.ReceiptHandle;
   const { priority } = jobData;
+
   let timeoutId;
   try {
-    const rawJob = JSON.parse(jobData.Body);
-    timeoutId = failAfterMaxJobTime(priority, receiptHandle, rawJob);
-    const job = await sanitizeJob(rawJob);
-
+    let rawJob;
+    let job;
+    try {
+      rawJob = JSON.parse(jobData.Body);
+      timeoutId = failAfterMaxJobTime(priority, receiptHandle, rawJob);
+      logger.info(
+        { buildJobId: rawJob.id, messageId: jobData.MessageId },
+        `Processing job with priority=${priority.slice(0, priority.length - 8)} timestamp=${Date.now()}`,
+      );
+      job = await sanitizeJob(rawJob);
+    } catch (err) {
+      logger.error({ err, ...rawJob && { buildJobId: rawJob.id } }, 'The build job is invalid');
+      // send message only if we've managed to parse the job json
+      if (rawJob) {
+        await sqs.sendMessage(rawJob.id, BUILD.JOB_STATES.ERRORED, {
+          turtleVersion,
+          buildDuration: 0,
+          reason: 'The build job is invalid',
+        });
+      }
+      throw err;
+    }
     setCurrentJobId(job.id);
     const pingerHandle = sqs.changeMessageVisibilityRecurring(priority, jobData.ReceiptHandle, job.id);
-
-    logger.info(
-      `Doing job MessageId=${jobData.MessageId} BuildId=${job.id} `
-      + `Priority=${priority.slice(0, priority.length - 8)} ${Date.now()}`,
-    );
 
     const cancelled = await redis.checkIfCancelled(job.id);
     if (cancelled) {

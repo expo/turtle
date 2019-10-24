@@ -55,7 +55,7 @@ async function main() {
     try {
       await doJob();
     } catch (err) {
-      logger.error({ err }, 'Failed to do a job');
+      logger.error({ err }, 'Failed to process a job');
     }
   }
 }
