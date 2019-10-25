@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.7] - 2019-10-25
+
+### Changed
+
+- Updated Android shell app for SDK 35 to fix occasional crash in background due to GCM registration service (https://github.com/expo/expo/issues/4207)
+
 ## [0.12.5] - 2019-10-18
 
 ### Changed
