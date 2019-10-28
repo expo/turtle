@@ -15,6 +15,7 @@ import { PLATFORMS } from 'turtle/constants';
 import logger from 'turtle/logger';
 
 const which = util.promisify(_which);
+const JAVA_REQUIRED_VERSION = 8;
 const REQUIRED_TOOLS: IToolDefinition[] = [
   {
     command: 'bash',
@@ -22,16 +23,27 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
   },
   {
     command: 'javac',
-    missingDescription: 'Please install JDK (version 8 or newer) - check https://jdk.java.net/',
+    missingDescription: `Please install JDK (version ${JAVA_REQUIRED_VERSION}) - check https://jdk.java.net/`,
     testFn: async () => {
-      const { status, stdout } = await ExponentTools.spawnAsyncThrowError(
-        'javac',
+      const { status, stdout, stderr } = await ExponentTools.spawnAsyncThrowError(
+        'java',
         ['-version'],
         { stdio: 'pipe' },
       );
       if (stdout.match(/no java runtime present/i)) {
         return false;
       }
+
+      const matchResult = stderr.match(/.*version ".*\.(.*)\..*"/);
+      if (matchResult) {
+        const [, currentJavaVersion] = matchResult;
+        if (Number(currentJavaVersion) !== JAVA_REQUIRED_VERSION) {
+          throw new Error(`You're using a wrong Java version, please install version ${JAVA_REQUIRED_VERSION}`);
+        }
+      } else {
+        logger.warn(`Couldn't find Java version number, assuming you're on Java ${JAVA_REQUIRED_VERSION}...`);
+      }
+
       return status === 0;
     },
   },
