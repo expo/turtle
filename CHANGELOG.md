@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.8] - 2019-10-29
+
 ### Changed
+
+- Updated Android shell app for SDK 35 to fix `Linking.openUrl` not opening app if it's already foregrounded (https://github.com/expo/expo/issues/6058)
 - Enforce Java 8 when using turtle-cli.
 
 ## [0.12.7] - 2019-10-25
