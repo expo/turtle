@@ -1,4 +1,3 @@
-
 import EventEmitter from 'events';
 import path from 'path';
 
