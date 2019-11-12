@@ -138,6 +138,11 @@ spec:
               secretKeyRef:
                 name: turtle-js-config
                 key: datadog_app_key
+          - name: TURTLE_SDK_VERSIONS_SECRET_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: turtle-js-config
+                key: turtle_sdk_versions_secret_token
           # other vars
           - name: GRADLE_DAEMON_DISABLED
             value: "1"
