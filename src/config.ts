@@ -89,4 +89,7 @@ export default {
       path.join(os.platform() === 'darwin' ? '/private' : '/', 'tmp', 'turtle'),
     ),
   },
+  www: {
+    sdkVersionsSecretToken: env('TURTLE_SDK_VERSIONS_SECRET_TOKEN'),
+  },
 };
