@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.9] - 2019-11-14
+
 ### Added
 
 - Support for customizing Facebook SDK behavior at buildtime (autoinitialization, logging app events, logging Advertiser ID) (https://github.com/expo/expo/pull/5924)
