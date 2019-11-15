@@ -36,6 +36,7 @@ export default async function runShellAppBuilder(ctx: IContext, job: IJob): Prom
     manifest,
     output: ctx.outputPath,
     verbose: true,
+    shellAppSdkVersion: sdkVersion,
   };
   if (buildType === IOS_BUILD_TYPES.CLIENT) {
     Object.assign(shellAppParams, {
