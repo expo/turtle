@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.10] - 2019-11-15
+
+### Added
+
+- Add `shellAppSdkVersion` param to `IOSShellAppBuilder` so entitlement keys get properly added in (https://github.com/expo/turtle/pull/162)
+
 ## [0.12.9] - 2019-11-14
 
 ### Added
