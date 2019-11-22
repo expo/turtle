@@ -7,11 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.12.12] - 2019-11-22
+
+### Fixed
+
+- A bug that caused `expo.owner` value not to be used if defined.
+
 ## [0.12.11] - 2019-11-20
 
 ### Added
 
-- Bumped `travelling-fastlane` to 1.11.0
+- Bumped `traveling-fastlane` to 1.11.0
 
 ## [0.12.10] - 2019-11-15
 
