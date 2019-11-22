@@ -92,6 +92,7 @@ const buildJobObject = async (
   { releaseChannel, buildType, buildMode, username, publicUrl, projectDir }: any,
   credentials: any,
 ) => {
+  const experienceName = `@${_.get(appJSON, 'expo.owner', username)}/${_.get(appJSON, 'expo.slug')}`;
   const job = {
     config: {
       ..._.get(appJSON, `expo.${platform}.config`, {}),
@@ -106,7 +107,7 @@ const buildJobObject = async (
     platform,
     projectDir,
     sdkVersion: _.get(appJSON, 'expo.sdkVersion'),
-    experienceName: `@${username}/${_.get(appJSON, 'expo.slug')}`,
+    experienceName,
     ...(credentials && { credentials }),
   };
   const url = getExperienceUrl(job.experienceName, job.config.publicUrl);
