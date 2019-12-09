@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.0] - 2019-12-09
+
+### Added
+
+- Added iOS and Android shell apps for SDK 36
+
+### Changed
+
+- Updated iOS client shell app to support SDK 36
+
 ## [0.12.12] - 2019-11-22
 
 ### Fixed
