@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.2] - 2019-12-10
+
+### Fixed
+
+- Fixed Android App Bundle builds
+- Fixed issue with Root View Background Color and AppLoading on Android SDK 36 builds
+
 ## [0.13.1] - 2019-12-09
 
 ### Fixed
