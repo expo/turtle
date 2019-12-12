@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.3] - 2019-12-12
+
+### Fixed
+
+- Removed private API usage from iOS SDK 36 tarball
+
 ## [0.13.2] - 2019-12-10
 
 ### Fixed
