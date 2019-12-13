@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.4] - 2019-12-13
+
+### Added
+
+- Support for building iOS apps with a wildcard provisioning profile.
+
 ## [0.13.3] - 2019-12-12
 
 ### Fixed
