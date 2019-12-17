@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.5] - 2019-12-17
+
+### Fixed
+
+- Fixed issue with missing request handler for assets-library urls.
+
 ## [0.13.4] - 2019-12-13
 
 ### Added
