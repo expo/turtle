@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.7] - 2029-01-15
+
+### Added
+
+- Bumped `traveling-fastlane` to 1.11.4 to update CA certs
+
 ## [0.13.6] - 2019-12-17
 
 ### Fixed

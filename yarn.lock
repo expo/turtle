@@ -1364,10 +1364,10 @@
   dependencies:
     cross-spawn "^6.0.5"
 
-"@expo/traveling-fastlane-darwin@1.11.0":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-darwin/-/traveling-fastlane-darwin-1.11.0.tgz#88f09e2332f2103fafac4759bbbc86832633768a"
-  integrity sha512-owQdOQ0Ag4XE9LtXQ0p1fWwWqa0uhJvEKEmvb5ugPbdkT8BSs92TNfULHPMkGohcHlB0/Q+VXTUbSnP4zczKbQ==
+"@expo/traveling-fastlane-darwin@1.11.4":
+  version "1.11.4"
+  resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-darwin/-/traveling-fastlane-darwin-1.11.4.tgz#bc83ea2a3c8fa2cb1c7daedf1514c5839b4f1f45"
+  integrity sha512-1rNq4yMHGfmYhUJuBH5lKpmHVAa5QjgXbv3MoMqsFrlnwzDaq4qHSs6s/RWHw+gmk5lASEhmW32ALArAxX9ceA==
 
 "@expo/webpack-config@^0.10.6":
   version "0.10.6"
