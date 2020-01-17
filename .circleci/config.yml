@@ -186,14 +186,14 @@ jobs:
       - run: yarn
       - save_yarn_cache
       - restore_workingdir_cache:
-          sdk_version: sdk32
+          sdk_version: sdk35
           platform: ios
       - run:
           name: Run iOS smoke tests
           command: ./scripts/tests/runIOSSmokeTestsCI.sh
       - save_workingdir_cache:
           workingdir: /Users/distiller/project/workingdir
-          sdk_version: sdk32
+          sdk_version: sdk35
           platform: ios
 
   android_smoke_tests:
