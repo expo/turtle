@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.8] - 2020-01-27
+
+### Fixed
+
+- Fixed `react-native-maps` native module not being properly initialized (https://github.com/expo/expo/pull/6844)
+- Fixed Android standalone apps crashing on startup (https://github.com/expo/expo/pull/6825)
+
 ## [0.13.7] - 2020-01-15
 
 ### Added
