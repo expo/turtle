@@ -17,6 +17,7 @@ RUN dpkg --add-architecture i386 && \
   build-essential\
   bzip2:i386\
   file\
+  jq\
   lib32ncurses5\
   lib32z1\
   libc6:i386\
