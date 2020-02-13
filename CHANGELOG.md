@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.9] - 2020-02-13
+
+### Fixed
+
+- Fixed Notifications.getDevicePushTokenAsync() erroring occasionally on iOS SDK 36
+
 ## [0.13.8] - 2020-01-27
 
 ### Fixed
