@@ -1,5 +1,3 @@
-!/src/node_modules
-
 node_modules
 yarn-error.log
 google-cloud-credentials.json
@@ -7,6 +5,8 @@ google-cloud-credentials.json
 /build/
 /workingdir/*
 /artifacts/*
+.history
+
 shell.apk
 .secrets*
 
