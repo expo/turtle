@@ -55,7 +55,7 @@
     "react-native"
   ],
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "author": "Expo <support@expo.io>",
   "license": "MIT",
@@ -86,13 +86,13 @@
     "@types/webpack-dev-server": "^3.1.7",
     "@types/which": "^1.3.1",
     "husky": "^1.3.1",
-    "jest": "^23.6.0",
+    "jest": "^25.1.0",
     "lint-staged": "^8.1.5",
     "nock": "^10.0.1",
-    "nodemon": "^1.18.11",
+    "nodemon": "^2.0.2",
     "release-it": "^12.3.4",
     "rimraf": "^2.6.2",
-    "ts-jest": "^23.10.4",
+    "ts-jest": "^25.2.1",
     "ts-node": "^8.0.3",
     "ts-transformer-imports": "^0.4.1",
     "tsconfig-paths": "^3.8.0",
@@ -103,8 +103,8 @@
   },
   "dependencies": {
     "@expo/spawn-async": "^1.4.2",
-    "@expo/xdl": "57.4.0",
-    "@google-cloud/logging-bunyan": "^0.9.5",
+    "@expo/xdl": "57.5.2",
+    "@google-cloud/logging-bunyan": "^2.0.3",
     "async-retry": "^1.2.1",
     "aws-sdk": "^2.226.1",
     "bunyan": "^1.8.12",
@@ -125,7 +125,7 @@
     "request-progress": "^3.0.0",
     "request-promise": "^4.2.5",
     "semver": "^6.0.0",
-    "sharp": "0.22.1",
+    "sharp": "0.24.1",
     "source-map-support": "^0.5.6",
     "tar": "^4.4.6",
     "uuid": "^3.2.1",
@@ -135,6 +135,7 @@
     "@expo/traveling-fastlane-darwin": "1.11.4"
   },
   "volta": {
-    "node": "8.15.1"
+    "node": "12.16.1",
+    "yarn": "1.22.0"
   }
 }

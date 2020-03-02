@@ -1,5 +1,5 @@
 self: super:
 
 {
-  nodejs = super.nodejs-8_x;
+  nodejs = super.nodejs-12_x;
 }

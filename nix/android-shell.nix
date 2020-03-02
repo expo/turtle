@@ -24,7 +24,7 @@ mkShell rec {
     awscli
     curl
     git
-    nodejs-8_x
+    nodejs-12_x
     openjdk8
     yarn
   ];
