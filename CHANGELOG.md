@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Dropped support for Node.js versions older than 10.
+- Dropped support for building Expo SDK 31 and 32 apps.
 
 ## [0.13.9] - 2020-02-13
 
