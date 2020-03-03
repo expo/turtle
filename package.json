@@ -133,5 +133,8 @@
   },
   "optionalDependencies": {
     "@expo/traveling-fastlane-darwin": "1.11.4"
+  },
+  "volta": {
+    "node": "8.15.1"
   }
 }
