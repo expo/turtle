@@ -3,7 +3,18 @@
 
 const subcommand = process.argv[2];
 if (subcommand) {
-  const [, platform] = subcommand.split(':');
+  let platform;
+  if (subcommand.length === 2) {
+    const letter = subcommand[1];
+    if (letter === 'a') {
+      platform = 'android';
+    } else if (letter === 'i') {
+      platform = 'ios';
+    }
+  } else {
+    const [, maybePlatform] = subcommand.split(':');
+    platform = maybePlatform;
+  }
   if (platform === 'ios' || platform === 'android') {
     // so that logs have correct platform set
     process.env.PLATFORM = platform;
