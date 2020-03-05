@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added validation for `--public-url`.
+
 ### Fixed
 
 - A bug where the `platform` field in logs wasn't set correctly when using a shortcut command.

@@ -1,3 +1,5 @@
+import _url from 'url';
+
 import { ExponentTools } from '@expo/xdl';
 import _ from 'lodash';
 import uuid from 'uuid';
@@ -52,6 +54,13 @@ export function createBuilderAction({
         throw new ErrorWithCommandHelp(
           'You must provide your Expo username and password unless you specify --public-url to your project manifest.',
         );
+      }
+
+      if (cmd.publicUrl) {
+        const parsedPublicUrl = _url.parse(cmd.publicUrl);
+        if (parsedPublicUrl.protocol !== 'https:') {
+          throw new ErrorWithCommandHelp('--public-url is invalid - only HTTPS urls are supported');
+        }
       }
 
       const args = {

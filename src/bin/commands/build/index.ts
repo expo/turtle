@@ -15,7 +15,7 @@ function setCommonCommandOptions(cmd: any) {
     .option('-o --output <output-file-path>', 'output file path')
     .option(
       '--public-url <url>',
-      'the URL of an externally hosted manifest (for self-hosted apps).',
+      'the URL of an externally hosted manifest (for self-hosted apps), only HTTPS URLs are supported!',
     )
     .option(
       '--release-channel <channel-name>',
