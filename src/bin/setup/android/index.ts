@@ -5,7 +5,6 @@ import { ExponentTools } from '@expo/xdl';
 import fs from 'fs-extra';
 import _which from 'which';
 
-import ensureAndroidNDKIsPresent from 'turtle/bin/setup/android/ndk';
 import ensureAndroidSDKIsPresent from 'turtle/bin/setup/android/sdk';
 import { checkSystem, ensureShellAppIsPresent } from 'turtle/bin/setup/utils/common';
 import { IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
@@ -66,9 +65,8 @@ export default async function setup(sdkVersion?: string) {
 async function prepareAndroidEnv() {
   await fs.ensureDir(config.directories.androidDependenciesDir);
   const sdkConfig = await ensureAndroidSDKIsPresent();
-  const ndkConfig = await ensureAndroidNDKIsPresent();
-  _setEnvVars({ ...sdkConfig.envVars, ...ndkConfig.envVars });
-  _alterPath([...sdkConfig.path, ...sdkConfig.path]);
+  _setEnvVars(sdkConfig.envVars);
+  _alterPath(sdkConfig.path);
 }
 
 function formatShellAppTarballUriPath(sdkMajorVersion: string) {

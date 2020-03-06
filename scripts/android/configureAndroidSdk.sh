@@ -18,3 +18,5 @@ yes | $SDKMANAGER \
   "extras;android;m2repository" \
   "extras;google;m2repository" \
   "extras;google;google_play_services" | grep -v '='; [[ ${PIPESTATUS[1]} = 0 ]]
+
+yes | $SDKMANAGER "ndk;17.2.4988734" | grep -v '='; [[ ${PIPESTATUS[1]} = 0 ]]
