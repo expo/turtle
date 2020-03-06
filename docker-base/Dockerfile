@@ -55,7 +55,7 @@ ENV PATH ${ANDROID_HOME}/tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools/bin:${PATH}
 ENV PATH ${ANDROID_HOME}/build-tools/28.0.3/:${PATH}
 
-ADD scripts/android/configureAndroidSdk.sh /tmp/configureAndroidSdk.sh
+ADD configureAndroidSdk.sh /tmp/configureAndroidSdk.sh
 RUN /tmp/configureAndroidSdk.sh --install-all-platforms
 
 # Support Gradle
