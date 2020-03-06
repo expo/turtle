@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added validation for `--public-url`.
 
+### Changed
+
+- Changed the way of installing NDK - it's installed with `sdkmanager` now.
+- Upgraded NDK to 17.2.4988734.
+
 ### Fixed
 
 - A bug where the `platform` field in logs wasn't set correctly when using a shortcut command.
