@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.13.10] - 2020-03-09
+
 ### Added
 
 - Added validation for `--public-url`.
@@ -19,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - A bug where the `platform` field in logs wasn't set correctly when using a shortcut command.
+- Removed all remaining instances of `UIWebView` in iOS app builds.
 
 ## [0.13.9] - 2020-02-13
 
