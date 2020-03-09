@@ -61,10 +61,27 @@ RUN /tmp/configureAndroidSdk.sh --install-all-platforms
 # Support Gradle
 ENV TERM dumb
 
-# Install gradle
-RUN wget https://services.gradle.org/distributions/gradle-4.4-all.zip
-RUN unzip -qq gradle-4.4-all.zip
-RUN mv gradle-4.4 /usr/local
-RUN rm gradle-4.4-all.zip
-ENV GRADLE_HOME /usr/local/gradle-4.4
+# Install gradle 5.6.3
+RUN wget https://services.gradle.org/distributions/gradle-5.6.3-all.zip
+RUN unzip -qq gradle-5.6.3-all.zip
+RUN cp -r gradle-5.6.3 /usr/local
+
+RUN mkdir -p /root/.gradle/wrapper/dists/gradle-5.6.3-all/7wpcz6s7ut7bllr9k6e1hazxc
+RUN mv gradle-5.6.3-all.zip /root/.gradle/wrapper/dists/gradle-5.6.3-all/7wpcz6s7ut7bllr9k6e1hazxc
+RUN mv gradle-5.6.3 /root/.gradle/wrapper/dists/gradle-5.6.3-all/7wpcz6s7ut7bllr9k6e1hazxc
+RUN touch /root/.gradle/wrapper/dists/gradle-5.6.3-all/7wpcz6s7ut7bllr9k6e1hazxc/gradle-5.6.3-all.zip.ok
+RUN touch /root/.gradle/wrapper/dists/gradle-5.6.3-all/7wpcz6s7ut7bllr9k6e1hazxc/gradle-5.6.3-all.zip.lck
+RUN chmod 755 /root/.gradle/wrapper/dists/gradle-5.6.3-all/7wpcz6s7ut7bllr9k6e1hazxc/gradle-5.6.3/bin/gradle
+
+ENV GRADLE_HOME /usr/local/gradle-5.6.3
 ENV PATH ${GRADLE_HOME}/bin:$PATH
+
+# Install gradle 4.10.2
+RUN wget https://services.gradle.org/distributions/gradle-4.10.2-all.zip
+RUN mkdir -p /root/.gradle/wrapper/dists/gradle-4.10.2-all/9fahxiiecdb76a5g3aw9oi8rv
+RUN unzip -qq gradle-4.10.2-all.zip
+RUN mv gradle-4.10.2-all.zip /root/.gradle/wrapper/dists/gradle-4.10.2-all/9fahxiiecdb76a5g3aw9oi8rv
+RUN mv gradle-4.10.2 /root/.gradle/wrapper/dists/gradle-4.10.2-all/9fahxiiecdb76a5g3aw9oi8rv
+RUN touch /root/.gradle/wrapper/dists/gradle-4.10.2-all/9fahxiiecdb76a5g3aw9oi8rv/gradle-4.10.2-all.zip.ok
+RUN touch /root/.gradle/wrapper/dists/gradle-4.10.2-all/9fahxiiecdb76a5g3aw9oi8rv/gradle-4.10.2-all.zip.lck
+RUN chmod 755 /root/.gradle/wrapper/dists/gradle-4.10.2-all/9fahxiiecdb76a5g3aw9oi8rv/gradle-4.10.2/bin/gradle
