@@ -22,7 +22,8 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
   },
   {
     command: 'javac',
-    missingDescription: `Please install JDK (version ${JAVA_REQUIRED_VERSION}) - check https://jdk.java.net/`,
+    missingDescription:
+      `Please install JDK 8 - keep in mind that other versions are not supported by Android`,
     testFn: async () => {
       const { status, stdout, stderr } = await ExponentTools.spawnAsyncThrowError(
         'java',
@@ -33,11 +34,13 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
         return false;
       }
 
-      const matchResult = stderr.match(/.*version ".*\.(.*)\..*"/);
+      const matchResult = stderr.match(/.*version "(.*)"/);
       if (matchResult) {
-        const [, currentJavaVersion] = matchResult;
-        if (Number(currentJavaVersion) !== JAVA_REQUIRED_VERSION) {
-          throw new Error(`You're using a wrong Java version, please install version ${JAVA_REQUIRED_VERSION}`);
+        const [, currentFullJavaVersion] = matchResult;
+        const javaMajorVersionPosition = currentFullJavaVersion.startsWith('1.') ? 1 : 0;
+        const javaMajorVersion = Number(currentFullJavaVersion.split('.')[javaMajorVersionPosition]);
+        if (javaMajorVersion !== JAVA_REQUIRED_VERSION) {
+          throw new Error(`You're on Java ${currentFullJavaVersion}, please install version ${JAVA_REQUIRED_VERSION}`);
         }
       } else {
         logger.warn(`Couldn't find Java version number, assuming you're on Java ${JAVA_REQUIRED_VERSION}...`);
