@@ -131,7 +131,7 @@ export function createBuilderContext(job: IJob): IContext {
   const s3FileExtension = buildType === IOS_BUILD_TYPES.SIMULATOR ? 'tar.gz' : 'ipa';
   const s3Filename = `${job.experienceName}-${appUUID}-${buildType}.${s3FileExtension}`;
   if (config.builder.fakeUpload) {
-    const fakeUploadFilename = s3Filename.replace('/', '\\');
+    const fakeUploadFilename = s3Filename.replace('/', '__');
     context.fakeUploadBuildPath = job.fakeUploadBuildPath
       ? job.fakeUploadBuildPath
       : join(job.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename);
