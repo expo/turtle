@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added iOS shell app for SDK 37
+
 ### Changed
 
 - Replace `/` with `__` in the artifact filename to fix a strange bug with selecting APK file in Android Studio.
