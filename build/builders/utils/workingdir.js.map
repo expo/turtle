@@ -1,0 +1,1 @@
+{"version":3,"file":"workingdir.js","sourceRoot":"","sources":["../../../src/builders/utils/workingdir.ts"],"names":[],"mappings":"","sourcesContent":["import { ANDROID_BUILD_TYPES, IOS_BUILD_TYPES } from 'turtle/constants';\n\nexport interface IShellAppDirectoryConfig {\n  sdkVersion: string;\n  buildType?: IOS_BUILD_TYPES & ANDROID_BUILD_TYPES;\n}\n"]}

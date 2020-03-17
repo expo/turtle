@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/jobsSchemas/index.ts"],"names":[],"mappings":";;AAAA,6BAAuC;AAA9B,oBAAA,OAAO,CAAO;AACvB,qCAA+C;AAAtC,4BAAA,OAAO,CAAW","sourcesContent":["export { default as ios } from './ios';\nexport { default as android } from './android';\n"]}

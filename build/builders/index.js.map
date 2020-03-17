@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/builders/index.ts"],"names":[],"mappings":";;;;;AAAA,wDAAqC;AACrC,gDAA6B;AAE7B,kBAAe;IACb,GAAG,EAAE,aAAQ;IACb,OAAO,EAAE,iBAAY;CACtB,CAAC","sourcesContent":["import buildAndroid from './android';\nimport buildIOS from './ios';\n\nexport default {\n  ios: buildIOS,\n  android: buildAndroid,\n};\n"]}

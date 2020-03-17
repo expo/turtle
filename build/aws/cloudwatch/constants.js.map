@@ -1,0 +1,1 @@
+{"version":3,"file":"constants.js","sourceRoot":"","sources":["../../../src/aws/cloudwatch/constants.ts"],"names":[],"mappings":";;AAAa,QAAA,gBAAgB,GAAG,MAAM,CAAC,kBAAkB,CAAC,CAAC;AAC9C,QAAA,UAAU,GAAG,MAAM,CAAC,YAAY,CAAC,CAAC","sourcesContent":["export const EXTRA_DIMENSIONS = Symbol('Extra Dimensions');\nexport const GROUP_HASH = Symbol('Group Hash');\n"]}

@@ -1,0 +1,1 @@
+{"version":3,"file":"ErrorWithProgramHelp.js","sourceRoot":"","sources":["../../../src/bin/commands/ErrorWithProgramHelp.ts"],"names":[],"mappings":";;AAAA,MAAa,oBAAqB,SAAQ,KAAK;CAC9C;AADD,oDACC","sourcesContent":["export class ErrorWithProgramHelp extends Error {\n}\n"]}

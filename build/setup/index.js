@@ -1,0 +1,13 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("../constants");
+const android_1 = __importDefault(require("./android"));
+const ios_1 = __importDefault(require("./ios"));
+exports.default = {
+    [constants_1.PLATFORMS.IOS]: ios_1.default,
+    [constants_1.PLATFORMS.ANDROID]: android_1.default,
+};
+//# sourceMappingURL=index.js.map
