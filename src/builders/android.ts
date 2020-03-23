@@ -27,7 +27,7 @@ export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
   const s3FileExtension = jobData.config.buildType === ANDROID_BUILD_TYPES.APP_BUNDLE ? 'aab' : 'apk';
   const s3Filename = `${jobData.experienceName}-${randomHex}-signed.${s3FileExtension}`;
   const s3FileKey = `android/${s3Filename}`;
-  const fakeUploadFilename = s3Filename.replace('/', '\\');
+  const fakeUploadFilename = s3Filename.replace('/', '__');
 
   const artifactUrl = await uploadBuildToS3({
     uploadPath: outputFilePath,
