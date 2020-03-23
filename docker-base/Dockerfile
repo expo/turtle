@@ -32,7 +32,7 @@ RUN dpkg --add-architecture i386 && \
   apt-get clean
 
 ENV NPM_CONFIG_LOGLEVEL warn
-ENV NODE_VERSION 8.12.0
+ENV NODE_VERSION 12.16.1
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
