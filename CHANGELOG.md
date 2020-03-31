@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace `/` with `__` in the artifact filename to fix a strange bug with selecting APK file in Android Studio.
 - Print currently using Java version if it's not 8.
 
+### Removed
+
+- Dropped support for SDK 33.
+
 ## [0.13.10] - 2020-03-09
 
 ### Added
