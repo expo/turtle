@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added iOS shell app for SDK 37.
+- Added Android shell app for SDK 37.
 
 ### Changed
 
