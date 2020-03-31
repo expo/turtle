@@ -115,7 +115,7 @@ commands:
         default: ios
       sdk_version:
         type: string
-        default: sdk37
+        default: sdk36
     steps:
       - restore_cache:
           key: "workingdir-v1-<< parameters.platform >>-<< parameters.sdk_version >>"
@@ -130,7 +130,7 @@ commands:
         default: ios
       sdk_version:
         type: string
-        default: sdk37
+        default: sdk36
     steps:
       - save_cache:
           key: "workingdir-v1-<< parameters.platform >>-<< parameters.sdk_version >>"
@@ -205,11 +205,11 @@ jobs:
       - run: yarn
       - save_yarn_cache
       - restore_workingdir_cache:
-          sdk_version: sdk37
+          sdk_version: sdk36
           platform: android
       - run:
           name: Fetch Android shell app
-          command: SDK_VERSION=sdk37 ./scripts/android/fetchRemoteAndroidTarball.sh
+          command: SDK_VERSION=sdk36 ./scripts/android/fetchRemoteAndroidTarball.sh
       - run:
           name: Run Android smoke tests
           command: |
@@ -217,7 +217,7 @@ jobs:
               --run "./scripts/tests/runAndroidSmokeTestsCI.sh"
       - save_workingdir_cache:
           workingdir: ~/turtle/workingdir
-          sdk_version: sdk37
+          sdk_version: sdk36
           platform: android
 
   android_staging_deploy:
