@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.14.1] - 2020-04-01
+
+### Changed
+
+- Updated iOS shell app for SDK 37 to remove unnecessary unimodules.
+
 ## [0.14.0] - 2020-03-31
 
 ### Added
