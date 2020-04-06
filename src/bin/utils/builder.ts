@@ -1,6 +1,6 @@
 import _url from 'url';
 
-import { getExpoSDKVersion } from '@expo/config';
+import { ConfigError, getExpoSDKVersion } from '@expo/config';
 import { ExponentTools } from '@expo/xdl';
 import _ from 'lodash';
 import uuid from 'uuid';
@@ -75,7 +75,7 @@ export function createBuilderAction({
       };
 
       const appJSON = await ProjectUtils.loadAppJSON(projectDirArg, cmd.config);
-      const sdkVersion = getExpoSDKVersion(projectAbsoluteDir, appJSON && appJSON.expo);
+      const sdkVersion = getExpoSDKVersionSafely(projectAbsoluteDir, appJSON);
       await setup(platform, sdkVersion);
       const credentials = await prepareCredentials(cmd);
       const rawJob = {
@@ -95,6 +95,21 @@ export function createBuilderAction({
       process.exit(1);
     }
   };
+}
+
+function getExpoSDKVersionSafely(projectDir: string, appJSON?: any) {
+  try {
+    return getExpoSDKVersion(projectDir, appJSON && appJSON.expo);
+  } catch (err) {
+    if (err instanceof ConfigError) {
+      throw new Error(
+        'Couldn\'t find the `expo` library in your project\'s dependencies.'
+        + ' Have you run \'yarn install\' or \'npm install\' for your project?',
+      );
+    } else {
+      throw err;
+    }
+  }
 }
 
 const buildJobObject = async (
