@@ -88,6 +88,9 @@ commands:
     steps:
       - restore_cache:
           key: "node-js-v1-darwin-archive-<< parameters.nodejs_version >>"
+      - run:
+          name: Uninstall yarn with brew
+          command: brew uninstall --force yarn
       - install_node_and_yarn:
           platform: darwin
           nodejs_version: "<< parameters.nodejs_version >>"
