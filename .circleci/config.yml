@@ -118,7 +118,7 @@ commands:
         default: sdk37
     steps:
       - restore_cache:
-          key: "workingdir-v1-<< parameters.platform >>-<< parameters.sdk_version >>"
+          key: "workingdir-v2-<< parameters.platform >>-<< parameters.sdk_version >>"
 
   save_workingdir_cache:
     parameters:
@@ -133,7 +133,7 @@ commands:
         default: sdk37
     steps:
       - save_cache:
-          key: "workingdir-v1-<< parameters.platform >>-<< parameters.sdk_version >>"
+          key: "workingdir-v2-<< parameters.platform >>-<< parameters.sdk_version >>"
           paths:
             - "<< parameters.workingdir >>/<< parameters.platform >>/<< parameters.sdk_version >>"
 
