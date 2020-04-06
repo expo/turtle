@@ -9,7 +9,7 @@ executors:
     working_directory: ~/turtle
   mac:
     macos: # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-      xcode: '10.1.0'
+      xcode: '11.1.0'
     working_directory: /Users/distiller/project
     shell: /bin/bash -leo pipefail
   android:
@@ -77,6 +77,49 @@ commands:
             EOF
             chmod +x /bin/rm
 
+  install_nodejs_mac:
+    parameters:
+      nodejs_version:
+        type: string
+        default: 12.16.1
+      yarn_version:
+        type: string
+        default: 1.22.0
+    steps:
+      - restore_cache:
+          key: "node-js-v1-darwin-archive-<< parameters.nodejs_version >>"
+      - run:
+          name: Uninstall yarn with brew
+          command: brew uninstall --force yarn
+      - install_node_and_yarn:
+          platform: darwin
+          nodejs_version: "<< parameters.nodejs_version >>"
+          yarn_version: "<< parameters.yarn_version >>"
+      - save_cache:
+          key: "node-js-v1-darwin-archive-<< parameters.nodejs_version >>"
+          paths:
+            - /private/tmp/nodejs.tar.xz
+
+  install_node_and_yarn:
+    parameters:
+      platform:
+        type: string
+      nodejs_version:
+        type: string
+      yarn_version:
+        type: string
+    steps:
+      - run:
+          name: Install node & yarn
+          command: |
+            NODEJS_ARCHIVE="/tmp/nodejs.tar.xz"
+            if [ ! -f "$NODEJS_ARCHIVE" ]; then
+              curl -o $NODEJS_ARCHIVE -SL "https://nodejs.org/dist/v<< parameters.nodejs_version >>/node-v<< parameters.nodejs_version >>-<< parameters.platform >>-x64.tar.xz"
+            fi
+            tar -xJf $NODEJS_ARCHIVE -C /usr/local --strip-components=1 --exclude CHANGELOG.md --exclude README.md --exclude LICENSE
+            ln -s /usr/local/bin/node /usr/local/bin/nodejs
+            npm install --global yarn@<< parameters.yarn_version >>
+
   decrypt_secrets_if_possible:
     steps:
       - run:
@@ -93,18 +136,24 @@ commands:
       workingdir:
         type: string
         default: .
+      platform:
+        type: string
+        default: linux
     steps:
       - restore_cache:
-          key: yarn-v1-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
+          key: yarn-v2-<< parameters.platform >>-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
 
   save_yarn_cache:
     parameters:
       workingdir:
         type: string
         default: .
+      platform:
+        type: string
+        default: linux
     steps:
       - save_cache:
-          key: yarn-v1-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
+          key: yarn-v2-<< parameters.platform >>-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
           paths:
             - ~/.cache/yarn # `yarn cache dir`
 
@@ -180,11 +229,14 @@ jobs:
     executor: mac
     steps:
       - install_nix
+      - install_nodejs_mac
       - setup
       - decrypt_secrets_if_possible
-      - restore_yarn_cache
+      - restore_yarn_cache:
+          platform: darwin
       - run: yarn
-      - save_yarn_cache
+      - save_yarn_cache:
+          platform: darwin
       - restore_workingdir_cache:
           sdk_version: sdk37
           platform: ios
