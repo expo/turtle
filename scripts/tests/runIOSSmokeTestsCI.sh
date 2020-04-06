@@ -23,6 +23,6 @@ export DATADOG_DISABLED="true"
 export TURTLE_SDK_VERSIONS_SECRET_TOKEN="noop"
 
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/../.. && pwd )"
-SDK_VERSION=sdk35 $ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
+$ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
 
 yarn test:smoke:ios
