@@ -77,6 +77,46 @@ commands:
             EOF
             chmod +x /bin/rm
 
+  install_nodejs_mac:
+    parameters:
+      nodejs_version:
+        type: string
+        default: 12.16.1
+      yarn_version:
+        type: string
+        default: 1.22.0
+    steps:
+      - restore_cache:
+          key: "node-js-v1-darwin-archive-<< parameters.nodejs_version >>"
+      - install_node_and_yarn:
+          platform: darwin
+          nodejs_version: "<< parameters.nodejs_version >>"
+          yarn_version: "<< parameters.yarn_version >>"
+      - save_cache:
+          key: "node-js-v1-darwin-archive-<< parameters.nodejs_version >>"
+          paths:
+            - /private/tmp/nodejs.tar.xz
+
+  install_node_and_yarn:
+    parameters:
+      platform:
+        type: string
+      nodejs_version:
+        type: string
+      yarn_version:
+        type: string
+    steps:
+      - run:
+          name: Install node & yarn
+          command: |
+            NODEJS_ARCHIVE="/tmp/nodejs.tar.xz"
+            if [ ! -f "$NODEJS_ARCHIVE" ]; then
+              curl -o $NODEJS_ARCHIVE -SL "https://nodejs.org/dist/v<< parameters.nodejs_version >>/node-v<< parameters.nodejs_version >>-<< parameters.platform >>-x64.tar.xz"
+            fi
+            tar -xJf $NODEJS_ARCHIVE -C /usr/local --strip-components=1 --exclude CHANGELOG.md --exclude README.md --exclude LICENSE
+            ln -s /usr/local/bin/node /usr/local/bin/nodejs
+            npm install --global yarn@<< parameters.yarn_version >>
+
   decrypt_secrets_if_possible:
     steps:
       - run:
@@ -180,6 +220,7 @@ jobs:
     executor: mac
     steps:
       - install_nix
+      - install_nodejs_mac
       - setup
       - decrypt_secrets_if_possible
       - restore_yarn_cache
