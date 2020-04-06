@@ -9,7 +9,7 @@ executors:
     working_directory: ~/turtle
   mac:
     macos: # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-      xcode: '10.1.0'
+      xcode: '11.1.0'
     working_directory: /Users/distiller/project
     shell: /bin/bash -leo pipefail
   android:
