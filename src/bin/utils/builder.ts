@@ -1,5 +1,6 @@
 import _url from 'url';
 
+import { getExpoSDKVersion } from '@expo/config';
 import { ExponentTools } from '@expo/xdl';
 import _ from 'lodash';
 import uuid from 'uuid';
@@ -63,21 +64,22 @@ export function createBuilderAction({
         }
       }
 
+      const projectAbsoluteDir = ProjectUtils.resolveAbsoluteDir(projectDirArg);
       const args = {
         releaseChannel: cmd.releaseChannel || 'default',
         buildType: cmd.type,
         buildMode: cmd.mode,
         username: userData.username || 'anonymous',
-        projectDir: ProjectUtils.resolveAbsoluteDir(projectDirArg),
+        projectDir: projectAbsoluteDir,
         publicUrl: cmd.publicUrl,
       };
 
       const appJSON = await ProjectUtils.loadAppJSON(projectDirArg, cmd.config);
-      const sdkVersion = _.get(appJSON, 'expo.sdkVersion');
+      const sdkVersion = getExpoSDKVersion(projectAbsoluteDir, appJSON && appJSON.expo);
       await setup(platform, sdkVersion);
       const credentials = await prepareCredentials(cmd);
       const rawJob = {
-        ...await buildJobObject(platform, appJSON, args, credentials),
+        ...await buildJobObject(platform, appJSON, args, credentials, sdkVersion),
         ...cmd.buildDir && { fakeUploadDir: ProjectUtils.resolveAbsoluteDir(cmd.buildDir) },
         ...cmd.output && { fakeUploadBuildPath: ProjectUtils.resolveAbsoluteDir(cmd.output) },
       };
@@ -100,6 +102,7 @@ const buildJobObject = async (
   appJSON: any,
   { releaseChannel, buildType, buildMode, username, publicUrl, projectDir }: any,
   credentials: any,
+  sdkVersion: string,
 ) => {
   const experienceName = `@${_.get(appJSON, 'expo.owner', username)}/${_.get(appJSON, 'expo.slug')}`;
   const job = {
@@ -115,14 +118,14 @@ const buildJobObject = async (
     id: uuid.v4(),
     platform,
     projectDir,
-    sdkVersion: _.get(appJSON, 'expo.sdkVersion'),
+    sdkVersion,
     experienceName,
     ...(credentials && { credentials }),
   };
   const url = getExperienceUrl(job.experienceName, job.config.publicUrl);
 
   const manifest = await ExponentTools.getManifestAsync(url, {
-    'Exponent-SDK-Version': _.get(appJSON, 'expo.sdkVersion'),
+    'Exponent-SDK-Version': sdkVersion,
     'Exponent-Platform': platform,
     'Expo-Release-Channel': releaseChannel,
     'Accept': 'application/expo+json,application/json',

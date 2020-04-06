@@ -102,6 +102,7 @@
     "typescript": "^3.4.2"
   },
   "dependencies": {
+    "@expo/config": "^3.0.5",
     "@expo/spawn-async": "^1.4.2",
     "@expo/xdl": "57.5.2",
     "@google-cloud/logging-bunyan": "^2.0.3",
