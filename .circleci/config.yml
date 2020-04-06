@@ -136,18 +136,24 @@ commands:
       workingdir:
         type: string
         default: .
+      platform:
+        type: string
+        default: linux
     steps:
       - restore_cache:
-          key: yarn-v1-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
+          key: yarn-v2-<< parameters.platform >>-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
 
   save_yarn_cache:
     parameters:
       workingdir:
         type: string
         default: .
+      platform:
+        type: string
+        default: linux
     steps:
       - save_cache:
-          key: yarn-v1-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
+          key: yarn-v2-<< parameters.platform >>-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
           paths:
             - ~/.cache/yarn # `yarn cache dir`
 
@@ -226,9 +232,11 @@ jobs:
       - install_nodejs_mac
       - setup
       - decrypt_secrets_if_possible
-      - restore_yarn_cache
+      - restore_yarn_cache:
+          platform: darwin
       - run: yarn
-      - save_yarn_cache
+      - save_yarn_cache:
+          platform: darwin
       - restore_workingdir_cache:
           sdk_version: sdk37
           platform: ios
