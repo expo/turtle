@@ -5,11 +5,11 @@ import take from 'lodash/take';
 import logger from 'turtle/logger';
 import { sendMetric } from 'turtle/metrics/datadog';
 import { getReplicaCount } from 'turtle/utils/metadata';
-import { getLabeledConfiguration, TurtleModeLabels } from 'turtle/utils/priorities';
+import { getLabeledConfiguration, TurtleMode } from 'turtle/utils/priorities';
 
 const createMetricName = () => `turtle.replicaCount`;
-const createModeMetricName = (mode: TurtleModeLabels) => `${createMetricName()}.${mode}`;
-const createModeTag = (mode: TurtleModeLabels) => `mode:${mode}`;
+const createModeMetricName = (mode: TurtleMode) => `${createMetricName()}.${mode}`;
+const createModeTag = (mode: TurtleMode) => `mode:${mode}`;
 
 export default async function sendConfigToDatadog() {
   let configuration;
@@ -30,28 +30,28 @@ export default async function sendConfigToDatadog() {
 
   const metricName = createMetricName();
 
-  const normalReplicaCount = replicaCounts[TurtleModeLabels.Normal] || 0;
-  const highReplicaCount = replicaCounts[TurtleModeLabels.High] || 0;
-  const highOnlyReplicaCount = replicaCounts[TurtleModeLabels.HighOnly] || 0;
+  const normalReplicaCount = replicaCounts[TurtleMode.Normal] || 0;
+  const highReplicaCount = replicaCounts[TurtleMode.High] || 0;
+  const highOnlyReplicaCount = replicaCounts[TurtleMode.HighOnly] || 0;
 
-  const normalTag = createModeTag(TurtleModeLabels.Normal);
-  const normalMetricName = createModeMetricName(TurtleModeLabels.Normal);
+  const normalTag = createModeTag(TurtleMode.Normal);
+  const normalMetricName = createModeMetricName(TurtleMode.Normal);
   logger.debug(
     `Sending ${metricName}=${normalReplicaCount} (${normalTag}), ${normalMetricName}=${normalReplicaCount} to Datadog`,
   );
   await sendMetric(metricName, normalReplicaCount, [normalTag]);
   await sendMetric(normalMetricName, normalReplicaCount);
 
-  const highTag = createModeTag(TurtleModeLabels.High);
-  const highMetricName = createModeMetricName(TurtleModeLabels.High);
+  const highTag = createModeTag(TurtleMode.High);
+  const highMetricName = createModeMetricName(TurtleMode.High);
   logger.debug(
     `Sending ${metricName}=${highReplicaCount} (${highTag}), ${highMetricName}=${highReplicaCount} to Datadog`,
   );
   await sendMetric(metricName, highReplicaCount, [highTag]);
   await sendMetric(highMetricName, highReplicaCount);
 
-  const highOnlyTag = createModeTag(TurtleModeLabels.HighOnly);
-  const highOnlyMetricName = createModeMetricName(TurtleModeLabels.HighOnly);
+  const highOnlyTag = createModeTag(TurtleMode.HighOnly);
+  const highOnlyMetricName = createModeMetricName(TurtleMode.HighOnly);
   logger.debug(
     `Sending ${metricName}=${highOnlyReplicaCount} (${highOnlyTag}),`
     + ` ${highOnlyMetricName}=${highOnlyReplicaCount} to Datadog`,

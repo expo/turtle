@@ -10,7 +10,7 @@ import logger from 'turtle/logger';
 import * as buildDurationMetric from 'turtle/metrics/buildDuration';
 import * as buildStatusMetric from 'turtle/metrics/buildStatus';
 import { checkShouldExit, setCurrentJobId, turtleVersion } from 'turtle/turtleContext';
-import { getPriorities } from 'turtle/utils/priorities';
+import { getPriorities, labelConfiguration, TurtleMode } from 'turtle/utils/priorities';
 import * as redis from 'turtle/utils/redis';
 import { sanitizeJob } from 'turtle/validator';
 
@@ -22,8 +22,8 @@ function _maybeExit() {
 }
 
 export async function doJob() {
-  const jobData = await getJob();
-  await processJob(jobData);
+  const { job, turtleMode } = await getJob();
+  await processJob(job, turtleMode);
   _maybeExit();
 }
 
@@ -34,6 +34,7 @@ export async function getJob() {
     try {
       let job = null;
       const priorities = await getPriorities();
+      const turtleMode = labelConfiguration(priorities);
       for (const priority of priorities) {
         job = await sqs.receiveMessage(priority);
         _maybeExit();
@@ -44,7 +45,7 @@ export async function getJob() {
       }
       _maybeExit();
       if (job !== null) {
-        return job;
+        return { job, turtleMode };
       }
     } catch (err) {
       logger.error({ err }, 'Error at receiving messages');
@@ -52,7 +53,7 @@ export async function getJob() {
   }
 }
 
-async function processJob(jobData: any) {
+async function processJob(jobData: any, turtleMode: TurtleMode) {
   const receiptHandle = jobData.ReceiptHandle;
   const { priority } = jobData;
 
@@ -92,7 +93,7 @@ async function processJob(jobData: any) {
       let buildFailed = false;
       const buildType = _.get(job, 'config.buildType', 'default');
       try {
-        const status = await build(job);
+        const status = await build(job, turtleMode);
         buildStatusMetric.add(buildType, priority, status);
         buildFailed = !status;
       } catch (err) {
@@ -137,7 +138,7 @@ function failAfterMaxJobTime(priority: string, receiptHandle: string, job: any) 
   }, config.builder.maxJobTimeMs);
 }
 
-async function build(job: any) {
+async function build(job: any, turtleMode: TurtleMode) {
   const startTimestamp = Date.now();
   const s3Url = await logger.initForJob(job);
   const calculateBuildDuration = () => Math.ceil((Date.now() - startTimestamp) / 1000);
@@ -146,6 +147,7 @@ async function build(job: any) {
     await sqs.sendMessage(job.id, BUILD.JOB_STATES.IN_PROGRESS, {
       logUrl: s3Url,
       logFormat: 'json',
+      turtleMode,
     });
     const result = await (builders as any)[job.platform](job);
     const buildDuration = calculateBuildDuration();
