@@ -14,7 +14,7 @@ PLATFORM=$1
 yarn
 yarn run build
 if [ "$PLATFORM" = "android" ]; then
-  $ROOT_DIR/scripts/android/fetchRemoteAndroidTarball.sh
+  echo "shellapps will be fetched inside Dockerfile"
 elif [ "$PLATFORM" = "ios" ]; then
   $ROOT_DIR/scripts/ios/fetchRemoteIosTarball.sh
 fi
