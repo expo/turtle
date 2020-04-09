@@ -3,26 +3,21 @@ FROM gcr.io/exponentjs/turtle-android-base:0.4.0
 
 ADD . /app/turtle
 
-RUN mv /app/turtle/workingdir /app && \
+WORKDIR /app/turtle
+
+RUN ./scripts/fetchRemoteTarballs.sh android
+
+RUN ln -s /app/turtle/workingdir /app/workingdir && \
     for SDK_VERSION in `ls /app/workingdir/android/`; do \
       echo "preparing $SDK_VERSION shell app" && \
       cd /app/workingdir/android/$SDK_VERSION && \
-      if [ -f universe-package.json ]; then \
-      mv package.json exponent-package.json && \
-      mv universe-package.json package.json && \
+      mv packages non-workspace-packages && \
       yarn install && \
-      mv package.json universe-package.json && \
-      mv exponent-package.json package.json; \
-      else \
-      yarn install; \
-      fi \
-    ; done && \
-    mv /app/workingdir /app/turtle
+      mv non-workspace-packages packages ; \
+    done
 
 ENV NODE_ENV "production"
 ENV TURTLE_WORKING_DIR_PATH /app/turtle/workingdir/
-
-WORKDIR /app/turtle
 
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
