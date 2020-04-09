@@ -11,9 +11,9 @@ RUN ln -s /app/turtle/workingdir /app/workingdir && \
     for SDK_VERSION in `ls /app/workingdir/android/`; do \
       echo "preparing $SDK_VERSION shell app" && \
       cd /app/workingdir/android/$SDK_VERSION && \
-      mv packages packages-non-worksapce && \
+      mv packages non-workspace-packages && \
       yarn install && \
-      mv packages-non-worksapce packages ; \
+      mv non-workspace-packages packages ; \
     done
 
 ENV NODE_ENV "production"
