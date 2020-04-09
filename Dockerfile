@@ -12,7 +12,7 @@ RUN ln -s /app/turtle/workingdir /app/workingdir && \
       echo "preparing $SDK_VERSION shell app" && \
       cd /app/workingdir/android/$SDK_VERSION && \
       mv packages non-workspace-packages && \
-      yarn install && \
+      yarn install --ignore-scripts && \
       mv non-workspace-packages packages ; \
     done
 
