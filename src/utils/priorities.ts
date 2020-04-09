@@ -9,7 +9,7 @@ import { getRedisClient, RedisClient } from 'turtle/utils/redis';
 export const NORMAL = 'normalPriority';
 export const HIGH = 'highPriority';
 
-export enum TurtleModeLabels {
+export enum TurtleMode {
   Normal = 'normal',
   High = 'high',
   HighOnly = 'highOnly',
@@ -100,13 +100,15 @@ async function getConfiguration(currentRedisClient: any) {
 
 export async function getLabeledConfiguration(currentRedisClient?: any) {
   const configuration = await getConfiguration(currentRedisClient);
-  return configuration.map((i: string[]) => {
-    if (isEqual(i, NORMAL_CONFIGURATION)) {
-      return TurtleModeLabels.Normal;
-    } else if (isEqual(i, HIGH_CONFIGURATION)) {
-      return TurtleModeLabels.High;
-    } else {
-      return TurtleModeLabels.HighOnly;
-    }
-  });
+  return configuration.map((i: string[]) => labelConfiguration(i));
+}
+
+export function labelConfiguration(configuration: string[]): TurtleMode {
+  if (isEqual(configuration, NORMAL_CONFIGURATION)) {
+    return TurtleMode.Normal;
+  } else if (isEqual(configuration, HIGH_CONFIGURATION)) {
+    return TurtleMode.High;
+  } else {
+    return TurtleMode.HighOnly;
+  }
 }
