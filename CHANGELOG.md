@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.14.6] - 2020-04-09
+
 ### Changed
 
 - Updated @expo/xdl to 57.8.17 (fixed downloading assets smaller than 10 bytes).
