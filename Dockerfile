@@ -12,7 +12,9 @@ RUN ln -s /app/turtle/workingdir /app/workingdir && \
       echo "preparing $SDK_VERSION shell app" && \
       cd /app/workingdir/android/$SDK_VERSION && \
       mv packages non-workspace-packages && \
-      yarn install --ignore-scripts && \
+      # --prod requires --ignore-scripts (otherwise
+      # expo-yarn-workspaces errors as missing)
+      yarn install --ignore-scripts --prod && \
       mv non-workspace-packages packages ; \
     done
 
