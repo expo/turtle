@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Turtle no longer installs all dependencies of shell apps projects — only the production dependencies are installed now.
+
 ## [0.14.6] - 2020-04-09
 
 ### Changed
