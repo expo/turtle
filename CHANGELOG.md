@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Turtle no longer installs all dependencies of shell apps projects — only the production dependencies are installed now.
+- Updated `@expo/xdl` to 57.8.25 (fixed unintuitive `google-services.json` handling for SDK37+, [PR](https://github.com/expo/expo-cli/pull/1897)).
 
 ## [0.14.6] - 2020-04-09
 
