@@ -101,7 +101,9 @@ async function _shellAppPostDownloadAction(sdkVersion: string, workingdir: strin
 async function _installNodeModules(cwd: string) {
   l.info(`installing dependencies in ${cwd} directory...`);
   const command = await _shouldUseYarnOrNpm();
-  await ExponentTools.spawnAsyncThrowError(command, ['install', '--production'], {
+  // Keep in sync with /Dockerfile
+  // --prod requires --ignore-scripts (otherwise expo-yarn-workspaces errors as missing)
+  await ExponentTools.spawnAsyncThrowError(command, ['install', '--ignore-scripts', '--production'], {
     pipeToLogger: true,
     loggerFields: LOGGER_FIELDS,
     cwd,
