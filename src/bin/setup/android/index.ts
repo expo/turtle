@@ -101,7 +101,7 @@ async function _shellAppPostDownloadAction(sdkVersion: string, workingdir: strin
 async function _installNodeModules(cwd: string) {
   l.info(`installing dependencies in ${cwd} directory...`);
   const command = await _shouldUseYarnOrNpm();
-  await ExponentTools.spawnAsyncThrowError(command, ['install', '--production'], {
+  await ExponentTools.spawnAsyncThrowError(command, ['install'], {
     pipeToLogger: true,
     loggerFields: LOGGER_FIELDS,
     cwd,
