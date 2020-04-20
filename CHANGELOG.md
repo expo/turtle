@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.14.8] - 2020-04-20
+
 ### Changed
 
 - Updated `@expo/xdl` to 57.8.29 (removed call to `check-dynamic-macros-android.sh`, [PR](https://github.com/expo/expo-cli/pull/1933)).
