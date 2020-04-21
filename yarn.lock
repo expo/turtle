@@ -1470,10 +1470,10 @@
   resolved "https://registry.yarnpkg.com/@expo/traveling-fastlane-darwin/-/traveling-fastlane-darwin-1.11.4.tgz#bc83ea2a3c8fa2cb1c7daedf1514c5839b4f1f45"
   integrity sha512-1rNq4yMHGfmYhUJuBH5lKpmHVAa5QjgXbv3MoMqsFrlnwzDaq4qHSs6s/RWHw+gmk5lASEhmW32ALArAxX9ceA==
 
-"@expo/webpack-config@0.11.25":
-  version "0.11.25"
-  resolved "https://registry.yarnpkg.com/@expo/webpack-config/-/webpack-config-0.11.25.tgz#0bba187a324caa164ff5f4ec3b974be0cfec7166"
-  integrity sha512-Tr8i7qKE22NVhu2s7cZrl5FRyiA18eKUyoWu1j4nAAo5rT2ANpE7nUaDfeGdTrFSPxti49byIFB2eFBS/bqHIQ==
+"@expo/webpack-config@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@expo/webpack-config/-/webpack-config-0.12.0.tgz#c45abe178695105ce889345bb3de8f55b6f82dbb"
+  integrity sha512-ZrMb9+LicCvHbT4KJOHpNDEb/UUJHeJ6PdJ8Y6iXVMrjqb/Vu/YbRT+kT7nCxoF0jiOmkvahi1F40rRadPZ8VQ==
   dependencies:
     "@babel/core" "7.9.0"
     "@babel/runtime" "7.9.0"
@@ -1507,10 +1507,10 @@
     worker-loader "^2.0.0"
     yup "^0.27.0"
 
-"@expo/xdl@57.8.29":
-  version "57.8.29"
-  resolved "https://registry.yarnpkg.com/@expo/xdl/-/xdl-57.8.29.tgz#cb32e4df8b56da05d97781d125b13776d76dcc65"
-  integrity sha512-Yvh1BO/LWoFO4mAVgvCttzSQp8FWTG6QEXUGqErcJGfV+tTJ1jTunSwXv5sPK3lYenQt459ChRLwJ6WPycMNVw==
+"@expo/xdl@57.8.30":
+  version "57.8.30"
+  resolved "https://registry.yarnpkg.com/@expo/xdl/-/xdl-57.8.30.tgz#7e042be6e6a30f69ae343449b89d483bae359b5c"
+  integrity sha512-R4+5y7zYJMxYuP9s9y+qN8a89NJXGQWXF+8nNxlNrSFk+UNu3U1t7yx8d4S3yI4QZKeHVSI6HJLvkvzliO2VEw==
   dependencies:
     "@expo/bunyan" "3.0.2"
     "@expo/config" "3.1.2"
@@ -1521,7 +1521,7 @@
     "@expo/plist" "0.0.3"
     "@expo/schemer" "1.3.9"
     "@expo/spawn-async" "1.5.0"
-    "@expo/webpack-config" "0.11.25"
+    "@expo/webpack-config" "0.12.0"
     analytics-node "3.3.0"
     axios "0.19.0"
     boxen "4.1.0"
