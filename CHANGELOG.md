@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated `@expo/xdl` to 57.8.30 (scoped the build command so it only builds the `:app` Android sub-project and not all the sub-projects available, [PR](https://github.com/expo/expo-cli/pull/1937)).
+
 ## [0.14.8] - 2020-04-20
 
 ### Changed
