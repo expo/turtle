@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.14.12] - 2020-05-14
+
 ### Changed
 
 - Update iOS custom client shell app with various fixes
