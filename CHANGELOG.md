@@ -7,23 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated `@expo/xdl` to 57.9.13 (added \*.bak files clean-up when building .ipa).
+
 ## [0.14.12] - 2020-05-14
 
 ### Changed
 
-- Update iOS custom client shell app with various fixes
+- Update iOS custom client shell app with various fixes.
 
 ## [0.14.11] - 2020-05-04
 
 ### Changed
 
-- Update SDK 37 iOS shell app with various fixes
+- Update SDK 37 iOS shell app with various fixes.
 
 ## [0.14.10] - 2020-05-01
 
 ### Added
 
-- support for "android.enableDangerousExperimentalLeanBuilds" in app.json
+- support for "android.enableDangerousExperimentalLeanBuilds" in app.json.
 
 ## [0.14.9] - 2020-04-21
 

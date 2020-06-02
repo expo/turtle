@@ -73,6 +73,7 @@
     "@types/jest": "^23.3.9",
     "@types/joi": "^13.4.3",
     "@types/lodash": "^4.14.129",
+    "@types/node-forge": "^0.8.6",
     "@types/npm-package-arg": "^6.1.0",
     "@types/progress": "^2.0.1",
     "@types/raven": "^2.5.1",
@@ -104,7 +105,7 @@
   "dependencies": {
     "@expo/config": "^3.0.5",
     "@expo/spawn-async": "^1.4.2",
-    "@expo/xdl": "57.8.30",
+    "@expo/xdl": "^57.9.13",
     "@google-cloud/logging-bunyan": "^2.0.3",
     "async-retry": "^1.2.1",
     "aws-sdk": "^2.226.1",
