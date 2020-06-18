@@ -9,7 +9,7 @@ executors:
     working_directory: ~/turtle
   mac:
     macos: # https://circleci.com/docs/2.0/testing-ios/#supported-xcode-versions
-      xcode: '11.1.0'
+      xcode: "11.1.0"
     working_directory: /Users/distiller/project
     shell: /bin/bash -leo pipefail
   android:
@@ -57,8 +57,8 @@ commands:
       - run:
           name: Configure aws-cli
           command: |
-              aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-              aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
   setup_nix:
     steps:
@@ -141,7 +141,7 @@ commands:
         default: linux
     steps:
       - restore_cache:
-          key: yarn-v2-<< parameters.platform >>-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
+          key: yarn-v3-<< parameters.platform >>-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
 
   save_yarn_cache:
     parameters:
@@ -153,7 +153,7 @@ commands:
         default: linux
     steps:
       - save_cache:
-          key: yarn-v2-<< parameters.platform >>-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
+          key: yarn-v3-<< parameters.platform >>-{{ checksum "<< parameters.workingdir >>/yarn.lock" }}
           paths:
             - ~/.cache/yarn # `yarn cache dir`
 
