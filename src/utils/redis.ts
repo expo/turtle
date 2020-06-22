@@ -12,18 +12,27 @@ export enum RedisClient {
   Configuration = 'REDIS_CLIENT_CONFIGURATION',
 }
 
-interface IClientConfig { [key: string]: string; }
+interface IClientConfig {
+  [key: string]: {
+    url: string;
+    caCertificate?: string;
+  };
+}
 
-const clientToUrl: IClientConfig = {
-  [RedisClient.Subscriber]: config.redis.url,
-  [RedisClient.Default]: config.redis.url,
-  [RedisClient.Configuration]: config.redis.configUrl,
+const clientConfigs: IClientConfig = {
+  [RedisClient.Subscriber]: config.redis.main,
+  [RedisClient.Default]: config.redis.main,
+  [RedisClient.Configuration]: config.redis.turtle,
 };
 
 export function connect(timeoutMs: number, type: string): Promise<any> {
   return new Promise((resolve, reject) => {
-    const redisClient = new Redis(clientToUrl[type], {
+    const { url, caCertificate } = clientConfigs[type];
+    const redisClient = new Redis(url, {
       maxRetriesPerRequest: 2,
+      ...caCertificate && {
+        tls: { ca: caCertificate },
+      },
     });
     const timer = setTimeout(() => reject(new Error('Timeout at connecting to Redis')), timeoutMs);
     redisClient.on('ready', () => {
