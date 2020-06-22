@@ -152,6 +152,8 @@ spec:
             value: '-Xms2048m -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC'
           - name: GRADLE_OPTS
             value: '-Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xms2048m -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC"'
+          - name: REDIS_CA_CERTIFICATE
+            value: '/var/run/config/redislabs-tls/redislabs_ca.pem'
         resources:
           requests:
             memory: "8192Mi"

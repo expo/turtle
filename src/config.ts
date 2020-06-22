@@ -1,3 +1,4 @@
+import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
@@ -44,8 +45,17 @@ export default {
     intervalMs: env('DATADOG_INTERVAL_MS', 5 * 60 * 1000),
   },
   redis: {
-    url: env('REDIS_URL'),
-    configUrl: env('REDIS_CONFIG_URL'),
+    main: {
+      url: env('REDIS_URL'),
+      caCertificate: envTransform(
+        'REDIS_CA_CERTIFICATE',
+        null,
+        (caCertificate: string) => caCertificate && fs.readFileSync(caCertificate),
+      ),
+    },
+    turtle: {
+      url: env('REDIS_CONFIG_URL'),
+    },
   },
   logger: {
     level: env('LOGGER_LEVEL', 'info'),
@@ -81,7 +91,7 @@ export default {
     androidDependenciesDir: env(
       'TURTLE_ANDROID_DEPENDENCIES_DIR',
       path.join(os.homedir(), '.turtle/androidDependencies'),
-      ),
+    ),
     tempS3LogsDir: env('TURTLE_TEMP_S3_LOGS_DIR', '/tmp/logs'),
     fakeUploadDir: envOptional('TURTLE_FAKE_UPLOAD_DIR'),
     temporaryFilesRoot: env(
