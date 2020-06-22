@@ -4,7 +4,6 @@ declare module 'bunyan-sentry-stream';
 declare module 'bunyan-debug-stream';
 declare module 'copy';
 declare module 'dogapi';
-declare module 'ioredis';
 declare module 'is-semver';
 declare module 'request-progress';
 declare module '@expo/xdl';
