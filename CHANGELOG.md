@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.15.1] - 2020-06-22
+
+### Changed
+
+- Configure Turtle to use the Redis CA certificate.
+
+### Fixed
+
+- Fix announcing supported SDK versions.
+
 ## [0.15.0] - 2020-06-02
 
 ### Changed
