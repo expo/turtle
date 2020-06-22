@@ -38,9 +38,9 @@ async function setTurtleVersion(version: string) {
 function resolveWWWEndpoint() {
   const currentEnv = config.deploymentEnv;
   if (currentEnv === 'production') {
-    return 'https://expo.io';
+    return 'https://exp.host';
   } else if (currentEnv === 'staging') {
-    return 'https://staging.expo.io';
+    return 'https://staging.exp.host';
   } else {
     return 'http://127.0.0.1:3000';
   }
