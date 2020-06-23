@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added iOS shell app for Expo SDK38.
+- Added Android shell app for SDK 38.
 
 ## [0.15.1] - 2020-06-22
 
