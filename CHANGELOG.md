@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Added `--allow-non-https-public-url` to allow bypass of protocol validation on `--public-url`.
+
 ## [0.16.0] - 2020-06-25
 
 ### Added
