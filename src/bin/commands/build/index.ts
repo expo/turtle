@@ -15,7 +15,8 @@ function setCommonCommandOptions(cmd: any) {
     .option('-o --output <output-file-path>', 'output file path')
     .option(
       '--public-url <url>',
-      'the URL of an externally hosted manifest (for self-hosted apps), only HTTPS URLs are supported unless --allow-non-https-public-url is also set!',
+      'the URL of an externally hosted manifest (for self-hosted apps), only HTTPS URLs are supported unless '
+      + '--allow-non-https-public-url is also set!',
     )
     .option(
       '--allow-non-https-public-url',
