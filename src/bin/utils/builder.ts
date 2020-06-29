@@ -57,7 +57,7 @@ export function createBuilderAction({
         );
       }
 
-      if (cmd.publicUrl) {
+      if (cmd.publicUrl && !cmd.allowNonHttpsPublicUrl) {
         const parsedPublicUrl = _url.parse(cmd.publicUrl);
         if (parsedPublicUrl.protocol !== 'https:') {
           throw new ErrorWithCommandHelp('--public-url is invalid - only HTTPS urls are supported');
