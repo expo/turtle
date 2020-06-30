@@ -19,10 +19,10 @@ export default function calculateStatistics(metrics: IMetric[]) {
       });
     }
 
-    result.StatisticValues.Maximum = Math.max(result.StatisticValues.Maximum, i.Value);
-    result.StatisticValues.Minimum = Math.min(result.StatisticValues.Minimum, i.Value);
-    result.StatisticValues.SampleCount += 1;
-    result.StatisticValues.Sum += i.Value;
+    result!.StatisticValues.Maximum = Math.max(result!.StatisticValues.Maximum, i.Value);
+    result!.StatisticValues.Minimum = Math.min(result!.StatisticValues.Minimum, i.Value);
+    result!.StatisticValues.SampleCount += 1;
+    result!.StatisticValues.Sum += i.Value;
     return result;
   }, null);
   return [reduced];

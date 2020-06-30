@@ -1,6 +1,6 @@
 import _url from 'url';
 
-import { ConfigError, getExpoSDKVersion } from '@expo/config';
+import { ConfigError, getExpoSDKVersion, ProjectConfig } from '@expo/config';
 import { ExponentTools } from '@expo/xdl';
 import _ from 'lodash';
 import uuid from 'uuid';
@@ -74,12 +74,12 @@ export function createBuilderAction({
         publicUrl: cmd.publicUrl,
       };
 
-      const appJSON = await ProjectUtils.loadAppJSON(projectDirArg, cmd.config);
-      const sdkVersion = getExpoSDKVersionSafely(projectAbsoluteDir, appJSON);
+      const projectConfig = await ProjectUtils.getConfig(projectDirArg, cmd.config);
+      const sdkVersion = getExpoSDKVersionSafely(projectAbsoluteDir, projectConfig);
       await setup(platform, sdkVersion);
       const credentials = await prepareCredentials(cmd);
       const rawJob = {
-        ...await buildJobObject(platform, appJSON, args, credentials, sdkVersion),
+        ...await buildJobObject(platform, projectConfig, args, credentials, sdkVersion),
         ...cmd.buildDir && { fakeUploadDir: ProjectUtils.resolveAbsoluteDir(cmd.buildDir) },
         ...cmd.output && { fakeUploadBuildPath: ProjectUtils.resolveAbsoluteDir(cmd.output) },
       };
@@ -97,9 +97,9 @@ export function createBuilderAction({
   };
 }
 
-function getExpoSDKVersionSafely(projectDir: string, appJSON?: any) {
+function getExpoSDKVersionSafely(projectDir: string, projectConfig: ProjectConfig) {
   try {
-    return getExpoSDKVersion(projectDir, appJSON && appJSON.expo);
+    return getExpoSDKVersion(projectDir, projectConfig.exp);
   } catch (err) {
     if (err instanceof ConfigError) {
       throw new Error(
@@ -114,20 +114,21 @@ function getExpoSDKVersionSafely(projectDir: string, appJSON?: any) {
 
 const buildJobObject = async (
   platform: 'android' | 'ios',
-  appJSON: any,
+  projectConfig: ProjectConfig,
   { releaseChannel, buildType, buildMode, username, publicUrl, projectDir }: any,
   credentials: any,
   sdkVersion: string,
 ) => {
-  const experienceName = `@${_.get(appJSON, 'expo.owner', username)}/${_.get(appJSON, 'expo.slug')}`;
+  const owner = projectConfig.exp.owner || username;
+  const experienceName = `@${owner}/${projectConfig.exp.slug}`;
   const job = {
     config: {
-      ..._.get(appJSON, `expo.${platform}.config`, {}),
+      ...(projectConfig.exp?.[platform]?.config || {}),
       buildType,
       ...(platform === 'android' ? { buildMode } : {}),
       releaseChannel,
-      ...(platform === 'ios' ? { bundleIdentifier: _.get(appJSON, 'expo.ios.bundleIdentifier') } : {}),
-      ...(platform === 'android' ? { androidPackage: _.get(appJSON, 'expo.android.package') } : {}),
+      ...(platform === 'ios' ? { bundleIdentifier: projectConfig.exp?.ios?.bundleIdentifier } : {}),
+      ...(platform === 'android' ? { androidPackage: projectConfig.exp?.android?.package } : {}),
       publicUrl,
     },
     id: uuid.v4(),

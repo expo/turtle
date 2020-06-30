@@ -136,7 +136,7 @@ function _addEmptyMetrics(metrics: IMetric[]) {
       acc.add(i.MetricName);
     }
     return acc;
-  }, new Set());
+  }, new Set<string>());
 
   const nonEmptyMetrics = _.omitBy(state.registeredMetrics, ({ addEmpty }) => !addEmpty);
   const toAdd = _.difference(Object.keys(nonEmptyMetrics), Array.from(seenMetrics));

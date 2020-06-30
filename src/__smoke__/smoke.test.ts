@@ -17,8 +17,7 @@ jest.mock('../builders/utils/uploader.ts', () => ({
 async function performSmokeTest(recording: string) {
   jest.setTimeout(60 * 60 * 1000);
 
-  // @ts-ignore
-  const fixtureExists = await fs.exists(recording);
+  const fixtureExists = await fs.pathExists(recording);
   if (fixtureExists) {
     logger.info('Fixture exists, test will use existing one.');
 

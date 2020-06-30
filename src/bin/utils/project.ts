@@ -1,20 +1,18 @@
-import fs from 'fs-extra';
 import path from 'path';
 
-export async function loadAppJSON(projectDirArg: string, config: string | null) {
-  let appJSONPath;
+import { getConfig as getProjectConfig, setCustomConfigPath } from '@expo/config';
+import fs from 'fs-extra';
+
+export async function getConfig(projectDir: string, config: string | null) {
+  projectDir = resolveAbsoluteDir(projectDir);
   if (config) {
-    appJSONPath = resolveAbsoluteDir(config);
-  } else {
-    const projectDir = resolveAbsoluteDir(projectDirArg);
-    appJSONPath = path.join(projectDir, 'app.json');
+    const pathToConfig = path.resolve(process.cwd(), config);
+    if (!await fs.pathExists(pathToConfig)) {
+      throw new Error(`File at provided config path does not exist: ${pathToConfig}`);
+    }
+    setCustomConfigPath(projectDir, pathToConfig);
   }
-  const appJSONExists = await fs.pathExists(appJSONPath);
-  if (!appJSONExists) {
-    throw new Error(`Couldn't find app.json.`);
-  } else {
-    return require(appJSONPath);
-  }
+  return await getProjectConfig(projectDir, {});
 }
 
 export const resolveAbsoluteDir = (dir: string) => {
