@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added `--allow-non-https-public-url` to allow bypass of protocol validation on `--public-url`.
+- Added support for dynamic configs (`app.config.ts`, `app.config.js`).
 
 ## [0.16.0] - 2020-06-25
 
