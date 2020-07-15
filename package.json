@@ -106,7 +106,7 @@
   "dependencies": {
     "@expo/config": "^3.2.14",
     "@expo/spawn-async": "^1.4.2",
-    "@expo/xdl": "^57.9.13",
+    "@expo/xdl": "57.9.25-alpha.0",
     "@google-cloud/logging-bunyan": "^2.0.3",
     "async-retry": "^1.2.1",
     "aws-sdk": "^2.226.1",

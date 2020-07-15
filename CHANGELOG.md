@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Gradle Wrapper doesn't print when dots when the appropriate version of Gradle is being downloaded.
+
+## [0.16.2] - 2020-07-01
+
 ### Added
 
 - Added `--allow-non-https-public-url` to allow bypass of protocol validation on `--public-url`.
