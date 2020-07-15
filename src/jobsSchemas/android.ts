@@ -15,6 +15,7 @@ export default baseJobSchema.concat(
     config: Joi.object().keys({
       buildMode: Joi.string().valid(Object.values(ANDROID_BUILD_MODES)).default(ANDROID_BUILD_MODES.RELEASE),
       buildType: Joi.string().valid(Object.values(ANDROID_BUILD_TYPES)).default(ANDROID_BUILD_TYPES.APK),
+      gradleArgs: Joi.array().items(Joi.string()),
     }),
   }),
 );

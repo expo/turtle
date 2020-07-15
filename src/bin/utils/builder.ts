@@ -79,7 +79,7 @@ export function createBuilderAction({
       await setup(platform, sdkVersion);
       const credentials = await prepareCredentials(cmd);
       const rawJob = {
-        ...await buildJobObject(platform, projectConfig, args, credentials, sdkVersion),
+        ...await buildJobObject(cmd, platform, projectConfig, args, credentials, sdkVersion),
         ...cmd.buildDir && { fakeUploadDir: ProjectUtils.resolveAbsoluteDir(cmd.buildDir) },
         ...cmd.output && { fakeUploadBuildPath: ProjectUtils.resolveAbsoluteDir(cmd.output) },
       };
@@ -113,6 +113,7 @@ function getExpoSDKVersionSafely(projectDir: string, projectConfig: ProjectConfi
 }
 
 const buildJobObject = async (
+  cmd: any,
   platform: 'android' | 'ios',
   projectConfig: ProjectConfig,
   { releaseChannel, buildType, buildMode, username, publicUrl, projectDir }: any,
@@ -125,11 +126,12 @@ const buildJobObject = async (
     config: {
       ...(projectConfig.exp?.[platform]?.config || {}),
       buildType,
-      ...(platform === 'android' ? { buildMode } : {}),
       releaseChannel,
-      ...(platform === 'ios' ? { bundleIdentifier: projectConfig.exp?.ios?.bundleIdentifier } : {}),
-      ...(platform === 'android' ? { androidPackage: projectConfig.exp?.android?.package } : {}),
       publicUrl,
+      ...(platform === 'android' && cmd.gradleArgs ? { gradleArgs: cmd.gradleArgs.split(' ') } : {}),
+      ...(platform === 'android' ? { buildMode } : {}),
+      ...(platform === 'android' ? { androidPackage: projectConfig.exp?.android?.package } : {}),
+      ...(platform === 'ios' ? { bundleIdentifier: projectConfig.exp?.ios?.bundleIdentifier } : {}),
     },
     id: uuid.v4(),
     platform,

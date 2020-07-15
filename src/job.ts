@@ -15,6 +15,7 @@ export interface IJob {
     // android
     androidPackage?: string;
     buildMode?: ANDROID_BUILD_MODES;
+    gradleArgs?: string[];
   };
   credentials: {
     // android
