@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- `--gradle-args` option for `turtle build:android` which makes it possible to specify custom Gradle arguments.
+
 ### Changed
 
 - Gradle Wrapper doesn't print when dots when the appropriate version of Gradle is being downloaded.

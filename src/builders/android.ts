@@ -34,8 +34,8 @@ export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
     ...config.builder.fakeUpload && {
       fakeUploadBuildPath:
         jobData.fakeUploadBuildPath
-        ? jobData.fakeUploadBuildPath
-        : path.join(jobData.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename),
+          ? jobData.fakeUploadBuildPath
+          : path.join(jobData.fakeUploadDir || config.directories.fakeUploadDir, fakeUploadFilename),
     },
   });
 
@@ -103,6 +103,7 @@ async function runShellAppBuilder(
       modules: enabledModules,
       buildType: jobData.config.buildType,
       buildMode: jobData.config.buildMode,
+      gradleArgs: jobData.config.gradleArgs,
     });
   } catch (err) {
     commonUtils.logErrorOnce(err);

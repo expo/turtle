@@ -29,6 +29,11 @@ export default (program: any, setCommonCommandOptions: any) => {
       /^(debug|release)$/i,
       'release',
     )
+    .option(
+      '--gradle-args <gradle-args>',
+      'optional arguments passed to gradle, make sure to surround them with double quotes'
+      + ' (e.g.: --gradle-args "--stacktrace --debug")',
+    )
     .description(
       'Build a standalone APK or App Bundle for your project, either signed and ready for submission to'
       + ' the Google Play Store or in debug mode.',
