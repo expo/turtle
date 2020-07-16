@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.17.0] - 2020-07-16
+
 ### Added
 
 - `--gradle-args` option for `turtle build:android` which makes it possible to specify custom Gradle arguments.
