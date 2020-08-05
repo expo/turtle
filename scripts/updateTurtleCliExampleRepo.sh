@@ -14,4 +14,4 @@ curl -X POST \
           "TURTLE_TAG": "latest"
         }
       }' \
-    $DEPLOY_ENDPOINT_URL 2>/dev/null | jq -r .build_url
+    $DEPLOY_ENDPOINT_URL 2>/dev/null | ./node_modules/node-jq/bin/jq -r .build_url
