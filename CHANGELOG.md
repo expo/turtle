@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Updated iOS shell app for SDK 38 with fixed integer tagging in expo-gl for iOS 14. ([#245](https://github.com/expo/turtle/pull/245))
+
 # [0.17.1] - 2020-07-16
 
 - Updated Android shell app for SDK 38 with `targetSdkVersion` bumped to 29. ([#244](https://github.com/expo/turtle/pull/244))
