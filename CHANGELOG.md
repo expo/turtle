@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add `node-jq` dependency, a silent dependency of some scripts.
+
 # [0.17.1] - 2020-07-16
 
 - Updated Android shell app for SDK 38 with `targetSdkVersion` bumped to 29. ([#244](https://github.com/expo/turtle/pull/244))
