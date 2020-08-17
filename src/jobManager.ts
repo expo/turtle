@@ -143,15 +143,19 @@ async function build(job: any, turtleMode: TurtleMode) {
   const s3Url = await logger.initForJob(job);
   const calculateBuildDuration = () => Math.ceil((Date.now() - startTimestamp) / 1000);
 
+  const commonPayload = {
+    logUrl: s3Url,
+    logFormat: 'json',
+    turtleMode,
+  };
   try {
     await sqs.sendMessage(job.id, BUILD.JOB_STATES.IN_PROGRESS, {
-      logUrl: s3Url,
-      logFormat: 'json',
-      turtleMode,
+      ...commonPayload,
     });
     const result = await (builders as any)[job.platform](job);
     const buildDuration = calculateBuildDuration();
     sqs.sendMessage(job.id, BUILD.JOB_STATES.FINISHED, {
+      ...commonPayload,
       ...result,
       turtleVersion,
       buildDuration,
@@ -165,6 +169,7 @@ async function build(job: any, turtleMode: TurtleMode) {
       reason = err.reason;
     }
     sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, {
+      ...commonPayload,
       turtleVersion,
       buildDuration,
       ...reason && { reason },
