@@ -2,9 +2,8 @@ import retry from 'async-retry';
 import AWS from 'aws-sdk';
 import _ from 'lodash';
 
-import { OUTPUT_QUEUE_URL, QUEUE_URL } from 'turtle/aws/utils';
+import { QUEUE_URL } from 'turtle/aws/utils';
 import config from 'turtle/config';
-import { JOB_UPDATE_TYPE } from 'turtle/constants/build';
 import logger from 'turtle/logger';
 import { getCurrentJobId } from 'turtle/turtleContext';
 
@@ -72,20 +71,4 @@ export function changeMessageVisibilityRecurring(priority: string, receiptHandle
       });
     }
   }, (VISIBILITY_TIMEOUT_SEC * 1000) / 3);
-}
-
-export async function sendMessage(jobId: string, status: JOB_UPDATE_TYPE, data = {}) {
-  const params = {
-    MessageBody: JSON.stringify({ jobId, status, ...data }),
-    QueueUrl: OUTPUT_QUEUE_URL(),
-    DelaySeconds: 0,
-    MessageGroupId: jobId,
-  };
-  try {
-    return await retry(async () => {
-      return await sqs.sendMessage(params).promise();
-    });
-  } catch (err) {
-    logger.error({ err }, `Error sending SQS message: ${JSON.stringify(params)}}`);
-  }
 }

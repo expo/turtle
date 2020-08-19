@@ -7,7 +7,7 @@ DOWNLOAD_DIR="${EXPO_DOWNLOAD_DIR:-$HOME/Downloads}"
 mkdir -p $DOWNLOAD_DIR
 
 if [ ! -f "$ROOT_DIR/.secrets.local-queue" ]; then
-  echo "You need to run \"yarn secrets:init-private [SQS_NAME]\" or create the .secrets.local-queue file yourself with AWS_SQS_ANDROID_QUEUE_URL, AWS_SQS_ANDROID_PRIORITY_QUEUE_URL, AWS_SQS_IOS_QUEUE_URL, AWS_SQS_IOS_PRIORITY_QUEUE_URL and AWS_SQS_OUT_QUEUE_URL variables."
+  echo "You need to run \"yarn secrets:init-private [SQS_NAME]\" or create the .secrets.local-queue file yourself with AWS_SQS_ANDROID_QUEUE_URL, AWS_SQS_ANDROID_PRIORITY_QUEUE_URL, AWS_SQS_IOS_QUEUE_URL, and AWS_SQS_IOS_PRIORITY_QUEUE_URL variables."
   exit 1
 fi
 

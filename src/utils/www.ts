@@ -4,32 +4,30 @@ import request from 'request-promise';
 
 import config from 'turtle/config';
 
-async function setSupportedSdkVersions(platform: string, sdkVersions: string[]) {
-  const { href } = new URL('/--/api/v2/standalone-build/setSupportedSDKVersions', resolveWWWEndpoint());
+async function sendBuildStatusUpdate(buildId: string, updateParams: object) {
+  const { href } = new URL(`/--/api/v2/turtle-legacy-builds/${buildId}`, resolveWWWEndpoint());
   await request({
-    method: 'POST',
+    method: 'PUT',
+    uri: href,
+    headers: {
+      'secret-token': config.www.secretToken,
+    },
+    body: updateParams,
+    json: true,
+  });
+}
+
+async function sendCredentialsUpdate(buildId: string, platform: 'android' | 'ios', updateParams: object) {
+  const { href } = new URL(`/--/api/v2/turtle-legacy-builds/${buildId}/credentials`, resolveWWWEndpoint());
+  await request({
+    method: 'PUT',
     uri: href,
     headers: {
       'secret-token': config.www.secretToken,
     },
     body: {
       platform,
-      sdkVersions,
-    },
-    json: true,
-  });
-}
-
-async function setTurtleVersion(version: string) {
-  const { href } = new URL('/--/api/v2/standalone-build/setTurtleVersion', resolveWWWEndpoint());
-  await request({
-    method: 'POST',
-    uri: href,
-    headers: {
-      'secret-token': config.www.secretToken,
-    },
-    body: {
-      version,
+      ...updateParams,
     },
     json: true,
   });
@@ -46,4 +44,4 @@ function resolveWWWEndpoint() {
   }
 }
 
-export { setSupportedSdkVersions, setTurtleVersion };
+export { sendBuildStatusUpdate, sendCredentialsUpdate };

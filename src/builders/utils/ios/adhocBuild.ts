@@ -4,12 +4,11 @@ import spawnAsync from '@expo/spawn-async';
 import { IosCodeSigning } from '@expo/xdl';
 import fs from 'fs-extra';
 
-import * as sqs from 'turtle/aws/sqs';
 import BuildError, { BuildErrorReason } from 'turtle/builders/BuildError';
-import { UPDATE_CREDENTIALS } from 'turtle/constants/build';
 import { IJob } from 'turtle/job';
 import logger from 'turtle/logger';
 import { isOffline } from 'turtle/turtleContext';
+import { sendCredentialsUpdate } from 'turtle/utils/www';
 
 // tslint:disable-next-line:no-var-requires
 const travelingFastlane = process.platform === 'darwin' ? require('@expo/traveling-fastlane-darwin')() : null;
@@ -64,7 +63,7 @@ async function prepareAdHocBuildCredentials(job: IJob) {
       await fs.writeFile(provisioningProfilePath, Buffer.from(credentials.provisioningProfile, 'base64'));
       logger.info(`Saved provisioning profile to ${provisioningProfilePath}`);
     } else {
-      await sqs.sendMessage(job.id, UPDATE_CREDENTIALS, {
+      await sendCredentialsUpdate(job.id, 'ios', {
         provisioningProfileId: credentials.provisioningProfileId,
         provisioningProfile: credentials.provisioningProfile,
       });
