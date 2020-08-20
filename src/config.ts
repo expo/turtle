@@ -101,4 +101,8 @@ export default {
   www: {
     secretToken: env('TURTLE_SDK_VERSIONS_SECRET_TOKEN'),
   },
+  leader: {
+    redisKey: env('LEADER_REDIS_KEY', 'turtle-v1:leader'),
+    redisKeyTTLSec: envNum('LEADER_REDIS_KEY_TTL', 30),
+  },
 };

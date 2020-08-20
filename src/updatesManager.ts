@@ -26,7 +26,7 @@ export async function saveUpdateFailure(buildId: string, type: UpdateType, updat
   await redis.set(getFailedUpdateKey(buildId), JSON.stringify(update));
 }
 
-export async function synchronizeFailedUpdates(intervalMs = 15 * 1000): Promise<NodeJS.Timeout> {
+export async function synchronizeFailedUpdates(intervalMs = 3 * 60 * 1000): Promise<NodeJS.Timeout> {
   try {
     await _synchronizeFailedUpdates();
   } catch (err) {

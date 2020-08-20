@@ -7,6 +7,7 @@ import logger from 'turtle/logger';
 import setup from 'turtle/setup';
 import { checkShouldExit, setShouldExit, turtleVersion } from 'turtle/turtleContext';
 import { synchronizeFailedUpdates } from 'turtle/updatesManager';
+import Leader, { LeaderEvent } from 'turtle/utils/leader';
 import { setSupportedSdkVersions, setTurtleVersion } from 'turtle/utils/versions';
 
 process.on('unhandledRejection', (err) => logger.error({ err }, 'Unhandled promise rejection'));
@@ -34,7 +35,7 @@ async function main() {
     await setup[config.platform]();
   }
 
-  await synchronizeFailedUpdates();
+  await electLeaderAndSynchronize();
 
   try {
     await setTurtleVersion(turtleVersion);
@@ -53,6 +54,24 @@ async function main() {
       logger.error({ err }, 'Failed to process a job');
     }
   }
+}
+
+async function electLeaderAndSynchronize() {
+  const l = new Leader({
+    key: config.leader.redisKey,
+    id: config.hostname,
+    ttl: config.leader.redisKeyTTLSec,
+  });
+
+  let intervalId: NodeJS.Timeout;
+  l.on(LeaderEvent.elected, async () => {
+    intervalId = await synchronizeFailedUpdates();
+  });
+  l.on(LeaderEvent.revoked, () => {
+    clearInterval(intervalId);
+  });
+
+  await l.elect();
 }
 
 main()
