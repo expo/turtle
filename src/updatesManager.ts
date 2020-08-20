@@ -16,6 +16,9 @@ interface IUpdate {
 }
 
 export async function saveUpdateFailure(buildId: string, type: UpdateType, updateBody: object): Promise<void> {
+  if (config.env === 'test') {
+    return;
+  }
   const redis = await getRedisClient(RedisClient.Configuration) as Redis.Redis;
   const update: IUpdate = {
     type,

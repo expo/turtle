@@ -57,20 +57,24 @@ async function main() {
 }
 
 async function electLeaderAndSynchronize() {
+  if (config.env === 'test') {
+    return;
+
+  }
   const l = new Leader({
     key: config.leader.redisKey,
     id: config.hostname,
     ttl: config.leader.redisKeyTTLSec,
   });
-
   let intervalId: NodeJS.Timeout;
   l.on(LeaderEvent.elected, async () => {
     intervalId = await synchronizeFailedUpdates();
   });
   l.on(LeaderEvent.revoked, () => {
-    clearInterval(intervalId);
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
   });
-
   await l.elect();
 }
 
