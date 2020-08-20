@@ -6,6 +6,7 @@ import { doJob } from 'turtle/jobManager';
 import logger from 'turtle/logger';
 import setup from 'turtle/setup';
 import { checkShouldExit, setShouldExit, turtleVersion } from 'turtle/turtleContext';
+import { synchronizeFailedUpdates } from 'turtle/updatesManager';
 import { setSupportedSdkVersions, setTurtleVersion } from 'turtle/utils/versions';
 
 process.on('unhandledRejection', (err) => logger.error({ err }, 'Unhandled promise rejection'));
@@ -32,6 +33,8 @@ async function main() {
   if (setup[config.platform]) {
     await setup[config.platform]();
   }
+
+  await synchronizeFailedUpdates();
 
   try {
     await setTurtleVersion(turtleVersion);
