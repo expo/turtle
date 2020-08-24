@@ -10,7 +10,7 @@ async function setSupportedSdkVersions(platform: string, sdkVersions: string[]) 
     method: 'POST',
     uri: href,
     headers: {
-      'secret-token': config.www.sdkVersionsSecretToken,
+      'secret-token': config.www.secretToken,
     },
     body: {
       platform,
@@ -26,7 +26,7 @@ async function setTurtleVersion(version: string) {
     method: 'POST',
     uri: href,
     headers: {
-      'secret-token': config.www.sdkVersionsSecretToken,
+      'secret-token': config.www.secretToken,
     },
     body: {
       version,

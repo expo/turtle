@@ -5,11 +5,10 @@ import fs from 'fs-extra';
 import get from 'lodash/get';
 import uuidv4 from 'uuid/v4';
 
-import * as sqs from 'turtle/aws/sqs';
-import { UPDATE_CREDENTIALS } from 'turtle/constants/build';
 import { IAndroidCredentials, IJob } from 'turtle/job';
 import logger from 'turtle/logger';
 import { isOffline } from 'turtle/turtleContext';
+import { sendCredentialsUpdate } from 'turtle/utils/www';
 
 async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredentials> {
   if (!jobData.credentials) {
@@ -50,9 +49,7 @@ async function getOrCreateCredentials(jobData: IJob): Promise<IAndroidCredential
       l.info(`Key password: ${credentials.keyPassword}`);
       l.info(`Please keep these credentials safe`);
     } else {
-      await sqs.sendMessage(jobData.id, UPDATE_CREDENTIALS, {
-        ...credentials,
-      });
+      await sendCredentialsUpdate(jobData.id, 'android', credentials);
       l.info('Keystore sent to storage successfully');
     }
     await fs.unlink(keystoreFilename);

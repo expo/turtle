@@ -29,7 +29,6 @@ export default {
         ios: env('AWS_SQS_IOS_PRIORITY_QUEUE_URL'),
         android: env('AWS_SQS_ANDROID_PRIORITY_QUEUE_URL'),
       },
-      out: env('AWS_SQS_OUT_QUEUE_URL'),
     },
   },
   cloudwatch: {
@@ -100,6 +99,10 @@ export default {
     ),
   },
   www: {
-    sdkVersionsSecretToken: env('TURTLE_SDK_VERSIONS_SECRET_TOKEN'),
+    secretToken: env('TURTLE_SDK_VERSIONS_SECRET_TOKEN'),
+  },
+  leader: {
+    redisKey: env('LEADER_REDIS_KEY', 'turtle-v1:leader'),
+    redisKeyTTLSec: envNum('LEADER_REDIS_KEY_TTL', 30),
   },
 };

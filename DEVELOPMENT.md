@@ -8,7 +8,7 @@
 ## Setup
 
 - Run `update-local-secrets` to populate the `.secrets*` files. You'll need to run this any time any secret changes (it shouldn't be very often).
-- Run `EXPO_UNIVERSE_DIR=/path/to/universe/dir yarn secrets:init-private YOUR_SQS_NICKNAME`. Alternatively, you can create `.secrets.local-queue` file with the SQS queues' urls yourself (`AWS_SQS_OUT_QUEUE_URL`, `AWS_SQS_ANDROID_QUEUE_URL`, `AWS_SQS_ANDROID_PRIORITY_QUEUE_URL`, `AWS_SQS_IOS_QUEUE_URL`, `AWS_SQS_IOS_PRIORITY_QUEUE_URL`)
+- Run `EXPO_UNIVERSE_DIR=/path/to/universe/dir yarn secrets:init-private YOUR_SQS_NICKNAME`. Alternatively, you can create `.secrets.local-queue` file with the SQS queues' urls yourself (`AWS_SQS_ANDROID_QUEUE_URL`, `AWS_SQS_ANDROID_PRIORITY_QUEUE_URL`, `AWS_SQS_IOS_QUEUE_URL`, `AWS_SQS_IOS_PRIORITY_QUEUE_URL`)
 - Run `yarn set-workingdir:local` or `yarn set-workingdir:remote`:
   - `:local` creates symlinks to the shell apps in `expo` repository (_unfortunately this is currently broken_)
   - `:remote` downloads precompiled shell apps

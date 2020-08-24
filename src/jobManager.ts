@@ -12,6 +12,7 @@ import * as buildStatusMetric from 'turtle/metrics/buildStatus';
 import { checkShouldExit, setCurrentJobId, turtleVersion } from 'turtle/turtleContext';
 import { getPriorities, labelConfiguration, TurtleMode } from 'turtle/utils/priorities';
 import * as redis from 'turtle/utils/redis';
+import { sendBuildStatusUpdate } from 'turtle/utils/www';
 import { sanitizeJob } from 'turtle/validator';
 
 function _maybeExit() {
@@ -73,7 +74,8 @@ async function processJob(jobData: any, turtleMode: TurtleMode) {
       logger.error({ err, ...rawJob && { buildJobId: rawJob.id } }, 'The build job is invalid');
       // send message only if we've managed to parse the job json
       if (rawJob) {
-        await sqs.sendMessage(rawJob.id, BUILD.JOB_STATES.ERRORED, {
+        await sendBuildStatusUpdate(rawJob.id, {
+          status: BUILD.JOB_STATES.ERRORED,
           turtleVersion,
           buildDuration: 0,
           reason: 'The build job is invalid',
@@ -128,7 +130,7 @@ async function processJob(jobData: any, turtleMode: TurtleMode) {
 function failAfterMaxJobTime(priority: string, receiptHandle: string, job: any) {
   return setTimeout(async () => {
     try {
-      sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, { turtleVersion });
+      sendBuildStatusUpdate(job.id, { status: BUILD.JOB_STATES.ERRORED, turtleVersion });
       await deleteMessage(priority, receiptHandle);
     } finally {
       logger.error('Build timed out. Going to terminate turtle agent.');
@@ -144,19 +146,27 @@ async function build(job: any, turtleMode: TurtleMode) {
   const calculateBuildDuration = () => Math.ceil((Date.now() - startTimestamp) / 1000);
 
   const commonPayload = {
-    logUrl: s3Url,
-    logFormat: 'json',
-    turtleMode,
+    logs: {
+      url: s3Url,
+      format: 'json',
+    },
+    extraData: {
+      turtleMode,
+    },
   };
   try {
-    await sqs.sendMessage(job.id, BUILD.JOB_STATES.IN_PROGRESS, {
+    await sendBuildStatusUpdate(job.id, {
       ...commonPayload,
+      status: BUILD.JOB_STATES.IN_PROGRESS,
     });
-    const result = await (builders as any)[job.platform](job);
+    const { artifactUrl } = await (builders as any)[job.platform](job);
     const buildDuration = calculateBuildDuration();
-    sqs.sendMessage(job.id, BUILD.JOB_STATES.FINISHED, {
+    sendBuildStatusUpdate(job.id, {
       ...commonPayload,
-      ...result,
+      artifacts: {
+        url: artifactUrl,
+      },
+      status: BUILD.JOB_STATES.FINISHED,
       turtleVersion,
       buildDuration,
     });
@@ -168,8 +178,9 @@ async function build(job: any, turtleMode: TurtleMode) {
     if (err instanceof BuildError) {
       reason = err.reason;
     }
-    sqs.sendMessage(job.id, BUILD.JOB_STATES.ERRORED, {
+    sendBuildStatusUpdate(job.id, {
       ...commonPayload,
+      status: BUILD.JOB_STATES.ERRORED,
       turtleVersion,
       buildDuration,
       ...reason && { reason },

@@ -88,11 +88,6 @@ spec:
               secretKeyRef:
                 name: turtle-js-config
                 key: aws_sqs_android_priority_queue_url
-          - name: AWS_SQS_OUT_QUEUE_URL
-            valueFrom:
-              secretKeyRef:
-                name: turtle-js-config
-                key: aws_sqs_out_queue_url
           - name: AWS_CLOUDWATCH_REGION
             valueFrom:
               secretKeyRef:
