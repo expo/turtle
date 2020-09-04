@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added gradle 6.2 to `turtle-android-base`
 - Added `ANDROID_NDK_HOME` in `turtle-android-base`
+- Upgraded XDL so it processes root `build.gradle` of Android shell apps too
 
 ## [0.17.2] - 2020-08-06
 
