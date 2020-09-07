@@ -144,9 +144,9 @@ spec:
           - name: DISABLE_DEX_MAX_HEAP
             value: "true"
           - name: JAVA_OPTS
-            value: '-Xms2048m -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -XX:MaxRAMFraction=1'
+            value: '-Xms2048m -Xmx8192m -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC'
           - name: GRADLE_OPTS
-            value: '-Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xms2048m -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -XX:MaxRAMFraction=1"'
+            value: '-Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xms2048m -Xmx8192m -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC"'
           - name: REDIS_CA_CERTIFICATE
             value: '/var/run/config/redislabs-tls/redislabs_ca.pem'
         resources:
