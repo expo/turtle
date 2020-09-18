@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added Android shell app for SDK 39.
 
+### Removed
+
+- Dropped support for SDK 35.
+
 ## [0.17.3] - 2020-09-14
 
 ### Added
