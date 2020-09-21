@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added Android shell app for SDK 39.
+- Added iOS and Android shell apps for SDK 39.
 
 ### Removed
 
