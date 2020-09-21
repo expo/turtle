@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.18.0] - 2020-09-21
+
 ### Added
 
 - Added iOS and Android shell apps for SDK 39.
