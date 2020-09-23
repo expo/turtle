@@ -67,6 +67,7 @@ function _createEnvVars(androidSdkDir: string) {
   return {
     ANDROID_HOME: androidSdkDir,
     ANDROID_SDK: androidSdkDir,
+    ANDROID_NDK_HOME: path.join(androidSdkDir, 'ndk/17.2.4988734'),
   };
 }
 
