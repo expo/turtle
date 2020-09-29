@@ -164,7 +164,7 @@ commands:
         default: ios
       sdk_version:
         type: string
-        default: sdk37
+        default: sdk39
     steps:
       - restore_cache:
           key: "workingdir-v2-<< parameters.platform >>-<< parameters.sdk_version >>"
@@ -179,7 +179,7 @@ commands:
         default: ios
       sdk_version:
         type: string
-        default: sdk37
+        default: sdk39
     steps:
       - save_cache:
           key: "workingdir-v2-<< parameters.platform >>-<< parameters.sdk_version >>"
@@ -238,14 +238,14 @@ jobs:
       - save_yarn_cache:
           platform: darwin
       - restore_workingdir_cache:
-          sdk_version: sdk37
+          sdk_version: sdk39
           platform: ios
       - run:
           name: Run iOS smoke tests
-          command: SDK_VERSION=sdk37 ./scripts/tests/runIOSSmokeTestsCI.sh
+          command: SDK_VERSION=sdk39 ./scripts/tests/runIOSSmokeTestsCI.sh
       - save_workingdir_cache:
           workingdir: /Users/distiller/project/workingdir
-          sdk_version: sdk37
+          sdk_version: sdk39
           platform: ios
 
   android_smoke_tests:
