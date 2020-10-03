@@ -10,5 +10,10 @@
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules"
-  ]
+  ],
+  "linterOptions": {
+    "exclude": [
+      "src/types/xcode.d.ts"
+    ]
+  }
 }
