@@ -7,8 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Updated SDK 39 Android tarball
-- Updated SDK 39 iOS tarball
+- Updated SDK 39 Android tarball.
+- Updated SDK 39 iOS tarball.
+- Updated iOS client tarball.
 - Update @expo/config and @expo/xdl. Temporarily bring in type definitions for color-string and xcode.
 
 ## [0.18.1] - 2020-09-22
