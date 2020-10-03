@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.18.2] - 2020-10-03
+
 - Updated SDK 39 Android tarball.
 - Updated SDK 39 iOS tarball.
 - Updated iOS client tarball.
