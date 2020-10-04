@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update @expo/xdl to fix regression in SDK <= 39 splash
+
 # [0.18.2] - 2020-10-03
 
 - Updated SDK 39 Android tarball.
