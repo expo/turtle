@@ -84,7 +84,7 @@ async function runShellAppBuilder(
   logger.info({ buildPhase: 'resolve native modules' }, 'Resolving universal modules dependencies');
   const packageJsonDependecies = _.get(manifest, 'dependencies');
   const enabledModules = _.get(manifest, 'android.enableDangerousExperimentalLeanBuilds')
-    ? await resolveNativeModules(workingDir, packageJsonDependecies)
+    ? await resolveNativeModules(workingDir, sdkVersion, packageJsonDependecies)
     : await resolveExplicitOptIn(workingDir, packageJsonDependecies);
 
   try {
