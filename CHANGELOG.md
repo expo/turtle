@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Always add expo-notifications for SDK >= 39 projects with android.enableDangerousExperimentalLeanBuilds enabled.
+
 # [0.18.4] - 2020-10-06
 
 ### Fixed

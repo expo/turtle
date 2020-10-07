@@ -4,6 +4,7 @@ import keys from 'lodash/keys';
 import merge from 'lodash/merge';
 import values from 'lodash/values';
 import path from 'path';
+import semver from 'semver';
 import logger from 'turtle/logger';
 
 export interface IUnimoduleEntry {
@@ -19,21 +20,37 @@ interface IPackageInfo {
   dependencies: string[];
 }
 
-export async function resolveExplicitOptIn(workingdir: string, packages?: string[]): Promise<IUnimoduleEntry[]> {
+export async function resolveExplicitOptIn(
+  workingdir: string,
+  packages?: string[],
+): Promise<IUnimoduleEntry[]> {
   const resolver = new Resolver(workingdir);
   await resolver.init();
 
   const optionalModules = ['expo-branch'];
   resolver.addAll();
   const modules = packages
-    ? resolver.getModules().filter((mod) => !optionalModules.includes(mod.name) || packages.includes(mod.name))
-    : resolver.getModules().filter((mod) => !optionalModules.includes(mod.name));
+    ? resolver
+        .getModules()
+        .filter(
+          (mod) =>
+            !optionalModules.includes(mod.name) || packages.includes(mod.name),
+        )
+    : resolver
+        .getModules()
+        .filter((mod) => !optionalModules.includes(mod.name));
 
-  modules.forEach(({ name, version }) => { logger.info(`Adding ${name}:${version}`); });
+  modules.forEach(({ name, version }) => {
+    logger.info(`Adding ${name}:${version}`);
+  });
   return modules;
 }
 
-export async function resolveNativeModules(workingdir: string, packages?: string[]): Promise<IUnimoduleEntry[]> {
+export async function resolveNativeModules(
+  workingdir: string,
+  sdkVersion: string,
+  packages?: string[],
+): Promise<IUnimoduleEntry[]> {
   const resolver = new Resolver(workingdir);
   await resolver.init();
 
@@ -41,6 +58,13 @@ export async function resolveNativeModules(workingdir: string, packages?: string
     resolver.addAll();
   } else {
     const corePackages = await readCorePackages(workingdir);
+
+    // expo-notifications is required for shell apps in SDK >= 39
+    // https://github.com/expo/expo/issues/10569
+    if (semver.gte(sdkVersion, '39.0.0')) {
+      resolver.addModule('expo-notifications');
+    }
+
     for (const pkg of corePackages) {
       if (resolver.isUnimodule(pkg)) {
         resolver.addModule(pkg);
@@ -53,17 +77,36 @@ export async function resolveNativeModules(workingdir: string, packages?: string
     }
   }
   const modules = resolver.getModules();
-  modules.forEach(({ name, version }) => { logger.info(`Adding ${name}:${version}`); });
+  modules.forEach(({ name, version }) => {
+    logger.info(`Adding ${name}:${version}`);
+  });
   return modules;
 }
 
 async function readCorePackages(workingdir: string) {
-  const pkgJsonPath = path.join(workingdir, 'node_modules', 'react-native-unimodules', 'package.json');
-  const expoPkgJsonPath = path.join(workingdir, 'packages', 'expo', 'package.json');
-  if (await fs.pathExists(pkgJsonPath) && await fs.pathExists(expoPkgJsonPath)) {
+  const pkgJsonPath = path.join(
+    workingdir,
+    'node_modules',
+    'react-native-unimodules',
+    'package.json',
+  );
+  const expoPkgJsonPath = path.join(
+    workingdir,
+    'packages',
+    'expo',
+    'package.json',
+  );
+  if (
+    (await fs.pathExists(pkgJsonPath)) &&
+    (await fs.pathExists(expoPkgJsonPath))
+  ) {
     const packageJson = JSON.parse(await fs.readFile(pkgJsonPath, 'utf-8'));
-    const expoPackageJson = JSON.parse(await fs.readFile(expoPkgJsonPath, 'utf-8'));
-    return keys(packageJson.dependencies).concat(keys(expoPackageJson.dependencies));
+    const expoPackageJson = JSON.parse(
+      await fs.readFile(expoPkgJsonPath, 'utf-8'),
+    );
+    return keys(packageJson.dependencies).concat(
+      keys(expoPackageJson.dependencies),
+    );
   } else {
     logger.warn('No core packages detected');
     return [];
@@ -76,7 +119,7 @@ interface IDependencyInfo {
 
 class Resolver {
   private workingdir: string;
-  private modulesMap: {[key: string]: IUnimoduleEntry};
+  private modulesMap: { [key: string]: IUnimoduleEntry };
   private dependencyMap: IDependencyInfo;
 
   constructor(workingdir: string) {
@@ -108,7 +151,7 @@ class Resolver {
   }
 
   public getModules(): IUnimoduleEntry[] {
-     return values(this.modulesMap);
+    return values(this.modulesMap);
   }
 
   private async resolveModule(moduleName: string) {
@@ -127,7 +170,9 @@ class Resolver {
   }
 }
 
-async function generateDependenciesInfo(workingdir: string): Promise<IDependencyInfo> {
+async function generateDependenciesInfo(
+  workingdir: string,
+): Promise<IDependencyInfo> {
   const dir = await fs.readdir(path.join(workingdir, 'packages'));
   const map: IDependencyInfo = {};
 
@@ -140,7 +185,9 @@ async function generateDependenciesInfo(workingdir: string): Promise<IDependency
   }
 
   // handle @unimodules directory
-  const unimodulesDir = await fs.readdir(path.join(workingdir, 'packages', '@unimodules'));
+  const unimodulesDir = await fs.readdir(
+    path.join(workingdir, 'packages', '@unimodules'),
+  );
   for (const pkgName of unimodulesDir) {
     const pkg = await getPackage(workingdir, path.join('@unimodules', pkgName));
     if (pkg) {
@@ -155,19 +202,27 @@ async function generateDependenciesInfo(workingdir: string): Promise<IDependency
   return map;
 }
 
-async function getPackage(workingdir: string, pkgName: string): Promise<IPackageInfo | null> {
+async function getPackage(
+  workingdir: string,
+  pkgName: string,
+): Promise<IPackageInfo | null> {
   const pkgPath = path.join(workingdir, 'packages', pkgName);
   const isAndroid = await fs.pathExists(path.join(pkgPath, 'android'));
   const isIos = await fs.pathExists(path.join(pkgPath, 'ios'));
   const isUnimodule = await fs.pathExists(path.join(pkgPath, 'unimodule.json'));
-  const hasPackageJson = await fs.pathExists(path.join(pkgPath, 'package.json'));
+  const hasPackageJson = await fs.pathExists(
+    path.join(pkgPath, 'package.json'),
+  );
   if (!isUnimodule || !hasPackageJson || (!isAndroid && !isIos)) {
     return null;
   }
 
-  const packageJson = JSON.parse(await fs.readFile(path.join(pkgPath, 'package.json'), 'utf-8'));
+  const packageJson = JSON.parse(
+    await fs.readFile(path.join(pkgPath, 'package.json'), 'utf-8'),
+  );
 
-  const pkgDeps = merge({}, // reading everything to make sure
+  const pkgDeps = merge(
+    {}, // reading everything to make sure
     packageJson.dependencies,
     packageJson.peerDependencies,
     packageJson.unimodulePeerDependencies,
