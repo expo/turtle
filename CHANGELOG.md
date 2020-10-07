@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.18.4] - 2020-10-06
+
+### Fixed
+
+- Fixed an issue with notifications ([expo/expo#10562](https://github.com/expo/expo/issues/10562)) in the Android SDK 39 tarball.
+
 # [0.18.3] - 2020-10-03
 
 ### Fixed
