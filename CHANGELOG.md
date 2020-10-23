@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.18.7] - 2020-10-23
+
+### Fixed
+
+- Fix issue with updates in self-hosted Android apps ([#10746](https://github.com/expo/expo/issues/10746)) in the SDK 39 tarball
+
 # [0.18.6] - 2020-10-22
 
 ### Fixed
