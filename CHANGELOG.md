@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Fix issues with Reanimated v2 in Android SDK 39 tarball.
+
 # [0.18.7] - 2020-10-23
 
 ### Fixed
