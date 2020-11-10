@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.18.9] - 2020-11-09
+
+### Fixed
+
+- Updated xdl to 58.0.20 to fix an issue with updates.checkAutomatically not being applied properly to SDK 39 Android apps.
+
 # [0.18.8] - 2020-10-27
 
 ### Fixed
