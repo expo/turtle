@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.19.0] - 2020-11-13
+
+### Changed
+
 - Rebuild iOS tarballs (SDK 36, 37, 38, 39, Ad-Hoc Client) with Xcode 12.1.
 
 # [0.18.9] - 2020-11-09
