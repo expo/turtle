@@ -1,7 +1,6 @@
 import fs from 'fs-extra';
 import pick from 'lodash/pick';
 
-import spawnAsync from '@expo/spawn-async';
 import buildArchive from 'turtle/builders/ios/archive';
 import { createBuilderContext, IContext } from 'turtle/builders/ios/context';
 import buildSimulator from 'turtle/builders/ios/simulator';
@@ -52,7 +51,6 @@ async function initBuilder(ctx: IContext) {
     await fs.ensureDir(dir);
     await fs.chmod(dir, 0o755);
   }
-  await spawnAsync('sudo', ['xcrun', 'simctl', 'list']);
 }
 
 async function cleanup(ctx: IContext) {
