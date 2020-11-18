@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Fixed
+
+- Fixed the iOS build using Xcode 12.1 by runnig `xcrun simctl list` before the build phase.
+
 # [0.19.0] - 2020-11-13
 
 ### Changed
