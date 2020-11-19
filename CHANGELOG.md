@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fixed the iOS build using Xcode 12.1 by runnig `xcrun simctl list` before the build phase.
+- Rebuild iOS tarballs (SDK 36, 37, 38, 39, Ad-Hoc Client) with Xcode 12.1 containing iOS 14 image fix.
 
 # [0.19.0] - 2020-11-13
 
