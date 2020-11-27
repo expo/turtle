@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add SDK 40 tarballs in preparation for SDK 40 beta
+
 ### Fixed
 
 # [0.19.1] - 2020-11-19
