@@ -21,7 +21,7 @@ You can use it both on your CI and your private computer.
 
 ## Installation
 
-[Installation instructions and documentation here.](https://docs.expo.io/versions/latest/distribution/turtle-cli)
+[Installation instructions and documentation here.](https://docs.expo.io/distribution/turtle-cli/)
 
 ## Usage example
 
