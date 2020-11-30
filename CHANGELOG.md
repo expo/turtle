@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Verify jq installation before proceeding with release ([#281](https://github.com/expo/turtle/pull/281)).
+
 # [0.20.0] - 2020-11-30
 
 - Add SDK 40 tarballs in preparation for SDK 40 beta
