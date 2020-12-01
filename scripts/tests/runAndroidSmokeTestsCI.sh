@@ -25,7 +25,7 @@ export REDIS_CONFIG_URL="noop"
 export DATADOG_DISABLED="true"
 export TURTLE_SDK_VERSIONS_SECRET_TOKEN="noop"
 
-pushd $ROOT_DIR/workingdir/android/${SDK_VERSION:-sdk37} >/dev/null 2>&1
+pushd $ROOT_DIR/workingdir/android/${SDK_VERSION:-sdk39} >/dev/null 2>&1
 yarn
 popd >/dev/null 2>&1
 
