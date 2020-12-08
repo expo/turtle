@@ -52,7 +52,7 @@ async function initBuilder(ctx: IContext) {
     await fs.ensureDir(dir);
     await fs.chmod(dir, 0o755);
   }
-  await spawnAsync('sudo', ['xcrun', 'simctl', 'list']);
+  await spawnAsync('xcrun', ['simctl', 'list']);
 }
 
 async function cleanup(ctx: IContext) {
