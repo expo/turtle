@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated SDK 40 Android tarball to fix `expo-notifications` installation identifier changing as a bug.
+
 # [0.20.1] - 2020-12-08
 
 ### Changed
