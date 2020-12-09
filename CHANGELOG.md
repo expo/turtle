@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Update SDK 40 iOS tarball for release
+- Update SDK 40 iOS and Android tarballs for release
 
 ### Fixed
 
