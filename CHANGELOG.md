@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixed the iOS build when user does not have elevated permissions
+- Fixed the iOS build when running offline and user lacks elevated permissions.
 
 # [0.20.0] - 2020-11-30
 
