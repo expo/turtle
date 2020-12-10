@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.20.3] - 2020-12-10
+
+### Fixed
+
+- Verify jq installation before proceeding with release ([#281](https://github.com/expo/turtle/pull/281)).
+- Fixed the iOS build when running offline and user lacks elevated permissions.
+
 # [0.20.2] - 2020-12-09
 
 ### Changed
@@ -18,10 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Update SDK 40 iOS and Android tarballs for release
-
-- Verify jq installation before proceeding with release ([#281](https://github.com/expo/turtle/pull/281)).
-
-- Fixed the iOS build when running offline and user lacks elevated permissions.
 
 # [0.20.0] - 2020-11-30
 
