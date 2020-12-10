@@ -52,7 +52,13 @@ async function initBuilder(ctx: IContext) {
     await fs.ensureDir(dir);
     await fs.chmod(dir, 0o755);
   }
-  await spawnAsync('sudo', ['xcrun', 'simctl', 'list']);
+
+  if (config.builder.mode === 'online') {
+    await spawnAsync('sudo', ['xcrun', 'simctl', 'list']);
+  } else {
+    // sudo not needed for CLI builds
+    await spawnAsync('xcrun', ['simctl', 'list']);
+  }
 }
 
 async function cleanup(ctx: IContext) {
