@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Updated SDK 40 iOS tarball to fix `expo-notifications` not emitting initial notification response.
+
 # [0.20.3] - 2020-12-10
 
 ### Fixed
