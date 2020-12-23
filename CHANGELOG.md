@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.20.5] - 2020-12-23
+
+### Changed
+
+- Updated SDK 40 Android tarball to fix `expo-location` background permissions on Android <9.
+
 # [0.20.4] - 2020-12-17
 
 ### Changed
