@@ -1,8 +1,8 @@
 import path from 'path';
 
-import { ExponentTools } from '@expo/xdl';
 import fs from 'fs-extra';
 import tar from 'tar';
+import { ExponentTools } from '../../../xdl';
 
 import download from 'turtle/bin/setup/utils/downloader';
 import { ensureToolsAreInstalled, IToolDefinition } from 'turtle/bin/setup/utils/toolsDetector';
@@ -64,7 +64,7 @@ export function formatArtifactDownloadPath(uri: string) {
 
 async function _readShellAppTarballS3Uri(sdkVersion: string, formatters: IShellAppFormaters) {
   const sdkMajorVersion = ExponentTools.parseSdkMajorVersion(sdkVersion);
-  const filePath = formatters.formatShellAppTarballUriPath(sdkMajorVersion);
+  const filePath = formatters.formatShellAppTarballUriPath(String(sdkMajorVersion));
   const data = await fs.readFile(filePath, 'utf8');
   return data.trim();
 }

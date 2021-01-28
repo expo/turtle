@@ -1,9 +1,9 @@
 import _url from 'url';
 
 import { ConfigError, getExpoSDKVersion, ProjectConfig } from '@expo/config';
-import { ExponentTools } from '@expo/xdl';
 import _ from 'lodash';
 import uuid from 'uuid';
+import { ExponentTools } from '../../xdl';
 
 import { ErrorWithCommandHelp } from 'turtle/bin/commands/ErrorWithCommandHelp';
 import { ErrorWithProgramHelp } from 'turtle/bin/commands/ErrorWithProgramHelp';

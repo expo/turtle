@@ -1,4 +1,4 @@
-import { IosKeychain } from '@expo/xdl';
+import { IosKeychain } from '../../../xdl';
 
 import { IContext } from 'turtle/builders/ios/context';
 import * as fileUtils from 'turtle/builders/utils/file';

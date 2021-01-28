@@ -1,5 +1,5 @@
-import { IosIPABuilder as createIPABuilder } from '@expo/xdl';
 import _ from 'lodash';
+import { IosIPABuilder as createIPABuilder } from '../../xdl';
 
 import { IContext } from 'turtle/builders/ios/context';
 import { logErrorOnce } from 'turtle/builders/utils/common';

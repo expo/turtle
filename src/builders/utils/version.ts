@@ -1,6 +1,6 @@
-import { ExponentTools } from '@expo/xdl';
 import fs from 'fs-extra';
 import path from 'path';
+import { ExponentTools } from '../../xdl';
 
 import config from 'turtle/config';
 import { IJob } from 'turtle/job';

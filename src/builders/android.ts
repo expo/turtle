@@ -1,6 +1,7 @@
 import path from 'path';
 
-import { AndroidShellApp, ImageUtils } from '@expo/xdl';
+import { AndroidShellApp, ImageUtils } from '../xdl';
+
 import fs from 'fs-extra';
 import _ from 'lodash';
 import { ANDROID_BUILD_TYPES } from 'turtle/constants';

@@ -1,8 +1,8 @@
 import path from 'path';
 
 import spawnAsync from '@expo/spawn-async';
-import { IosCodeSigning } from '@expo/xdl';
 import fs from 'fs-extra';
+import { IosCodeSigning } from '../../../xdl';
 
 import BuildError, { BuildErrorReason } from 'turtle/builders/BuildError';
 import { IJob } from 'turtle/job';

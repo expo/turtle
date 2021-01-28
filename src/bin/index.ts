@@ -1,19 +1,27 @@
 import path from 'path';
 
-import { LoggerDetach, ModuleVersion } from '@expo/xdl';
 import program, { Command } from 'commander';
 import fs from 'fs-extra';
+import { LoggerDetach, ModuleVersion } from '../xdl';
 
 import * as commands from 'turtle/bin/commands';
 import logger from 'turtle/logger';
 
-const { name, version } = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf-8'));
+const { name, version } = JSON.parse(
+  fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf-8'),
+);
 
-const ModuleVersionChecker = ModuleVersion.createModuleVersionChecker(name, version);
+const ModuleVersionChecker = ModuleVersion.createModuleVersionChecker(
+  name,
+  version,
+);
 
+// @ts-ignore: Type mismatch
 LoggerDetach.configure(logger);
 
-Command.prototype.asyncAction = function asyncAction(asyncFn: (...asyncFnArgs: any[]) => void): Command {
+Command.prototype.asyncAction = function asyncAction(
+  asyncFn: (...asyncFnArgs: any[]) => void,
+): Command {
   return this.action(async (...args) => {
     try {
       await checkForUpdateAsync();
@@ -33,19 +41,24 @@ export function run(programName: string) {
 
 async function runAsync(programName: string) {
   program.version(version);
-  Object.values(commands).forEach((command) => registerCommand(program, command));
+  Object.values(commands).forEach((command) =>
+    registerCommand(program, command),
+  );
   program.parse(process.argv);
 
   const subCommand = process.argv[2];
   if (subCommand) {
-    const commandNames = program.commands.reduce((acc: string[], command: any) => {
-      acc.push(command._name);
-      const alias = command._alias;
-      if (alias) {
-        acc.push(alias);
-      }
-      return acc;
-    }, []);
+    const commandNames = program.commands.reduce(
+      (acc: string[], command: any) => {
+        acc.push(command._name);
+        const alias = command._alias;
+        if (alias) {
+          acc.push(alias);
+        }
+        return acc;
+      },
+      [],
+    );
     if (!commandNames.includes(subCommand)) {
       logger.error(
         `"${subCommand}" is not an ${programName} command. See "${programName} --help" for the full list of commands.`,
@@ -59,7 +72,11 @@ async function runAsync(programName: string) {
 const registerCommand = (prog: any, command: any) => command(prog);
 
 async function checkForUpdateAsync() {
-  const { updateIsAvailable, current, latest } = await ModuleVersionChecker.checkAsync();
+  const {
+    updateIsAvailable,
+    current,
+    latest,
+  } = await ModuleVersionChecker.checkAsync();
   if (updateIsAvailable) {
     logger.warn(
       `There is a new version of ${name} available (${latest}).

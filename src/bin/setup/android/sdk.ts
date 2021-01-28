@@ -1,9 +1,9 @@
 import os from 'os';
 import path from 'path';
 
-import { ExponentTools } from '@expo/xdl';
 import decompress from 'decompress';
 import fs from 'fs-extra';
+import { ExponentTools } from '../../../xdl';
 
 import * as utils from 'turtle/bin/setup/utils/common';
 import download from 'turtle/bin/setup/utils/downloader';
