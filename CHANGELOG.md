@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Add SDK 41 beta tarballs
+- Add SDK 41 beta tarballs.
+- Bump @expo/xdl to 59.1.0.
 
 # [0.20.7] - 2021-01-26
 
