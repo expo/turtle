@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Updated SDK 40 Android, iOS, and client tarballs for patch release.
+# [0.20.7] - 2021-01-26
+
+- Remove Go suffix from android app name
 
 # [0.20.6] - 2021-01-25
 
