@@ -7,7 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Update SDK 41 beta tarball.
+
+# [0.21.1] - 2021-04-01
+
+- Update SDK 41 beta tarball for iOS.
 
 # [0.21.0] - 2021-03-29
 
