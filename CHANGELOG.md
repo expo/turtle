@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update SDK 41 tarball for iOS and Android
+
 # [0.21.2] - 2021-04-07
 
 - Update SDK 41 beta tarball for Android.
