@@ -7,9 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update iOS client tarball for SDK 41.
+
 # [0.21.3] - 2021-04-13
 
-- Update SDK 41 tarball for iOS and Android
+- Update SDK 41 tarball for iOS and Android.
 
 # [0.21.2] - 2021-04-07
 
