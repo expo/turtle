@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.21.5] - 2021-04-15
+
+- Revert iOS client tarball for SDK 41, use the SDK 40 tarball. No longer supporting this feature in SDK 41+.
+- Update Android SDK 41 tarball.
+
+# [0.21.4] - 2021-04-13
+
 - Update iOS client tarball for SDK 41.
 
 # [0.21.3] - 2021-04-13
