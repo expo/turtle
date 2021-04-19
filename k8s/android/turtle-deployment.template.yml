@@ -144,15 +144,15 @@ spec:
           - name: DISABLE_DEX_MAX_HEAP
             value: "true"
           - name: JAVA_OPTS
-            value: '-Xms2048m -Xmx10g -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC'
+            value: '-Xms2048m -Xmx12g -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC'
           - name: GRADLE_OPTS
-            value: '-Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xms2048m -Xmx10g -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC"'
+            value: '-Dorg.gradle.parallel=true -Dorg.gradle.configureondemand=true -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xms2048m -Xmx12g -XX:+HeapDumpOnOutOfMemoryError -XX:+UseG1GC"'
           - name: REDIS_CA_CERTIFICATE
             value: '/var/run/config/redislabs-tls/redislabs_ca.pem'
         resources:
           requests:
-            memory: "9Gi"
-            cpu: "2000m"
-          limits:
-            memory: "10Gi"
+            memory: "12Gi"
             cpu: "3000m"
+          limits:
+            memory: "12Gi"
+            cpu: "3500m"
