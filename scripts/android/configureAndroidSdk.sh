@@ -19,4 +19,8 @@ yes | $SDKMANAGER \
   "extras;google;m2repository" \
   "extras;google;google_play_services" | grep -v '='; [[ ${PIPESTATUS[1]} = 0 ]]
 
-yes | $SDKMANAGER "ndk;17.2.4988734" | grep -v '='; [[ ${PIPESTATUS[1]} = 0 ]]
+if [[ "$(uname -s)" == "Darwin" ]] && [[ "$(uname -m)" == "arm64" ]]; then
+  echo "Skipping NDK install on M1 macOS"
+else
+  yes | $SDKMANAGER "ndk;17.2.4988734" | grep -v '='; [[ ${PIPESTATUS[1]} = 0 ]]
+fi
