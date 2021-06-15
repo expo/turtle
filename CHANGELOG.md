@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update `sharp` package, fixes support for M1 macs.
+
 # [0.21.8] - 2021-05-25
 
 - Update Android SDK41 tarball.

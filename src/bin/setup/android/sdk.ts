@@ -42,7 +42,7 @@ export default async function ensureAndroidSDKIsPresent() {
     }
   }
   return {
-    envVars: _createEnvVars(androidSdkDir),
+    envVars: await _createEnvVars(androidSdkDir),
     path: _createPaths(androidSdkDir),
   };
 }
@@ -63,11 +63,16 @@ async function _configureSdk(androidSdkDir: string) {
   });
 }
 
-function _createEnvVars(androidSdkDir: string) {
+async function _createEnvVars(androidSdkDir: string) {
+  const ndkPath = path.join(androidSdkDir, 'ndk/17.2.4988734');
+  const ndkPathExists = await fs.pathExists(ndkPath);
+  if (!ndkPathExists) {
+    l.warn('Skipping NDK installation');
+  }
   return {
     ANDROID_HOME: androidSdkDir,
     ANDROID_SDK: androidSdkDir,
-    ANDROID_NDK_HOME: path.join(androidSdkDir, 'ndk/17.2.4988734'),
+    ...(ndkPathExists ? { ANDROID_NDK_HOME: ndkPath } : {}),
   };
 }
 
