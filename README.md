@@ -6,8 +6,8 @@
 [![NPM](https://img.shields.io/npm/v/turtle-cli/latest.svg)](https://npmjs.com/package/turtle-cli)
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/expo/turtle/blob/master/LICENSE)
 
-[![Expo Developers Slack](https://img.shields.io/badge/Expo%20Developers-e01563.svg?logo=slack)](http://slack.expo.io)
-[![Expo Forums](https://img.shields.io/badge/Expo%20Forums-blue.svg)](https://forums.expo.io/)
+[![Expo Developers Discord](https://img.shields.io/discord/695411232856997968)](http://chat.expo.dev)
+[![Expo Forums](https://img.shields.io/badge/Expo%20Forums-blue.svg)](https://forums.expo.dev/)
 
 <hr />
 
@@ -21,7 +21,7 @@ You can use it both on your CI and your private computer.
 
 ## Installation
 
-[Installation instructions and documentation here.](https://docs.expo.io/distribution/turtle-cli/)
+[Installation instructions and documentation here.](https://docs.expo.dev/distribution/turtle-cli/)
 
 ## Usage example
 
@@ -29,13 +29,13 @@ See the [expo/turtle-cli-example](https://github.com/expo/turtle-cli-example) re
 
 ## Do you need help?
 
-- Make sure you've read [the Expo Docs](https://docs.expo.io/), especially [Building Standalone Apps on Your CI
-](https://docs.expo.io/versions/latest/distribution/turtle-cli) and [Building Standalone Apps](https://docs.expo.io/versions/latest/distribution/building-standalone-apps) guides.
+- Make sure you've read [the Expo Docs](https://docs.expo.dev/), especially [Building Standalone Apps on Your CI
+  ](https://docs.expo.dev/versions/latest/distribution/turtle-cli) and [Building Standalone Apps](https://docs.expo.dev/versions/latest/distribution/building-standalone-apps) guides.
 - Search for existing GitHub issues [in this repository](https://github.com/expo/turtle/issues) and in [expo/expo](https://github.com/expo/expo/issues) repository.
 - Ask for help in **one** of the following ways:
-  * create [a GitHub issue](https://github.com/expo/turtle/issues/new).
-  * create a new topic on [Expo Forums](https://forums.expo.io/).
-  * ask a question on [Expo Developers Slack](http://slack.expo.io).
+  - create [a GitHub issue](https://github.com/expo/turtle/issues/new).
+  - create a new topic on the [Expo Forums](https://forums.expo.dev/).
+  - connect with the community on the [Expo Developers Discord](http://chat.expo.dev).
 
 ## License
 

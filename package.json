@@ -57,7 +57,7 @@
   "engines": {
     "node": ">=10"
   },
-  "author": "Expo <support@expo.io>",
+  "author": "Expo <support@expo.dev>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/expo/turtle/issues"
