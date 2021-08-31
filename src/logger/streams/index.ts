@@ -1,20 +1,22 @@
-import pickBy from 'lodash/pickBy';
-
+import { pickBy } from 'lodash';
 import createGCloudStream from 'turtle/logger/streams/gcloud';
 import createOfflineStream from 'turtle/logger/streams/offline';
-import createS3Stream from 'turtle/logger/streams/s3';
+import createS3Stream, { S3Stream } from 'turtle/logger/streams/s3';
 import createSentryStream from 'turtle/logger/streams/sentry';
 import { isOffline } from 'turtle/turtleContext';
 
-interface IStream {
-  stream: any;
+interface IStream<T> {
+  stream: T;
   type?: string;
   level?: string;
   reemitErrorEvents?: boolean;
 }
 
 interface IStreamMap {
-  [key: string]: IStream;
+  stdout: IStream<any>;
+  gcloud?: IStream<any>;
+  s3?: IStream<S3Stream>;
+  sentry?: IStream<any>;
 }
 
 function prepareStreams(): IStreamMap {
@@ -29,7 +31,7 @@ function prepareStreams(): IStreamMap {
       s3: createS3Stream(),
       sentry: createSentryStream(),
     };
-    return pickBy(allStreams) as IStreamMap;
+    return pickBy(allStreams) as any as IStreamMap;
   }
 }
 

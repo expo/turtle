@@ -29,13 +29,13 @@ class Logger {
       jobID: job.id,
       experienceName: job.experienceName,
     });
-    const s3Url = await streams.s3.stream.init(job);
+    const s3Url = await streams.s3?.stream.init(job);
     return s3Url;
   }
 
   public async cleanup() {
     this.currentLogger = this.parentLogger;
-    await streams.s3.stream.cleanup();
+    await streams.s3?.stream.cleanup();
   }
 
   public trace(...all: any[]) {

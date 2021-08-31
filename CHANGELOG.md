@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Fix s3 logger stream close crash.
+
 # [0.22.4] - 2021-07-27
 
 - Update iOS and Android tarballs for SDK 42.

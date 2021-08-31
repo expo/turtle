@@ -18,7 +18,7 @@ export default function create() {
   };
 }
 
-class S3Stream extends EventEmitter {
+export class S3Stream extends EventEmitter {
   private s3Url: string | null = null;
   private lastFlush: number | null = null;
   private filePath: string | null = null;
@@ -44,7 +44,11 @@ class S3Stream extends EventEmitter {
 
   public async cleanup() {
     await this.flush(true);
-    await fs.close(this.fileHandle as number);
+
+    if (this.fileHandle) {
+      await fs.close(this.fileHandle);
+    }
+
     this.fileHandle = null;
     this.waitingOnPromise = false;
   }
@@ -64,7 +68,7 @@ class S3Stream extends EventEmitter {
       return;
     }
     fs
-      .write(this.fileHandle as number, `${JSON.stringify(rec)}\n`)
+      .write(this.fileHandle, `${JSON.stringify(rec)}\n`)
       .then(() => {
         this.flush();
       });
