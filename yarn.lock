@@ -4405,10 +4405,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/node-forge@^0.9.7":
-  version "0.9.7"
-  resolved "https://registry.yarnpkg.com/@types/node-forge/-/node-forge-0.9.7.tgz#948f7b52d352a6c4ab22d3328c206f0870672db5"
-  integrity sha512-AX7Mqk5ztzSvxqsA/q8y0k0/znJpW6QAqnoLQMEi7A3tio+laRmC/8Q3gbATHT4kZnvhnDmGAy1CpWFzlzCfeA==
+"@types/node-forge@^0.10.0":
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/@types/node-forge/-/node-forge-0.10.3.tgz#f3a83c1c679cde85ca1bd58e61331f16cb56a035"
+  integrity sha512-zgyZap9yq+mmonmFsuozDOVl5WGx3Uk9zYbueWgudIL7tbj1AL/8o47LplmCtuUAJfVUZ4l9l/DWDjcVUxi8Zw==
   dependencies:
     "@types/node" "*"
 
@@ -9245,11 +9245,11 @@ google-gax@^1.11.0:
     walkdir "^0.4.0"
 
 google-p12-pem@^2.0.0:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/google-p12-pem/-/google-p12-pem-2.0.4.tgz#036462394e266472632a78b685f0cc3df4ef337b"
-  integrity sha512-S4blHBQWZRnEW44OcR7TL9WR+QCqByRvhNDZ/uuQfpxywfupikf/miba8js1jZi6ZOGv5slgSuoshCWh6EMDzg==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/google-p12-pem/-/google-p12-pem-2.0.5.tgz#b1c44164d567ae894f7a19b4ff362a06be5b793b"
+  integrity sha512-7RLkxwSsMsYh9wQ5Vb2zRtkAHvqPvfoMGag+nugl1noYO7gf0844Yr9TIFA5NEBMAeVt2Z+Imu7CQMp3oNatzQ==
   dependencies:
-    node-forge "^0.9.0"
+    node-forge "^0.10.0"
 
 got@9.6.0, got@^9.6.0:
   version "9.6.0"
@@ -12474,20 +12474,10 @@ node-fetch@^2.2.0, node-fetch@^2.3.0, node-fetch@^2.6.0:
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
-node-forge@0.10.0:
+node-forge@0.10.0, node-forge@^0.10.0:
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
-
-node-forge@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.9.0.tgz#d624050edbb44874adca12bb9a52ec63cb782579"
-  integrity sha512-7ASaDa3pD+lJ3WvXFsxekJQelBKRpne+GOVbLbtHYdd7pFspyeuJHnWfLplGf3SwKGbfs/aYl5V/JCIaHVUKKQ==
-
-node-forge@^0.9.0:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.9.1.tgz#775368e6846558ab6676858a4d8c6e8d16c677b5"
-  integrity sha512-G6RlQt5Sb4GMBzXvhfkeFmbqR6MzhtnT7VTHuLadjkii3rdYHNdw0m8zA4BTxVIh68FicCQ2NSUANpsqkr9jvQ==
 
 node-html-parser@^1.2.12:
   version "1.2.14"
@@ -15062,11 +15052,11 @@ select-hose@^2.0.0:
   integrity sha1-Yl2GWPhlr0Psliv8N2o3NZpJlMo=
 
 selfsigned@^1.10.7:
-  version "1.10.7"
-  resolved "https://registry.yarnpkg.com/selfsigned/-/selfsigned-1.10.7.tgz#da5819fd049d5574f28e88a9bcc6dbc6e6f3906b"
-  integrity sha512-8M3wBCzeWIJnQfl43IKwOmC4H/RAp50S8DF60znzjW5GVqTcSe2vWclt7hmYVPkKPlHWOu5EaWOMZ2Y6W8ZXTA==
+  version "1.10.11"
+  resolved "https://registry.yarnpkg.com/selfsigned/-/selfsigned-1.10.11.tgz#24929cd906fe0f44b6d01fb23999a739537acbe9"
+  integrity sha512-aVmbPOfViZqOZPgRBT0+3u4yZFHpmnIghLMlAcb5/xhp5ZtB/RVnKhz5vl2M32CLXAqR4kha9zfhNg0Lf/sxKA==
   dependencies:
-    node-forge "0.9.0"
+    node-forge "^0.10.0"
 
 semver-compare@^1.0.0:
   version "1.0.0"
