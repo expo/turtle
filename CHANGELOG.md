@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.22.5] - 2021-09-09
+
 - Fix s3 logger stream close crash.
-- Update Android tarballs SDK 42, 41, 40, and 39 to include location workaround
+- Update Android tarballs SDK 42, 41, 40, and 39 to include location workaround.
 
 # [0.22.4] - 2021-07-27
 
