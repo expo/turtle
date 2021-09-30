@@ -307,7 +307,6 @@ workflows:
   tests:
     jobs:
       - unit_tests
-      - ios_smoke_tests
       - android_smoke_tests
   deploy:
     jobs:
