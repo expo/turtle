@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.22.6] - 2021-10-01
+
+- add `ACCESS_MEDIA_LOCATION` to blacklist for android permissions
+- disable automatic versioning in Xcode 13
+
 # [0.22.5] - 2021-09-09
 
 - Fix s3 logger stream close crash.
