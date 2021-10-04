@@ -20,6 +20,11 @@ commands:
   install_nix:
     steps:
       - run:
+          name: install ca-certifiactes with brew
+          command: |
+            echo 'export PATH="/usr/local/opt/curl/bin:$PATH"' >> /Users/distiller/.bash_profile
+            HOMEBREW_NO_AUTO_UPDATE=1 brew install curl
+      - run:
           name: Install nix
           command: curl https://nixos.org/releases/nix/nix-2.2.1/install | bash -s -- --no-daemon
       - run:
@@ -307,6 +312,7 @@ workflows:
   tests:
     jobs:
       - unit_tests
+      - ios_smoke_tests
       - android_smoke_tests
   deploy:
     jobs:
