@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { AndroidShellApp, ImageUtils } from '@expo/xdl';
+import { AndroidShellApp, ExponentTools, ImageUtils } from '@expo/xdl';
 import fs from 'fs-extra';
 import _ from 'lodash';
 import { ANDROID_BUILD_TYPES } from 'turtle/constants';
@@ -86,6 +86,23 @@ async function runShellAppBuilder(
   const enabledModules = _.get(manifest, 'android.enableDangerousExperimentalLeanBuilds')
     ? await resolveNativeModules(workingDir, sdkVersion, packageJsonDependecies)
     : await resolveExplicitOptIn(workingDir, packageJsonDependecies);
+
+  logger.info({ buildPhase: 'dump troubleshooting information' }, 'Dump file system');
+  await ExponentTools.spawnAsyncThrowError('find', ['.'], {
+    pipeToLogger: true,
+    loggerFields: { buildPhase: 'dump troubleshooting information' },
+    shell: true,
+  });
+  logger.info({ buildPhase: 'dump troubleshooting information' }, 'Overwrite autolinking.gradle');
+  // tslint:disable:max-line-length
+  const content = `\
+def proc = ["node", "--print", "require.resolve('expo-modules-autolinking/package.json')"].execute()
+proc.waitForProcessOutput(System.out, System.err)
+def autolinkingPath = ["node", "--print", "require.resolve('expo-modules-autolinking/package.json')"].execute().text.trim()
+apply from: new File(autolinkingPath, "../scripts/android/autolinking_implementation.gradle");
+`;
+  // tslint:enable:max-line-length
+  await fs.writeFile('/app/turtle/workingdir/android/sdk43/packages/expo/scripts/autolinking.gradle', content);
 
   try {
     await AndroidShellApp.createAndroidShellAppAsync({
