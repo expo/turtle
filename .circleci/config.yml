@@ -307,7 +307,6 @@ workflows:
   tests:
     jobs:
       - unit_tests
-      - android_smoke_tests
   deploy:
     jobs:
       - android_staging_approve_deploy:
