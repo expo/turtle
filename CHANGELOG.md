@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Add Android beta tarball for SDK 43
-- Add iOS beta tarball for SDK 43
+# [0.23.1] - 2021-10-20
+
+- Add iOS and Android tarballs for SDK 43
+
+# [0.23.0] - 2021-10-07
+
+- Add iOS and Android beta tarballs for SDK 43
 - Bump xdl to fix Android shell app for SDK 43
 
 # [0.22.6] - 2021-10-01
