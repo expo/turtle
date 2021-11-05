@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update iOS and Android SDK 43 tarballs with expo-updates fixes for [#14930](https://github.com/expo/expo/issues/14930)
+
 # [0.23.2] - 2021-10-29
 
 - Update Android SDK 43 shell app with proguard fix
