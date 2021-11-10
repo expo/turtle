@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Update Android SDK 43 tarball with expo-updates fix for [#15112](https://github.com/expo/expo/issues/15112)
+
 # [0.23.3] - 2021-11-04
 
 - Update iOS and Android SDK 43 tarballs with expo-updates fixes for [#14930](https://github.com/expo/expo/issues/14930)
