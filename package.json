@@ -110,7 +110,7 @@
     "@expo/xdl": "59.1.7",
     "@google-cloud/logging-bunyan": "^2.0.3",
     "async-retry": "^1.2.1",
-    "aws-sdk": "^2.226.1",
+    "aws-sdk": "^2.1043.0",
     "bunyan": "^1.8.12",
     "bunyan-debug-stream": "^1.0.8",
     "bunyan-sentry-stream": "^1.2.1",

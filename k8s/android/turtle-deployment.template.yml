@@ -64,10 +64,7 @@ spec:
                 name: turtle-js-config
                 key: aws_secret_access_key
           - name: AWS_SQS_REGION
-            valueFrom:
-              secretKeyRef:
-                name: turtle-js-config
-                key: aws_sqs_region
+            value: us-west-2
           - name: AWS_SQS_IOS_QUEUE_URL
             valueFrom:
               secretKeyRef:
