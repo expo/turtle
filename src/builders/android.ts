@@ -17,15 +17,7 @@ import config from 'turtle/config';
 import { IAndroidCredentials, IJob, IJobResult } from 'turtle/job';
 import logger from 'turtle/logger';
 
-// temporary solution until we can rebuild shellapps
-const blockGoogleBintrayAsync = _.once(async () => {
-  if (config.builder.mode === 'online') {
-    await fs.appendFile('/etc/hosts', '\n127.0.0.1\tdl.bintray.com\n127.0.0.1\tgoogle.bintray.com\n');
-  }
-});
-
 export default async function buildAndroid(jobData: IJob): Promise<IJobResult> {
-  await blockGoogleBintrayAsync();
   await ensureCanBuildSdkVersion(jobData);
   const credentials = await getOrCreateCredentials(jobData);
   const outputFilePath = await runShellAppBuilder(jobData, credentials);
