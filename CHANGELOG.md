@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Update iOS and Android tarballs for SDK 44 beta.
+- Add detection for Expo modules using `expo-module.config.json`, the successor to `unimodule.json`. [#368](https://github.com/expo/turtle/pull/368).
 
 # [0.23.5] - 2021-11-12
 
