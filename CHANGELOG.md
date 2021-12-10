@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.24.0] - 2021-12-10
+
 - Update iOS and Android tarballs for SDK 44 beta.
 - Add detection for Expo modules using `expo-module.config.json`, the successor to `unimodule.json`. [#368](https://github.com/expo/turtle/pull/368).
+- Redirect google bintray url to localhost. [#361](https://github.com/expo/turtle/pull/361)
+
+# [0.23.6] - 2021-12-08
+
+- Update android shell tarballs for bintray error fix. [#363](https://github.com/expo/turtle/pull/363)
+- Update AWS SDK. [#365](https://github.com/expo/turtle/pull/365)
 
 # [0.23.5] - 2021-11-12
 
