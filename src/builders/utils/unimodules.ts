@@ -209,7 +209,9 @@ async function getPackage(
   const pkgPath = path.join(workingdir, 'packages', pkgName);
   const isAndroid = await fs.pathExists(path.join(pkgPath, 'android'));
   const isIos = await fs.pathExists(path.join(pkgPath, 'ios'));
-  const isUnimodule = await fs.pathExists(path.join(pkgPath, 'unimodule.json'));
+  const isUnimodule =
+    (await fs.pathExists(path.join(pkgPath, 'unimodule.json'))) ||
+    (await fs.pathExists(path.join(pkgPath, 'expo-module.config.json')));
   const hasPackageJson = await fs.pathExists(
     path.join(pkgPath, 'package.json'),
   );
