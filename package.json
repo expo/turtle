@@ -1,6 +1,6 @@
 {
   "name": "turtle-cli",
-  "version": "0.24.0",
+  "version": "0.24.1",
   "description": "The command-line tool for building standalone Expo apps",
   "preferGlobal": true,
   "scripts": {
