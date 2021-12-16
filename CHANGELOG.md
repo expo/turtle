@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.24.2] - 2021-12-16
+
+- Update Android shell tarball for SDK 44.
+
 # [0.24.1] - 2021-12-15
 
 - Update iOS and Android tarballs for SDK 44 RC. [#369](https://github.com/expo/turtle/pull/369).
