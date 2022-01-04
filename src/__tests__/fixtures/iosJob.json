@@ -83,7 +83,7 @@
        ],
        "description": "A very interesting project.",
        "icon": "./assets/images/icon.png",
-       "iconUrl": "https://d1wp6m56sqw74a.cloudfront.net/~assets/fa6577fecc0a7838f15a254577639984",
+       "iconUrl": "https://classic-assets.eascdn.net/~assets/fa6577fecc0a7838f15a254577639984",
        "ios": {
           "bundleIdentifier": "com.niech.to.zadziala",
           "supportsTablet": true
@@ -101,7 +101,7 @@
        "splash": {
           "backgroundColor": "#ffffff",
           "image": "./assets/images/splash.png",
-          "imageUrl": "https://d1wp6m56sqw74a.cloudfront.net/~assets/43ec0dcbe5a156bf9e650bb8c15e7af6",
+          "imageUrl": "https://classic-assets.eascdn.net/~assets/43ec0dcbe5a156bf9e650bb8c15e7af6",
           "resizeMode": "contain"
        },
        "updates": {
@@ -112,7 +112,7 @@
        "revisionId": "1.0.0-r.zV1W89wn23",
        "publishedTime": "2018-10-16T08:44:05.362Z",
        "commitTime": "2018-10-16T08:44:05.403Z",
-       "bundleUrl": "https://d1wp6m56sqw74a.cloudfront.net/%40admin%2FtestApp%2F1.0.0%2Fb8678e2be7cd5bb9e240db0dd3c691c0-29.0.0-ios.js",
+       "bundleUrl": "https://classic-assets.eascdn.net/%40admin%2FtestApp%2F1.0.0%2Fb8678e2be7cd5bb9e240db0dd3c691c0-29.0.0-ios.js",
        "releaseChannel": "default",
        "hostUri": "exp.host/@admin/testApp"
     },
