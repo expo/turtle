@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Swap out Cloudfront CDN for `classic-assets.eascdn.net`. [#375](https://github.com/expo/turtle/pull/375)
+
 # [0.24.3] - 2021-12-29
 
 - Update ios sdk 44 shell tarball with [orientation lock fix](https://github.com/expo/expo/pull/15715)
