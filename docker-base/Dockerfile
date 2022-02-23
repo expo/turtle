@@ -1,6 +1,6 @@
 # If you ever need to rebuild this, run:
 # yarn docker:build-and-push:android-base-image NEW_IMAGE_SEMVER
-FROM openjdk:8u141
+FROM openjdk:11.0.14.1-jdk
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -18,7 +18,6 @@ RUN dpkg --add-architecture i386 && \
   bzip2:i386\
   file\
   jq\
-  lib32ncurses5\
   lib32z1\
   libc6:i386\
   libncurses5:i386\
@@ -41,14 +40,11 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
 # Download and untar SDK
 ENV ANDROID_HOME /usr/local/android-sdk-linux
 ENV ANDROID_SDK /usr/local/android-sdk-linux
-ENV ANDROID_SDK_URL https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-RUN mkdir -p ${ANDROID_HOME} && \
-  curl -L "${ANDROID_SDK_URL}" > ${ANDROID_HOME}/sdk.zip && \
-  cd ${ANDROID_HOME} && \
-  unzip -qq sdk.zip && \
-  rm sdk.zip && \
-  mkdir -p ${HOME}/.android && \
-  touch ${HOME}/.android/repositories.cfg
+RUN curl -s https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip > /tmp/tools.zip && \
+  mkdir -p $ANDROID_HOME/cmdline-tools && \
+  unzip -q -d $ANDROID_HOME/cmdline-tools /tmp/tools.zip && \
+  mv $ANDROID_HOME/cmdline-tools/cmdline-tools $ANDROID_HOME/cmdline-tools/tools && \
+  rm /tmp/tools.zip
 
 ENV PATH ${ANDROID_HOME}/platform-tools:${PATH}
 ENV PATH ${ANDROID_HOME}/tools:${PATH}

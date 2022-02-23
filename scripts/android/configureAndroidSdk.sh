@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SDKMANAGER=$ANDROID_HOME/tools/bin/sdkmanager
+SDKMANAGER=$ANDROID_HOME/cmdline-tools/tools/bin/sdkmanager
 
 yes | $SDKMANAGER --licenses > /dev/null
 if [[ "$1" = "--install-all-platforms" ]]; then

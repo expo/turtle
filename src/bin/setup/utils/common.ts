@@ -17,7 +17,7 @@ interface IShellAppFormaters {
   formatShellAppTarballUriPath: (sdkMajorVersion: string) => string;
 }
 
-type PostDownloadAction = (sdkVersion: string, workingdir: string) => void;
+type PostDownloadAction = (sdkVersion: string, workingdir: string) => Promise<void>;
 
 export async function checkSystem(requiredTools: IToolDefinition[]) {
   await ensureToolsAreInstalled(requiredTools);
@@ -69,8 +69,8 @@ async function _readShellAppTarballS3Uri(sdkVersion: string, formatters: IShellA
   return data.trim();
 }
 
-export async function removeDirectoryUnlessReady(dir: string, metadata?: string) {
-  const readyFilePath = path.join(dir, '.ready');
+export async function removeDirectoryUnlessReady(dir: string, metadata?: string, readyFileName?: string) {
+  const readyFilePath = path.join(dir, readyFileName ?? '.ready');
   const readyFileExists = await fs.pathExists(readyFilePath);
   let shouldRemove = false;
   if (readyFileExists) {
@@ -88,8 +88,8 @@ export async function removeDirectoryUnlessReady(dir: string, metadata?: string)
   }
 }
 
-export async function markDirectoryAsReady(dir: string, metadata?: string) {
-  const readyFilePath = path.join(dir, '.ready');
+export async function markDirectoryAsReady(dir: string, metadata?: string, readyFileName?: string) {
+  const readyFilePath = path.join(dir, readyFileName ?? '.ready');
   if (metadata === undefined) {
     await fs.open(readyFilePath, 'w');
   } else {

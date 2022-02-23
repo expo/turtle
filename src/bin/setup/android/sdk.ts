@@ -10,14 +10,15 @@ import download from 'turtle/bin/setup/utils/downloader';
 import config from 'turtle/config';
 import logger from 'turtle/logger';
 
-const ANDROID_SDK_URL = 'https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip';
+const ANDROID_SDK_URL = 'https://dl.google.com/android/repository/commandlinetools-linux-7583922_latest.zip';
 
 const LOGGER_FIELDS = { buildPhase: 'setting up environment' };
 const l = logger.child(LOGGER_FIELDS);
 
 export default async function ensureAndroidSDKIsPresent() {
   const androidSdkDir = path.join(config.directories.androidDependenciesDir, 'sdk');
-  await utils.removeDirectoryUnlessReady(androidSdkDir);
+  const readyFileName = '.ready-v2';
+  await utils.removeDirectoryUnlessReady(androidSdkDir, undefined, readyFileName);
   if (!(await fs.pathExists(androidSdkDir))) {
     await fs.ensureDir(androidSdkDir);
     const androidSdkDownloadPath = utils.formatArtifactDownloadPath(ANDROID_SDK_URL);
@@ -26,13 +27,14 @@ export default async function ensureAndroidSDKIsPresent() {
       l.info('Downloading Android SDK');
       await fs.ensureDir(config.directories.artifactsDir);
       await download(ANDROID_SDK_URL, androidSdkDownloadPath);
-      await fs.ensureDir(androidSdkDir);
+      const cmdlineToolsDir = path.join(androidSdkDir, 'cmdline-tools/tools');
+      await fs.ensureDir(cmdlineToolsDir);
       l.info('Decompressing Android SDK');
-      await decompress(androidSdkDownloadPath, androidSdkDir);
+      await decompress(androidSdkDownloadPath, cmdlineToolsDir, { strip: 1 });
       await fs.remove(androidSdkDownloadPath);
       l.info('Configuring Android SDK, this may take a while');
       await _configureSdk(androidSdkDir);
-      await utils.markDirectoryAsReady(androidSdkDir);
+      await utils.markDirectoryAsReady(androidSdkDir, undefined, readyFileName);
       l.info('Android SDK installed and configured successfully');
     } catch (err) {
       await fs.remove(androidSdkDir);

@@ -14,7 +14,6 @@ import { PLATFORMS } from 'turtle/constants';
 import logger from 'turtle/logger';
 
 const which = util.promisify(_which);
-const JAVA_REQUIRED_VERSION = 8;
 const REQUIRED_TOOLS: IToolDefinition[] = [
   {
     command: 'bash',
@@ -23,9 +22,9 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
   {
     command: 'javac',
     missingDescription:
-      `Please install JDK 8 - keep in mind that other versions are not supported by Android`,
+      `Please install JDK 11 - keep in mind that other versions might not be supported by Android`,
     testFn: async () => {
-      const { status, stdout, stderr } = await ExponentTools.spawnAsyncThrowError(
+      const { status, stdout } = await ExponentTools.spawnAsyncThrowError(
         'java',
         ['-version'],
         { stdio: 'pipe' },
@@ -33,19 +32,6 @@ const REQUIRED_TOOLS: IToolDefinition[] = [
       if (stdout.match(/no java runtime present/i)) {
         return false;
       }
-
-      const matchResult = stderr.match(/.*version "(.*)"/);
-      if (matchResult) {
-        const [, currentFullJavaVersion] = matchResult;
-        const javaMajorVersionPosition = currentFullJavaVersion.startsWith('1.') ? 1 : 0;
-        const javaMajorVersion = Number(currentFullJavaVersion.split('.')[javaMajorVersionPosition]);
-        if (javaMajorVersion !== JAVA_REQUIRED_VERSION) {
-          throw new Error(`You're on Java ${currentFullJavaVersion}, please install version ${JAVA_REQUIRED_VERSION}`);
-        }
-      } else {
-        logger.warn(`Couldn't find Java version number, assuming you're on Java ${JAVA_REQUIRED_VERSION}...`);
-      }
-
       return status === 0;
     },
   },
