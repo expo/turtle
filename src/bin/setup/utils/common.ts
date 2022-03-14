@@ -30,7 +30,7 @@ export async function ensureShellAppIsPresent(
 ) {
   const workingdir = formatters.formatShellAppDirectory({ sdkVersion });
   const shellAppMetadata = await _readShellAppTarballS3Uri(sdkVersion, formatters);
-  await removeDirectoryUnlessReady(workingdir, shellAppMetadata);
+  await removeDirectoryUnlessReady(workingdir, { metadata: shellAppMetadata });
   if (await fs.pathExists(workingdir)) {
     return;
   }
@@ -39,7 +39,7 @@ export async function ensureShellAppIsPresent(
   if (postDownloadAction) {
     await postDownloadAction(sdkVersion, workingdir);
   }
-  await markDirectoryAsReady(workingdir, shellAppMetadata);
+  await markDirectoryAsReady(workingdir, { metadata: shellAppMetadata });
 }
 
 async function _downloadShellApp(sdkVersion: string, targetDirectory: string, formatters: IShellAppFormaters) {
@@ -69,7 +69,10 @@ async function _readShellAppTarballS3Uri(sdkVersion: string, formatters: IShellA
   return data.trim();
 }
 
-export async function removeDirectoryUnlessReady(dir: string, metadata?: string, readyFileName?: string) {
+export async function removeDirectoryUnlessReady(
+  dir: string,
+  { metadata, readyFileName }: { metadata?: string, readyFileName?: string },
+) {
   const readyFilePath = path.join(dir, readyFileName ?? '.ready');
   const readyFileExists = await fs.pathExists(readyFilePath);
   let shouldRemove = false;
@@ -78,7 +81,7 @@ export async function removeDirectoryUnlessReady(dir: string, metadata?: string,
       const readyFileContents = (await fs.readFile(readyFilePath, 'utf-8')).trim();
       if (readyFileContents !== metadata) {
         shouldRemove = true;
-       }
+      }
     }
   } else {
     shouldRemove = true;
@@ -88,7 +91,10 @@ export async function removeDirectoryUnlessReady(dir: string, metadata?: string,
   }
 }
 
-export async function markDirectoryAsReady(dir: string, metadata?: string, readyFileName?: string) {
+export async function markDirectoryAsReady(
+  dir: string,
+  { metadata, readyFileName }: { metadata?: string, readyFileName?: string },
+) {
   const readyFilePath = path.join(dir, readyFileName ?? '.ready');
   if (metadata === undefined) {
     await fs.open(readyFilePath, 'w');

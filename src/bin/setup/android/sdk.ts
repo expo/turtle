@@ -18,7 +18,7 @@ const l = logger.child(LOGGER_FIELDS);
 export default async function ensureAndroidSDKIsPresent() {
   const androidSdkDir = path.join(config.directories.androidDependenciesDir, 'sdk');
   const readyFileName = '.ready-v2';
-  await utils.removeDirectoryUnlessReady(androidSdkDir, undefined, readyFileName);
+  await utils.removeDirectoryUnlessReady(androidSdkDir, { readyFileName });
   if (!(await fs.pathExists(androidSdkDir))) {
     await fs.ensureDir(androidSdkDir);
     const androidSdkDownloadPath = utils.formatArtifactDownloadPath(ANDROID_SDK_URL);
@@ -34,7 +34,7 @@ export default async function ensureAndroidSDKIsPresent() {
       await fs.remove(androidSdkDownloadPath);
       l.info('Configuring Android SDK, this may take a while');
       await _configureSdk(androidSdkDir);
-      await utils.markDirectoryAsReady(androidSdkDir, undefined, readyFileName);
+      await utils.markDirectoryAsReady(androidSdkDir, { readyFileName });
       l.info('Android SDK installed and configured successfully');
     } catch (err) {
       await fs.remove(androidSdkDir);
