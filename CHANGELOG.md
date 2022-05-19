@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add iOS and Android shell tarballs for SDK 45.
+
 # [0.26.0] - 2022-03-21
 
 - Remove JDK 8 validation. [#389](https://github.com/expo/turtle/pull/389)
