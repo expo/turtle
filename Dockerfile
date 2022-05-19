@@ -1,5 +1,5 @@
 # see docker-base/Dockerfile to learn what's installed in the turtle-android-base image
-FROM gcr.io/exponentjs/turtle-android-base:0.7.0
+FROM gcr.io/exponentjs/turtle-android-base:0.8.0
 
 ADD . /app/turtle
 
