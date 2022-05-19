@@ -139,7 +139,7 @@
     "@expo/traveling-fastlane-darwin": "1.11.4"
   },
   "volta": {
-    "node": "12.22.7",
+    "node": "14.17.3",
     "yarn": "1.22.0"
   }
 }
