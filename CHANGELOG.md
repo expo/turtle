@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.27.2] - 2022-06-15
+
+- Update Android shell tarballs for SDK 44 and 43.
+
 # [0.27.1] - 2022-06-13
 
 - Update Android shell tarball for SDK 45.
