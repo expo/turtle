@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.27.4] - 2022-06-28
+
+- Update Android shell tarball for SDK 45.
+
 # [0.27.3] - 2022-06-18
 
 - Update Android SDK 45 shell tarball to fix the notification trampoline issues for Android 12+.
