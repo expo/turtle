@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.27.5] - 2022-07-26
+
+- Update iOS shell tarball for SDK 43, 44, 45 for [expo-notifications crash fix](https://github.com/expo/expo/pull/18023).
+
 # [0.27.4] - 2022-06-28
 
 - Update Android shell tarball for SDK 45.
