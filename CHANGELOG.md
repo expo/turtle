@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.28.0] - 2022-08-19
+
 - Add iOS and Android shell tarballs for SDK 46.
 
 # [0.27.5] - 2022-07-26
