@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+# [0.28.1] - 2022-08-22
+
+- Update Android shell tarball for SDK 46 to remove deprecated *expo-analytics-segment* dependency.
+
 # [0.28.0] - 2022-08-19
 
 - Add iOS and Android shell tarballs for SDK 46.
