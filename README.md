@@ -11,8 +11,9 @@
 
 <hr />
 
-Turtle CLI is a command line interface for building Expo standalone apps.
-You can use it both on your CI and your private computer.
+ > 🚨 This tool is specifically intended for the classic build service. We recommend [migrating to EAS Build](https://docs.expo.dev/build-reference/migrating/), which [also supports building on your own infrastructure](https://docs.expo.dev/build-reference/local-builds/). The final Expo SDK release to support Turtle was SDK 46.
+
+Turtle CLI is a command line interface for building Expo standalone apps. You can use it both on your CI and your private computer.
 
 - [Changelog](CHANGELOG.md)
 - [Contributing](CONTRIBUTING.md)
