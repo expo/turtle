@@ -13,6 +13,5 @@
     "before:init": [
       "yarn"
     ],
-    "after:release": "yarn release:update:turtle-cli-example"
   }
 }
